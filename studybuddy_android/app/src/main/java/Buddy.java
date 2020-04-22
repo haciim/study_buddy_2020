@@ -12,7 +12,7 @@ public class Buddy {
      * constructs a new Buddy with the given name and
      * default affinity
      *
-     * @param name name of the pet
+     * @param name - the name of the pet
      */
     public Buddy(String name) {
         this(name, DEFAULT_AFFINITY);
@@ -21,8 +21,8 @@ public class Buddy {
     /**
      * constructs a new Buddy with the given name and affinity
      *
-     * @param name name of the pet
-     * @param affinity affinity of the pet
+     * @param name - the name of the pet
+     * @param affinity - the affinity of the pet
      */
     public Buddy(String name, int affinity) {
         this.name = name;
@@ -32,7 +32,7 @@ public class Buddy {
     /**
      * sets the pet's name to the given name
      *
-     * @param name the new name of the pet
+     * @param name - the new name of the pet
      */
     public void SetName(String name) {
         this.name = name;
@@ -50,7 +50,7 @@ public class Buddy {
     /**
      * increments the pets affinity by the given amount
      *
-     * @param amount the amount to change the affinity by
+     * @param amount - the amount to change the affinity by
      */
     public void ChangeAffinity(int amount) {
         affinity += amount;
