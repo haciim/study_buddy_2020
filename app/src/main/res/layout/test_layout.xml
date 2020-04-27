@@ -7,20 +7,35 @@
     android:orientation="vertical"
     android:background="@drawable/test_background">
 
-    <TextView
-        android:id="@+id/newSession"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NEW SESSION"
-        android:fontFamily="monospace"
-        android:textColor="@color/red"
-        android:textSize="@dimen/test_new_session_text_size"
+        android:backgroundTint="@color/red"
+        app:cardCornerRadius="@dimen/test_new_session_corner_outer_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias=".75"
-        app:layout_constraintVertical_bias=".1"/>
+        app:layout_constraintVertical_bias=".1">
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/test_new_session_border_width"
+            android:backgroundTint="@color/white"
+            android:background="@color/red"
+            app:cardCornerRadius="@dimen/test_new_session_corner_inner_radius">
+            <TextView
+                android:id="@+id/newSession"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/test_new_session_inner_margin"
+                android:text="NEW SESSION"
+                android:fontFamily="@font/montserrat_light"
+                android:textColor="@color/red"
+                android:textSize="@dimen/test_new_session_text_size" />
+        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/squareButton"

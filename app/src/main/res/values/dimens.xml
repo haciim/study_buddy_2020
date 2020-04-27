@@ -9,4 +9,8 @@
     <dimen name="test_button_elevation">20dp</dimen>
 
     <dimen name="test_new_session_text_size">25sp</dimen>
+    <dimen name="test_new_session_border_width">1dp</dimen>
+    <dimen name="test_new_session_inner_margin">4dp</dimen>
+    <dimen name="test_new_session_corner_outer_radius">6dp</dimen>
+    <dimen name="test_new_session_corner_inner_radius">5dp</dimen>
 </resources>
