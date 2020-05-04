@@ -1,3 +1,5 @@
+// Author: Georgina Chandler
+
 package studyBuddy;
 
 import java.sql.Timestamp;
