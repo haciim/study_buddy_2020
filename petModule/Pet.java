@@ -3,12 +3,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
-/** TO DO NOW
- * Add username request to spreadsheet
- * Mention that checks for name changes are absolute (checks for level 2 always)
- * Need way to keep track of days at -10 (even if app is inactive)
- * Check last recorded day at -10, check and update
-*/
 public class Pet {
     /* Instance Variables */ 
     private String name;
