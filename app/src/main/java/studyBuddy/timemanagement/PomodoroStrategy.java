@@ -1,4 +1,4 @@
-package com.example.studdybuddy.timemanagement;
+package studyBuddy.timemanagement;
 
 import java.util.Collections;
 import java.util.LinkedList;

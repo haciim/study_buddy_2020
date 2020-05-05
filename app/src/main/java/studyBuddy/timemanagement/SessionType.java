@@ -1,4 +1,4 @@
-package com.example.studdybuddy.timemanagement;
+package studyBuddy.timemanagement;
 
 public enum SessionType {
     STANDARD,

@@ -1,4 +1,4 @@
-package com.example.studdybuddy.timemanagement;
+package studyBuddy.timemanagement;
 
 /**
  * Cleans up some of the redundant bits regarding creating a session
