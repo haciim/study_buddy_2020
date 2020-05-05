@@ -2,6 +2,7 @@
 
 package studyBuddy;
 
+// Could change to java.util.Date
 import java.sql.Timestamp;
 
 public class Session {
@@ -65,10 +66,10 @@ public class Session {
     public double endSession() {
         long currentTime = System.currentTimeMillis();
         Timestamp endTime = new Timestamp(currentTime);
-        long sessionMinutes = getMinutes(startTime, endTime);
+        double sessionMinutes = getMinutes(startTime, endTime);
         // there could be some loss of precision here but since our session times
         // will likely be relatively short? like max 8 hours it shouldn't be a problem
-        totalTime = (double) sessionMinutes;
+        totalTime = sessionMinutes;
         sessionOngoing = false;
         // TODO: record to data base
         // view should display this total time to user and then ask for percentProductiveTime
@@ -82,12 +83,12 @@ public class Session {
      * Uses the user given percentage to calculate the amount (in minutes) of productive time
      * @param percentProductiveTime the percentage of the session time that the user was productive
      */
-    public void setTotalProductiveTime(double percentProductiveTime) {
+    public void setTotalProductiveTime(long percentProductiveTime) {
         // assert precondition is met
         assert (percentProductiveTime >= 0.0 && percentProductiveTime <= 1.0);
         // we might use this later
         percentProductive = percentProductiveTime;
-        productiveTime = totalTime * percentProductive;
+        productiveTime = (totalTime * percentProductive);
     }
 
     /**
@@ -125,11 +126,11 @@ public class Session {
      * @param endTime the later time
      * @return the number of minutes between the two times
      */
-    private long getMinutes(Timestamp startTime, Timestamp endTime) {
+    private double getMinutes(Timestamp startTime, Timestamp endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;
-        long minutes = diff / (60 * 1000);
+        double minutes = diff / (60.0 * 1000.0);
         return minutes;
     }
 }
