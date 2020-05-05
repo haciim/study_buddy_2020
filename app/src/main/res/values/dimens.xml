@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="test_button_inner_corner_radius">3dp</dimen>
+    <dimen name="test_button_outer_size">50dp</dimen>
+    <dimen name="test_button_outer_corner_radius">25dp</dimen>
+    <dimen name="test_button_inner_size">20dp</dimen>
+    <dimen name="test_button_inner_margin">15dp</dimen>
+    <dimen name="test_button_info_text_size">25dp</dimen>
+    <dimen name="test_button_elevation">20dp</dimen>
+
+    <dimen name="test_new_session_text_size">25sp</dimen>
+    <dimen name="test_new_session_border_width">1dp</dimen>
+    <dimen name="test_new_session_inner_margin">4dp</dimen>
+    <dimen name="test_new_session_corner_outer_radius">6dp</dimen>
+    <dimen name="test_new_session_corner_inner_radius">5dp</dimen>
+</resources>

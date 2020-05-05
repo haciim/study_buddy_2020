@@ -1,16 +1,16 @@
-package com.example.studdybuddy;
+package studyBuddy;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.studdybuddy.R;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // test
-        setContentView(R.layout.activity_main);
-        System.out.println("hello world");
+        setContentView(R.layout.test_layout);
     }
 }

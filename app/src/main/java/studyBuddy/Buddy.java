@@ -1,5 +1,7 @@
+package studyBuddy;
+
 /**
- * The Buddy class represents the statistics of the virtual pet
+ * The studyBuddy.Buddy class represents the statistics of the virtual pet
  */
 
 public class Buddy {
@@ -9,7 +11,7 @@ public class Buddy {
     private static final int DEFAULT_AFFINITY = 0;
 
     /**
-     * constructs a new Buddy with the given name and
+     * constructs a new studyBuddy.Buddy with the given name and
      * default affinity
      *
      * @param name - the name of the pet
@@ -19,7 +21,7 @@ public class Buddy {
     }
 
     /**
-     * constructs a new Buddy with the given name and affinity
+     * constructs a new studyBuddy.Buddy with the given name and affinity
      *
      * @param name - the name of the pet
      * @param affinity - the affinity of the pet
