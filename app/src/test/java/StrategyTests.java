@@ -3,7 +3,6 @@ import org.junit.Assert;
 
 import java.util.List;
 
-import studyBuddy.timemanagement.PomodoroStrategy;
 import studyBuddy.timemanagement.SessionType;
 import studyBuddy.timemanagement.Strategy;
 import studyBuddy.timemanagement.StrategyFactory;
@@ -11,7 +10,7 @@ import studyBuddy.timemanagement.StudyInterval;
 
 public class StrategyTests {
 
-    public static final long HOUR_MILLIS = (60 * 60 * 1000);
+    private static final long HOUR_MILLIS = (60 * 60 * 1000);
 
     @Test
     public void TestPomodoroCalls() {
@@ -27,5 +26,22 @@ public class StrategyTests {
 
         Assert.assertEquals(HOUR_MILLIS, duration);
         Assert.assertEquals(SessionType.POMODORO, pomo.getSessionType());
+    }
+
+    @Test
+    public void TestStandardCalls() {
+        Strategy std = StrategyFactory.getStrategy(SessionType.STANDARD, HOUR_MILLIS);
+        Assert.assertNotNull(std);
+        List<StudyInterval> intervalList = std.getTimeTable();
+        Assert.assertEquals(1, intervalList.size());
+        StudyInterval interval = intervalList.get(0);
+        Assert.assertEquals(HOUR_MILLIS, interval.end - interval.start);
+    }
+
+    @Test
+    public void TestFactoryMethod() {
+        Assert.assertNull(StrategyFactory.getStrategy(SessionType.POMODORO, 142857));
+        Assert.assertNull(StrategyFactory.getStrategy(SessionType.POMODORO, 0));
+        Assert.assertNull(StrategyFactory.getStrategy(SessionType.POMODORO, 1499999));
     }
 }
