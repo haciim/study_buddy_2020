@@ -4,7 +4,7 @@ package studyBuddy.timemanagement;
  * Cleans up some of the redundant bits regarding creating a session
  */
 public class StrategyFactory {
-    static Strategy getStrategy(SessionType type, long duration) {
+    public static Strategy getStrategy(SessionType type, long duration) {
         switch(type) {
             case STANDARD:
                 if (StandardStrategy.isDurationValid(duration)) {
