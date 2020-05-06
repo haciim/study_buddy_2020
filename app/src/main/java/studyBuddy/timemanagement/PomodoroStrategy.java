@@ -6,10 +6,10 @@ import java.util.List;
 
 public class PomodoroStrategy implements Strategy {
 
-    public static final long HALF_HOUR_MILLIS = 1800000;
-    public static final long TWENTY_FIVE_MILLIS = 1500000;
+    private static final long HALF_HOUR_MILLIS = 1800000;
+    private static final long TWENTY_FIVE_MILLIS = 1500000;
 
-    public final long duration;
+    private final long duration;
     private final List<StudyInterval> intervals;
 
     public SessionType getSessionType() {
@@ -20,12 +20,15 @@ public class PomodoroStrategy implements Strategy {
         return Collections.unmodifiableList(intervals);
     }
 
-
-    public static boolean isDurationValid(long duration) {
-        return (duration % HALF_HOUR_MILLIS == 0);
+    public long getDuration() {
+        return duration;
     }
 
-    public PomodoroStrategy(long duration) {
+    static boolean isDurationValid(long duration) {
+        return (duration % HALF_HOUR_MILLIS == 0 && duration > 0);
+    }
+
+    PomodoroStrategy(long duration) {
         this.duration = duration;
         this.intervals = new LinkedList<>();
         int intervalCount = (int)(duration / HALF_HOUR_MILLIS);

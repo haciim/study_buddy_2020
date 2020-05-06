@@ -20,10 +20,15 @@ public interface Strategy {
 
     /**
      * Returns true if the session is valid with the given duration, false otherwise.
-     * @param duration - the length of the session.
+     * @param duration - the length of the session, in milliseconds.
      * @return - true if the session is valid, false otherwise.
      */
     static boolean isDurationValid(long duration) {
         return false;
     }
+
+    /**
+     * Returns the duration of the strategy, in milliseconds.
+     */
+    public long getDuration();
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StandardStrategy implements Strategy {
 
-    public final long duration;
+    private final long duration;
     private StudyInterval interval;
 
     public SessionType getSessionType() {
@@ -19,11 +19,15 @@ public class StandardStrategy implements Strategy {
         return result;
     }
 
-    public static boolean isDurationValid(long duration) {
-        return true;
+    static boolean isDurationValid(long duration) {
+        return (duration > 0);
     }
 
-    public StandardStrategy(long duration) {
+    public long getDuration() {
+        return duration;
+    }
+
+    StandardStrategy(long duration) {
         this.duration = duration;
         this.interval = new StudyInterval(0, duration, true);
     }

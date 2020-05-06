@@ -24,7 +24,7 @@ public class StrategyTests {
             duration += (entry.end - entry.start);
         }
 
-        Assert.assertEquals(HOUR_MILLIS, duration);
+        Assert.assertEquals(HOUR_MILLIS, pomo.getDuration());
         Assert.assertEquals(SessionType.POMODORO, pomo.getSessionType());
     }
 
@@ -36,6 +36,7 @@ public class StrategyTests {
         Assert.assertEquals(1, intervalList.size());
         StudyInterval interval = intervalList.get(0);
         Assert.assertEquals(HOUR_MILLIS, interval.end - interval.start);
+        Assert.assertEquals(HOUR_MILLIS, std.getDuration());
     }
 
     @Test
