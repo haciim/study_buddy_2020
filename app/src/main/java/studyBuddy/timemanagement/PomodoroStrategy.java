@@ -31,7 +31,7 @@ public class PomodoroStrategy implements Strategy {
         int intervalCount = (int)(duration / HALF_HOUR_MILLIS);
 
         for (int i = 0; i < intervalCount; i++) {
-            intervals.add(new StudyInterval(0, (i * HALF_HOUR_MILLIS) + TWENTY_FIVE_MILLIS, true));
+            intervals.add(new StudyInterval((i * HALF_HOUR_MILLIS), (i * HALF_HOUR_MILLIS) + TWENTY_FIVE_MILLIS, true));
             intervals.add(new StudyInterval((i * HALF_HOUR_MILLIS) + TWENTY_FIVE_MILLIS, (i + 1) * HALF_HOUR_MILLIS, false));
         }
     }
