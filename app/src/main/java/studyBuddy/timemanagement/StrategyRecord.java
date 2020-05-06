@@ -5,14 +5,16 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Date;
+
 /**
  * Stores all information necessary to represent a session at some point in time
  */
 public class StrategyRecord {
     public final SessionType type;
     public final String name;
-    public final long start;
-    public final long end;
+    public final Date start;
+    public final Date end;
     public final double percentProductive;
 
     public StrategyRecord(Strategy strategy, String name,
@@ -20,8 +22,8 @@ public class StrategyRecord {
                           double percentProductive) {
         this.type = strategy.getSessionType();
         this.name = name;
-        this.start = start;
-        this.end = (start + duration);
+        this.start = new Date(start);
+        this.end = new Date(start + duration);
         this.percentProductive = percentProductive;
     }
 

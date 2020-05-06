@@ -6,8 +6,8 @@ import java.util.Date;
  * Records a single active / inactive interval.
  */
 public class StudyInterval {
-    public final Date start;
-    public final Date end;
+    public final long start;
+    public final long end;
     public final boolean isActive;
 
     /**
@@ -17,8 +17,8 @@ public class StudyInterval {
      * @param isActive -- whether or not the user was/is active during this interval.
      */
     public StudyInterval(long start, long end, boolean isActive) {
-        this.start = new Date(start);
-        this.end = new Date(end);
+        this.start = start;
+        this.end = end;
         this.isActive = isActive;
     }
 }
