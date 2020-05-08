@@ -10,14 +10,14 @@ import java.util.Date;
 /**
  * Stores all information necessary to represent a session at some point in time
  */
-public class StrategyRecord {
+public class SessionRecord {
     public final SessionType type;
     public final String name;
     public final Date start;
     public final Date end;
     public final double percentProductive;
 
-    public StrategyRecord(Strategy strategy, String name,
+    public SessionRecord(Strategy strategy, String name,
                           long start, long duration,
                           double percentProductive) {
         this.type = strategy.getSessionType();
@@ -35,8 +35,8 @@ public class StrategyRecord {
         return gson.toJson(this);
     }
 
-    public static StrategyRecord fromString(String input) {
+    public static SessionRecord fromString(String input) {
         Gson gson = new Gson();
-        return gson.fromJson(input, StrategyRecord.class);
+        return gson.fromJson(input, SessionRecord.class);
     }
 }
