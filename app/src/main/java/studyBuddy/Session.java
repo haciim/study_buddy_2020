@@ -25,7 +25,7 @@ public class Session {
     // handler vs thread: if this is created on the UI thread, the task runs on there
     private boolean sessionOngoing;
     private SessionTimerCallback callback;
-    private TimerRunner runner;
+    private final TimerRunner runner;
     private Handler handler;
     /**
      * Constructs a new studyBuddy.Session
@@ -47,10 +47,10 @@ public class Session {
 
         // manage session events
         callback = null;
-        runner = null;
 
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
+        runner = new TimerRunner(handler);
     }
 
     /**
@@ -86,14 +86,24 @@ public class Session {
         // if runner is null: create runner
         // regardless: pass callback
         // regardless: start runner
-        if (runner == null) {
-            runner = new TimerRunner(handler);
-        }
 
         runner.setCallback(callback);
         runner.setStartTime(startTime.getTime());
+        // the runner and the session are now synchronized
         handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
     }
+
+    // TODO: some conditions to handle with session:
+    //       - user leaves the app (no longer call our callback -- just update time)
+    //       - app is destroyed (saveInstanceState + loadInstanceState calls, allow user to recover state)
+    //       - user terminates the session prematurely (endsession should handle this)
+
+    // implementation
+    //      - pauseSession: stop the runnable but keep tracking time (implement parcelable)
+    //      - the way it was done on the branch was to just save the initialTime, then add a method
+    //        to the session which lets us update the current time
+    //        the session would then be created onCreate and we could update its time in the onRestore call if it was available
+    //      - resumeSession: update the runner's offset, figure out how much time until our next callback, then recreate the callback with that delay
 
     /**
      * Preconditions: session must be ongoing (start session must have been called)
@@ -111,7 +121,13 @@ public class Session {
         sessionOngoing = false;
         // view should display this total time to user and then ask for percentProductiveTime
         // total time is in MINUTES
-        handler.removeCallbacks(runner);
+
+        // ensure that we do not cancel a callback
+        // callback is scheduled in synchro'd  run function
+        synchronized(runner) {
+            handler.removeCallbacks(runner);
+        }
+
         return totalTime;
     }
 
