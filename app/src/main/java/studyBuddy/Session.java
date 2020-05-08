@@ -2,12 +2,11 @@
 
 package studyBuddy;
 
-// Could change to java.util.Date
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Session {
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private Date startTime;
+    private Date endTime;
     private String name;
     // In minutes
     private double expectedTime;
@@ -51,7 +50,7 @@ public class Session {
      */
     public void startSession(String sessionName, double expectedSessionTime) {
         long currentTime = System.currentTimeMillis();
-        startTime = new Timestamp(currentTime);
+        startTime = new Date(currentTime);
         name = sessionName;
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
@@ -65,13 +64,12 @@ public class Session {
      */
     public double endSession() {
         long currentTime = System.currentTimeMillis();
-        Timestamp endTime = new Timestamp(currentTime);
+        Date endTime = new Date(currentTime);
         double sessionMinutes = getMinutes(startTime, endTime);
         // there could be some loss of precision here but since our session times
         // will likely be relatively short? like max 8 hours it shouldn't be a problem
         totalTime = sessionMinutes;
         sessionOngoing = false;
-        // TODO: record to data base
         // view should display this total time to user and then ask for percentProductiveTime
         // total time is in MINUTES
         return totalTime;
@@ -83,7 +81,7 @@ public class Session {
      * Uses the user given percentage to calculate the amount (in minutes) of productive time
      * @param percentProductiveTime the percentage of the session time that the user was productive
      */
-    public void setTotalProductiveTime(long percentProductiveTime) {
+    public void setTotalProductiveTime(double percentProductiveTime) {
         // assert precondition is met
         assert (percentProductiveTime >= 0.0 && percentProductiveTime <= 1.0);
         // we might use this later
@@ -105,6 +103,32 @@ public class Session {
         return productiveTime;
     }
 
+
+    /**
+     * Gets the name of the session - usually a task name provided by user
+     * @return the name of this session
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Gets the session real time start time
+     * @return the session start time as a date or null if the session has not been started
+     */
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * Precondition: session is not ongoing
+     *
+     * @return the total time of this session (in minutes)
+     */
+    public double getTotalTime() {
+        return totalTime;
+    }
+
     /**
      * Precondition: session is not ongoing
      *
@@ -117,6 +141,7 @@ public class Session {
         return percentProductive;
     }
 
+
     /**
      * Precondition: endTime is later than startTime
      *
@@ -126,7 +151,7 @@ public class Session {
      * @param endTime the later time
      * @return the number of minutes between the two times
      */
-    private double getMinutes(Timestamp startTime, Timestamp endTime) {
+    private double getMinutes(Date startTime, Date endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;
