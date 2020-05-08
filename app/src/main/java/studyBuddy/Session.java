@@ -24,6 +24,7 @@ public class Session {
 
     // handler vs thread: if this is created on the UI thread, the task runs on there
     private boolean sessionOngoing;
+    private boolean sessionPaused;
     private SessionTimerCallback callback;
     private final TimerRunner runner;
     private Handler handler;
@@ -44,6 +45,7 @@ public class Session {
         expectedTime = 0.0;
         // timeManager = null;
         sessionOngoing = false;
+        sessionPaused = false;
 
         // manage session events
         callback = null;
@@ -93,6 +95,18 @@ public class Session {
         handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
     }
 
+    /**
+     * Adjusts the start time of this session. Used to restore a session's state after
+     * onDestroy() is called.
+     * @param startTime - ms since epoch where this session began.
+     */
+    public void setStartTime(long startTime) {
+        this.startTime = new Date(startTime);
+        synchronized (runner) {
+            runner.setStartTime(startTime);
+        }
+    }
+
     // TODO: some conditions to handle with session:
     //       - user leaves the app (no longer call our callback -- just update time)
     //       - app is destroyed (saveInstanceState + loadInstanceState calls, allow user to recover state)
@@ -104,6 +118,24 @@ public class Session {
     //        to the session which lets us update the current time
     //        the session would then be created onCreate and we could update its time in the onRestore call if it was available
     //      - resumeSession: update the runner's offset, figure out how much time until our next callback, then recreate the callback with that delay
+
+    /**
+     * If session is running and unpaused, pause it by removing the callback. Otherwise, do nothing.
+     */
+    public void pauseSession() {
+        if (!sessionPaused && sessionOngoing) {
+            sessionPaused = true;
+            synchronized (runner) {
+                handler.removeCallbacks(runner);
+            }
+        }
+    }
+
+    public void resumeSession() {
+        // call the runnable right away (get updated data onscreen instantly)
+        // from there the runner will figure out when to call itself again
+        handler.post(runner);
+    }
 
     /**
      * Preconditions: session must be ongoing (start session must have been called)
@@ -124,7 +156,7 @@ public class Session {
 
         // ensure that we do not cancel a callback
         // callback is scheduled in synchro'd  run function
-        synchronized(runner) {
+        synchronized (runner) {
             handler.removeCallbacks(runner);
         }
 
