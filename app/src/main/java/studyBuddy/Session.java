@@ -108,12 +108,22 @@ public class Session {
     }
 
     // TODO: some conditions to handle with session:
-    //       - user leaves the app (no longer call our callback -- just update time)
+    //       - user leaves the app (pauseSession + resumeSession)
     //       - app is destroyed (saveInstanceState + loadInstanceState calls, allow user to recover state)
+    //          - this one is a todo until we can start making activities
     //       - user terminates the session prematurely (endsession should handle this)
+    //          - another activity one -- onBackButton or some other calls
+
+    // TODO: handle the endSession case.
+    //       create a broadcastReceiver which gets pinged when our session ends
+    //       additionally, provide sufficient information so that if we open the app after a session has completed,
+    //       nothing weird happens
+
+    //       if the user exits the app / restarts their phone, all is lost unfortunately
+    //       but we should be able to store some data
 
     // implementation
-    //      - pauseSession: stop the runnable but keep tracking time (implement parcelable)
+    //      - pauseSession: stop the runnable but keep tracking time
     //      - the way it was done on the branch was to just save the initialTime, then add a method
     //        to the session which lets us update the current time
     //        the session would then be created onCreate and we could update its time in the onRestore call if it was available
