@@ -2,7 +2,10 @@
 
 package studyBuddy;
 
+import android.os.Handler;
+
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Session {
@@ -17,11 +20,11 @@ public class Session {
     private double percentProductive;
     // TODO: fill this in correctly according to implementation of Time Management module
     // private TimeManagement timeManager;
+
     private boolean sessionOngoing;
-
     private SessionTimerCallback callback;
-    private ReentrantLock threadLock;
-
+    private TimerRunner runner;
+    private Handler handler;
     /**
      * Constructs a new studyBuddy.Session
      * Parameters are initialized to somewhat meaningless values
@@ -39,10 +42,11 @@ public class Session {
         expectedTime = 0.0;
         // timeManager = null;
         sessionOngoing = false;
+
         // manage session events
         callback = null;
-        threadLock = new ReentrantLock();
-
+        runner = null;
+        handler = new Handler();
     }
 
     /**
@@ -51,9 +55,10 @@ public class Session {
      * @param callback -- the function which will be called.
      */
     public synchronized void setTimerCallback(SessionTimerCallback callback) {
-        threadLock.lock();
         this.callback = callback;
-        threadLock.unlock();
+        if (runner != null) {
+            runner.setCallback(callback);
+        }
     }
 
 //    TODO
@@ -73,6 +78,16 @@ public class Session {
         name = sessionName;
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
+
+        // if runner is null: create runner
+        // regardless: pass callback
+        // regardless: start runner
+        if (runner == null) {
+            runner = new TimerRunner(handler);
+        }
+
+        runner.setCallback(callback);
+        handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
     }
 
     /**
@@ -91,6 +106,7 @@ public class Session {
         sessionOngoing = false;
         // view should display this total time to user and then ask for percentProductiveTime
         // total time is in MINUTES
+        handler.removeCallbacks(runner);
         return totalTime;
     }
 
