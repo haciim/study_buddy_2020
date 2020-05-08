@@ -3,6 +3,7 @@
 package studyBuddy;
 
 import java.util.Date;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Session {
     private Date startTime;
@@ -17,6 +18,9 @@ public class Session {
     // TODO: fill this in correctly according to implementation of Time Management module
     // private TimeManagement timeManager;
     private boolean sessionOngoing;
+
+    private SessionTimerCallback callback;
+    private ReentrantLock threadLock;
 
     /**
      * Constructs a new studyBuddy.Session
@@ -35,6 +39,21 @@ public class Session {
         expectedTime = 0.0;
         // timeManager = null;
         sessionOngoing = false;
+        // manage session events
+        callback = null;
+        threadLock = new ReentrantLock();
+
+    }
+
+    /**
+     * Sets the callback on this session, which will be called once per second while the session
+     * is running. At most one callback can be set on a single session at a time.
+     * @param callback -- the function which will be called.
+     */
+    public synchronized void setTimerCallback(SessionTimerCallback callback) {
+        threadLock.lock();
+        this.callback = callback;
+        threadLock.unlock();
     }
 
 //    TODO
