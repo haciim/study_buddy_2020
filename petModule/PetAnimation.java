@@ -52,7 +52,10 @@ public class PetAnimation {
     }
 
     /** Setter methods */
+    // Precondition: newAnimation is a string in possibleAnimations
+    // and possibleSprites
     public void setCurAnimation(String newAnimation){
+
         curAnimation = newAnimation;
 
     }
@@ -112,11 +115,6 @@ public class PetAnimation {
     }
 
     public static void main(String[] args){
-        /*
-        Pet testPet = new Pet("132123");
-        PetAnimation testPetAnimation = new PetAnimation(testPet);
-        testPetAnimation.run();
-        */
         
     }
 

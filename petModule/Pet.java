@@ -7,32 +7,36 @@ public class Pet {
     /* Instance Variables */ 
     private String name;
     final private String ownerID; 
-    private int trustLevel; //-10 to 10
-    private int moodLevel; //-10 to 10
+    private int trustLevel; // ranges from -10 to 10
+    private int moodLevel; // ranges from -10 to 10
     private String color;
-    private int[] mStates; //Maintenance State field
-    private int daysAtWorstTrust; //Need way to keep track of days at -10
-    private Date lastDAWT; //Need way to keep track of days at -10
+    private boolean isFed; // maintenance state 1
+    private boolean isBathed; // maintenance state 1
+    
+    /* days recorded at worst trust level */
+    private int daysAtWorstTrust;
+   
+    /* the last date recorded at the worst trust level */
+    private Date lastDAWT;
     final private Date birthDate; // possible birthday tracker?
 
     /* Constructor */
     public Pet(String userID) {
         /*TODO: get user's name */
         String userName = "Joe Mama";
-        this.name = userName + "\'s" + " pet";
         
-        this.ownerID = userID;
+        name = userName + "\'s" + " pet";
         
-        this.trustLevel = 0;
+        ownerID = userID;
+        
+        trustLevel = 0;
 
-        this.moodLevel = 0;
+        moodLevel = 0;
 
-        this.color = "default";
+        color = "default";
 
-        this.mStates = new int[] {0, 0};
-        //0th column = has been feed?
-        //1st column = has been bathed?
-        //values are binary booleans
+        isFed = false;
+        isBathed = false;
 
         this.daysAtWorstTrust = 0;
 
@@ -43,49 +47,32 @@ public class Pet {
     /* Getter Methods */
 
     public String getName(){
-        return this.name;
+        return name;
     }
 
     public String getOwnerID(){
-        return this.ownerID;
+        return ownerID;
 
     }
 
     public int getTrustLevel(){
-        return this.trustLevel;
+        return trustLevel;
     }
 
     public int getMoodLevel(){
-        return this.trustLevel;
+        return trustLevel;
     }
 
     public String getColor(){
-        return this.color;
+        return color;
     }
 
-    // if maintenance state array ever needed
-    public int[] getMStates(){
-        return this.mStates;
+    public boolean getIsFed(){
+        return isFed;
     }
 
-    // get first maintenance state
-    public boolean isFed(){
-        if(mStates[0] == 1){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    // get second maintenance state
-    public boolean isBathed(){
-        if(mStates[1] == 1){
-            return true;
-        }
-        else{
-            return false;
-        }
+    public boolean getIsBathed(){
+        return isBathed;
     }
 
     public int getDaysAtWorstTrust(){
@@ -102,7 +89,8 @@ public class Pet {
 
     /* Setter Methods */
     // methods that return booleans for fields that are changeable
-    // dependent on certain pet conditions
+    // dependent on certain pet conditions and will return false
+    // if field cannot change due to condition
     
     public boolean setName(String newName){
         
@@ -134,9 +122,12 @@ public class Pet {
         }
     }
 
-    // if setting maintenance state directly is ever needed
-    public void setMState(int index, int value){
-        mStates[index] = value;
+    public void setIsFed(boolean newState){
+        isFed = newState;
+    }
+
+    public void setIsBathed(boolean newState){
+        isBathed = newState;
     }
 
     public void setDaysAtWorstTrust(int n){
@@ -146,21 +137,23 @@ public class Pet {
     /* Other Functionality */
 
     public boolean feed(){
-        if(isFed()){
+        // check if pet has been fed already
+        if(isFed){
             return false;
         }
         else{
-            mStates[0] = 1;
+            isFed = true;
             return true;
         }
     }
 
     public boolean bathe(){
-        if(isBathed()){
+        // check if pet has been bathed already
+        if(isBathed){
             return false;
         }
         else{
-            mStates[1] = 1;
+            isBathed = true;
             return true;
         }
     }
@@ -203,21 +196,33 @@ public class Pet {
         return hour;
     }
 
-    // the maintenance states don't need to keep track of days
-    // of inactivity or anything, it's just a cute visual
-    // feature
-    public void mStatesCheck(){
+    // pet feeds/bathes itself at a certain time if not fed
+    // bathed at certain times
+    public void maintenanceCheck(){
         int curHour = getHourofDay();
-        if(curHour >= 12 && !isFed()){
+
+        
+        // checking app from 12am to 9am resets feeding/bathing
+        // again, minor cosmetic feature so it doesn't matter too much
+        if(curHour <= 9){
+            
+            isFed = false;
+            isBathed = false;
+        }
+
+
+        if(curHour >= 12 && !isFed){
             //pet feeds itself after noon
             //TODO: updatePetAnimation on self-feeding animation
+            //do in main i guess
             feed();
 
         }
 
-        if(curHour >= (9 + 12) && !isBathed()){
+        if(curHour >= (9 + 12) && !isBathed){
             //pet bathes itself after 9 pm
             //TODO: updatePetAnimation on self-bathing animation
+            //do in main i guess
             bathe();
 
         }
@@ -297,12 +302,10 @@ public class Pet {
             return false;
         }
     }
-
+    
     public static void main( String[] args){
-        //initial testing
-        Pet test = new Pet("8675309");
-        test.feed();
-    }
 
+    }
+    
     
 }
