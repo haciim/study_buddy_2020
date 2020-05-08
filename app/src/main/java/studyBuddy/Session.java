@@ -64,7 +64,7 @@ public class Session {
      */
     public double endSession() {
         long currentTime = System.currentTimeMillis();
-        Date endTime = new Date(currentTime);
+        endTime = new Date(currentTime);
         double sessionMinutes = getMinutes(startTime, endTime);
         // there could be some loss of precision here but since our session times
         // will likely be relatively short? like max 8 hours it shouldn't be a problem
@@ -127,6 +127,14 @@ public class Session {
      */
     public double getTotalTime() {
         return totalTime;
+    }
+
+    /**
+     * Returns the expected session time as indicated by the user on session start
+     * @return expected time in minutes
+     */
+    public double getExpectedTime() {
+        return expectedTime;
     }
 
     /**
