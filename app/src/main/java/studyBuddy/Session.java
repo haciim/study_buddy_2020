@@ -3,6 +3,7 @@
 package studyBuddy;
 
 import android.os.Handler;
+import android.os.Looper;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicLong;
@@ -21,6 +22,7 @@ public class Session {
     // TODO: fill this in correctly according to implementation of Time Management module
     // private TimeManagement timeManager;
 
+    // handler vs thread: if this is created on the UI thread, the task runs on there
     private boolean sessionOngoing;
     private SessionTimerCallback callback;
     private TimerRunner runner;
@@ -46,7 +48,9 @@ public class Session {
         // manage session events
         callback = null;
         runner = null;
-        handler = new Handler();
+
+        // runs on UI thread (intended for view updates)
+        handler = new Handler(Looper.getMainLooper());
     }
 
     /**
@@ -87,6 +91,7 @@ public class Session {
         }
 
         runner.setCallback(callback);
+        runner.setStartTime(startTime.getTime());
         handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
     }
 
