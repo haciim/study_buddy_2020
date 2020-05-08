@@ -1,5 +1,6 @@
 package studyBuddy;
 
+// string formatting?
 public interface SessionTimerCallback {
-    void callbackFunc();
+    void callbackFunc(long secondsPassed);
 }
