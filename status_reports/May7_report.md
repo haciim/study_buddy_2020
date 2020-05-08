@@ -7,7 +7,7 @@
 
 - [x] Begin implementing pet
 
-- [ ] have a unified project directory and package layout complete
+- [x] have a unified project directory and package layout complete
 
 - [x] *Testing & CI* Assignment - 5/5
 
