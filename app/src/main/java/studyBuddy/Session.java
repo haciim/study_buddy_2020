@@ -28,8 +28,11 @@ public class Session {
     private boolean sessionOngoing;
     private boolean sessionPaused;
     private SessionTimerCallback callback;
-    private TimerRunner runner;
     private Handler handler;
+
+    private final TimerRunner runner;
+
+
     /**
      * Constructs a new studyBuddy.Session
      * Parameters are initialized to somewhat meaningless values
@@ -54,6 +57,7 @@ public class Session {
 
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
+        runner = new TimerRunner(handler);
     }
 
     /**
@@ -80,13 +84,12 @@ public class Session {
      *                            expected time to complete task
      */
     public void startSession(String sessionName, double expectedSessionTime) {
+        // weird thing: inconsistent double/long units
         long currentTime = System.currentTimeMillis();
         startTime = new Date(currentTime);
         name = sessionName;
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
-
-        runner = new TimerRunner(handler, (long)expectedSessionTime);
 
         // if runner is null: create runner
         // regardless: pass callback
@@ -94,6 +97,7 @@ public class Session {
 
         runner.setCallback(callback);
         runner.setStartTime(startTime.getTime());
+        runner.setDuration((long)expectedSessionTime);
         // the runner and the session are now synchronized
         handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
     }
@@ -158,6 +162,9 @@ public class Session {
         }
     }
 
+    /**
+     * Resumes a session which has been paused, but not yet stopped.
+     */
     public void resumeSession() {
         // call the runnable right away (get updated data onscreen instantly)
         // from there the runner will figure out when to call itself again

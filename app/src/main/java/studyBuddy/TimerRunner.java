@@ -15,11 +15,25 @@ public class TimerRunner implements Runnable {
 
     static final long SECOND_MILLIS = 1000;
 
-    public TimerRunner(Handler parent, long duration) {
+    public TimerRunner(Handler parent) {
         this.parent = parent;
         startTime = 0;
-        this.duration = duration;
     }
+
+    // TODO:
+    //  - rig up some broadcast receivers
+    //      - display a notification if the user is in the middle of a session
+    //      - if they dismiss it, the session ends -- there's no guarantee the app will be rebooted and pick it up
+    //        so we need to be able to handle this case independently
+    //          - Observer pattern, singleton with observer objects that get pinged
+    //      - if they tap it, or resume the app, the session continues.
+    //          - PendingIntent -- we have no desire to destroy the app so we can use onSave/onRestore to hold onto that info if we lose it,
+    //            and otherwise depend on the session to hold its state
+    //      - the notification updates to reflect the session -- it should probably have some reference to the session itself
+    //          - broadcast receiver triggers itself once every minute to update the notification text
+    //          - once done: read out that the session is done! :)
+    //  - ensure that only the activity or the notification attempts to save -- perhaps the session will have to do that on its own
+    //    and that would be best
 
     /**
      * Sets the callback for this runnable.
@@ -35,6 +49,10 @@ public class TimerRunner implements Runnable {
      */
     public synchronized void setStartTime(long startTime) {
         this.startTime = startTime;
+    }
+
+    public synchronized void setDuration(long duration) {
+        this.duration = duration;
     }
 
     /**

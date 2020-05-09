@@ -1,8 +1,6 @@
 package studyBuddy;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +34,8 @@ public class SessionActivity extends AppCompatActivity {
             timeline.setPercentageCompletion(percentage);
             timer.setText(Session.formatTime(secondsPassed / 1000));
         };
+
+        timer.setText(getResources().getText(R.string.zero_time));
 
         session.setTimerCallback(callback);
         session.startSession("hello", 100000);

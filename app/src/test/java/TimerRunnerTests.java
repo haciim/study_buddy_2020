@@ -39,7 +39,8 @@ public class TimerRunnerTests {
     @Test
     public void TestTimerRunner() throws InterruptedException {
         Handler handler = Mockito.mock(Handler.class);
-        TimerRunner runner = new TimerRunner(handler, 100000);
+        TimerRunner runner = new TimerRunner(handler);
+        runner.setDuration(100000);
         final AtomicInteger runs = new AtomicInteger(0);
         Mockito.when(handler.postDelayed(Mockito.eq(runner), Mockito.anyLong())).then(new Answer<Void>() {
             public Void answer(InvocationOnMock invoc) throws InterruptedException {

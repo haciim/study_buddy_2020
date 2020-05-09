@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.studdybuddy.R;
 
@@ -47,7 +46,6 @@ public class TimelineView extends LinearLayout {
     }
 
     public void setPercentageCompletion(double percentageCompletion) {
-        System.out.println(timelineRange);
         if (timelineRange > 0) {
             LinearLayoutCompat.LayoutParams param = (LinearLayoutCompat.LayoutParams)marker.getLayoutParams();
             param.setMarginStart((int)(((percentageCompletion * 2.0) - 1.0) * timelineRange));
