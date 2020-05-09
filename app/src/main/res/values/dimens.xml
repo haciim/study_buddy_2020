@@ -13,4 +13,5 @@
     <dimen name="test_new_session_inner_margin">4dp</dimen>
     <dimen name="test_new_session_corner_outer_radius">6dp</dimen>
     <dimen name="test_new_session_corner_inner_radius">5dp</dimen>
+    <dimen name="timeline_width_dp">320dp</dimen>
 </resources>
