@@ -18,10 +18,12 @@ public class TimelineView extends LinearLayout {
         // https://stackoverflow.com/questions/3820401/how-to-load-an-xml-inside-a-view-in-android
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View v = inflater.inflate(R.layout.session_timeline_view, this, false);
-        this.addView(v);
         View marker = findViewById(R.id.time_marker);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)marker.getLayoutParams();
+        // test
+        // should be centered initially, this should jog it to the left
         params.setMarginStart(-120);
         marker.setLayoutParams(params);
+        this.addView(v);
     }
 }
