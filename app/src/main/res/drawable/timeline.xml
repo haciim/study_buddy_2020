@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="12dp"
+        android:height="12dp"
+        android:start="50dp"
+        android:top="40dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <item
+        android:width="@dimen/timeline_width_dp"
+        android:height="6dp"
+        android:start="56dp"
+        android:top="43dp">
+        <shape
+            android:shape="rectangle">
+            <size android:width="@dimen/timeline_width_dp" android:height="4dp" />
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+    <item
+        android:width="12dp"
+        android:height="12dp"
+        android:start="370dp"
+        android:top="40dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+
+
+
+    <item
+        android:width="39dp"
+        android:height="48dp"
+        android:left="19dp"
+        android:top="0dp">
+        <bitmap
+            android:gravity="fill_horizontal|fill_vertical|center"
+            android:src="@drawable/start_flag" />
+    </item>
+
+    <item
+        android:width="39dp"
+        android:height="48dp"
+        android:left="374dp"
+        android:top="0dp">
+        <bitmap
+            android:gravity="fill_horizontal|fill_vertical|center"
+            android:src="@drawable/finish_flag" />
+    </item>
+</layer-list>
