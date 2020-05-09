@@ -16,7 +16,7 @@ public class Session {
     private Date endTime;
     private String name;
     // In minutes
-    private double expectedTime;
+    private long expectedTime;
     private double productiveTime;
     private double totalTime;
     // Expected value between 0 and 1
@@ -42,13 +42,10 @@ public class Session {
         startTime = null;
         endTime = null;
         name = null;
-        expectedTime = 0.0;
+        expectedTime = 0;
         productiveTime = 0.0;
         totalTime = 0.0;
-        // assume they were productive the whole time
         percentProductive = 1.0;
-        expectedTime = 0.0;
-        // timeManager = null;
         sessionOngoing = false;
         sessionPaused = false;
 
@@ -58,6 +55,10 @@ public class Session {
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
         runner = new TimerRunner(handler);
+    }
+
+    public static Session restoreSession(long startTime, long duration, String name) {
+        return null;
     }
 
     /**
@@ -83,10 +84,11 @@ public class Session {
      * @param expectedSessionTime the expected duration of this session /
      *                            expected time to complete task
      */
-    public void startSession(String sessionName, double expectedSessionTime) {
+    public void startSession(String sessionName, long expectedSessionTime) {
         // weird thing: inconsistent double/long units
         long currentTime = System.currentTimeMillis();
         startTime = new Date(currentTime);
+        endTime = new Date(currentTime + (long)expectedSessionTime);
         name = sessionName;
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
@@ -255,7 +257,7 @@ public class Session {
      * Returns the expected session time as indicated by the user on session start
      * @return expected time in minutes
      */
-    public double getExpectedTime() {
+    public long getExpectedTime() {
         return expectedTime;
     }
 
