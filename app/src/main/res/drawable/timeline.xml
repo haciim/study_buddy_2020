@@ -3,7 +3,7 @@
     <item
         android:width="12dp"
         android:height="12dp"
-        android:start="50dp"
+        android:start="31dp"
         android:top="40dp">
         <shape android:shape="oval">
             <solid android:color="@color/white" />
@@ -13,7 +13,7 @@
     <item
         android:width="@dimen/timeline_width_dp"
         android:height="6dp"
-        android:start="56dp"
+        android:start="37dp"
         android:top="43dp">
         <shape
             android:shape="rectangle">
@@ -25,7 +25,7 @@
     <item
         android:width="12dp"
         android:height="12dp"
-        android:start="370dp"
+        android:start="351dp"
         android:top="40dp">
         <shape android:shape="oval">
             <solid android:color="@color/white" />
@@ -37,7 +37,7 @@
     <item
         android:width="39dp"
         android:height="48dp"
-        android:left="19dp"
+        android:left="0dp"
         android:top="0dp">
         <bitmap
             android:gravity="fill_horizontal|fill_vertical|center"
@@ -47,7 +47,7 @@
     <item
         android:width="39dp"
         android:height="48dp"
-        android:left="374dp"
+        android:left="355dp"
         android:top="0dp">
         <bitmap
             android:gravity="fill_horizontal|fill_vertical|center"
