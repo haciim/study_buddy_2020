@@ -13,14 +13,16 @@ import studyBuddy.timemanagement.TimelineView;
 public class SessionActivity extends AppCompatActivity {
 
     private Session session;
-    private long sessionDuration;
+
+    static private String SESSION_START_KEY = "sessionStart";
+    static private String SESSION_DURATION_KEY = "sessionDuration";
+    static private String SESSION_NAME_KEY = "sessionName";
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.session_layout);
         session = new Session();
-        sessionDuration = 100000;    // dummy value
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
 
@@ -44,5 +46,8 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putLong(SESSION_START_KEY, session.getStartTime().getTime());
+        savedInstanceState.putLong(SESSION_DURATION_KEY, session.getExpectedTime());
+        savedInstanceState.putString(SESSION_NAME_KEY, session.getName());
     }
 }
