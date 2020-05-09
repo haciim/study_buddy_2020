@@ -6,6 +6,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -26,7 +28,7 @@ public class Session {
     private boolean sessionOngoing;
     private boolean sessionPaused;
     private SessionTimerCallback callback;
-    private final TimerRunner runner;
+    private TimerRunner runner;
     private Handler handler;
     /**
      * Constructs a new studyBuddy.Session
@@ -52,7 +54,6 @@ public class Session {
 
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
-        runner = new TimerRunner(handler);
     }
 
     /**
@@ -85,6 +86,8 @@ public class Session {
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
 
+        runner = new TimerRunner(handler, (long)expectedSessionTime);
+
         // if runner is null: create runner
         // regardless: pass callback
         // regardless: start runner
@@ -105,6 +108,19 @@ public class Session {
         synchronized (runner) {
             runner.setStartTime(startTime);
         }
+    }
+
+    /**
+     * String formatting method
+     * Seemed pretty convenient at the time so i put it here :)
+     * @param seconds - Number of seconds
+     * @return - String representing `seconds` in HH:MM:SS format
+     */
+    public static String formatTime(long seconds) {
+        return String.format(Locale.US, "%02d:%02d:%02d",
+                TimeUnit.SECONDS.toHours(seconds),
+                TimeUnit.SECONDS.toMinutes(seconds) % 60,
+                TimeUnit.SECONDS.toSeconds(seconds) % 60);
     }
 
     // TODO: some conditions to handle with session:
