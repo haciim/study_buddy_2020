@@ -105,6 +105,7 @@ public class Session {
      */
     public void setStartTime(long startTime) {
         this.startTime = new Date(startTime);
+        // todo: fix constructor so that we dont need to deal with this
         synchronized (runner) {
             runner.setStartTime(startTime);
         }

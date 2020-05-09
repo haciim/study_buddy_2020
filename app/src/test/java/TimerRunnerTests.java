@@ -17,7 +17,7 @@ public class TimerRunnerTests {
 
     private static long currentTime;
     private static SessionTimerCallback callback = new SessionTimerCallback() {
-        public void callbackFunc(long secondsPassed) {
+        public void callbackFunc(long secondsPassed, long secondsDuration) {
             System.out.println("called");
             System.out.println(secondsPassed + " seconds");
             // figure out which second should be called
@@ -39,7 +39,7 @@ public class TimerRunnerTests {
     @Test
     public void TestTimerRunner() throws InterruptedException {
         Handler handler = Mockito.mock(Handler.class);
-        TimerRunner runner = new TimerRunner(handler);
+        TimerRunner runner = new TimerRunner(handler, 100000);
         final AtomicInteger runs = new AtomicInteger(0);
         Mockito.when(handler.postDelayed(Mockito.eq(runner), Mockito.anyLong())).then(new Answer<Void>() {
             public Void answer(InvocationOnMock invoc) throws InterruptedException {

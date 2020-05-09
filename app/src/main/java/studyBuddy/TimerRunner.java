@@ -8,14 +8,17 @@ import java.util.concurrent.atomic.AtomicLong;
 public class TimerRunner implements Runnable {
 
     private SessionTimerCallback callback;      // callback function called per-second.
+    private SessionCompleteCallback finishCall; // callback once session is done
     private Handler parent;                     // used to queue per-second.
     private long startTime;                     // used to synchronize timer
+    private long duration;                      // length in MS
 
     static final long SECOND_MILLIS = 1000;
 
-    public TimerRunner(Handler parent) {
+    public TimerRunner(Handler parent, long duration) {
         this.parent = parent;
         startTime = 0;
+        this.duration = duration;
     }
 
     /**
@@ -45,7 +48,7 @@ public class TimerRunner implements Runnable {
             // increment internal timer
             // pass to callback method
             if (callback != null) {
-                callback.callbackFunc(((System.currentTimeMillis() - startTime) / 1000));
+                callback.callbackFunc((System.currentTimeMillis() - startTime), duration);
             }
 
         long currentTime = System.currentTimeMillis() - startTime;
@@ -55,6 +58,11 @@ public class TimerRunner implements Runnable {
         Log.d("TimerRunner", "est: " + estimatedTime);
         Log.d("TimerRunner", "cur: " + currentTime);
 
-        parent.postDelayed(this, Math.max(estimatedTime - currentTime, 0));
+        if (currentTime < duration && duration > 0) {
+            parent.postDelayed(this, Math.max(estimatedTime - currentTime, 0));
+        } else if (finishCall != null) {
+            finishCall.callbackFunc();
+            // call finished callback
+        }
     }
 }

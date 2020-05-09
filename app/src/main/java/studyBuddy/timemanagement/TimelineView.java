@@ -33,14 +33,21 @@ public class TimelineView extends LinearLayout {
         timelineRange = -1;
     }
 
+    // todo: create some sort of resource class which is used to color each element (BG, etc)
+
     @Override
     protected void onDraw(Canvas canvas) {
-        timelineRange = (int)((getMeasuredWidth() / RANGE_DIVIDER) * 150);
-        setPercentageCompletion(0.5);
         super.onDraw(canvas);
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        timelineRange = (int)((getMeasuredWidth() / RANGE_DIVIDER) * 150);
+    }
+
     public void setPercentageCompletion(double percentageCompletion) {
+        System.out.println(timelineRange);
         if (timelineRange > 0) {
             LinearLayoutCompat.LayoutParams param = (LinearLayoutCompat.LayoutParams)marker.getLayoutParams();
             param.setMarginStart((int)(((percentageCompletion * 2.0) - 1.0) * timelineRange));
