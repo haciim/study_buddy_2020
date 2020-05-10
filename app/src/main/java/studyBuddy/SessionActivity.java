@@ -26,11 +26,6 @@ public class SessionActivity extends AppCompatActivity {
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
 
-
-        // callback:
-        //  - we'll have some idea of the duration of our session from the intent sent to it
-        //  -
-
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
             timeline.setPercentageCompletion(percentage);
@@ -38,9 +33,21 @@ public class SessionActivity extends AppCompatActivity {
         };
 
         timer.setText(getResources().getText(R.string.zero_time));
-
         session.setTimerCallback(callback);
-        session.startSession("hello", 100000);
+
+        // move this "start session" call to like onResume or something
+        if (savedInstanceBundle != null) {
+            session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
+                                 savedInstanceBundle.getLong(SESSION_DURATION_KEY),
+                                 savedInstanceBundle.getLong(SESSION_START_KEY));
+        } else {
+            session.startSession("testname", 100000);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -49,5 +56,11 @@ public class SessionActivity extends AppCompatActivity {
         savedInstanceState.putLong(SESSION_START_KEY, session.getStartTime().getTime());
         savedInstanceState.putLong(SESSION_DURATION_KEY, session.getExpectedTime());
         savedInstanceState.putString(SESSION_NAME_KEY, session.getName());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        session.pauseSession();
     }
 }
