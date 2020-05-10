@@ -42,11 +42,6 @@ public class EndSessionView extends LinearLayout {
         clippingPath.addCircle((buttonCoords[0] - left) + (buttonWidth / 2.0f), (buttonWidth / 2.0f), buttonWidth / 2.0f, Path.Direction.CW);
     }
 
-    // todo: animate "endsession" text
-    //  callback should be a bit larger
-    //  end session only on second press
-    //  hide again after like five seconds or so
-
     @Override
     protected void dispatchDraw(Canvas canvas) {
         canvas.clipPath(clippingPath);

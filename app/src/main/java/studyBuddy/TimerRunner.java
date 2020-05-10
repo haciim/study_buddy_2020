@@ -20,21 +20,6 @@ public class TimerRunner implements Runnable {
         startTime = 0;
     }
 
-    // TODO:
-    //  - rig up some broadcast receivers
-    //      - display a notification if the user is in the middle of a session
-    //      - if they dismiss it, the session ends -- there's no guarantee the app will be rebooted and pick it up
-    //        so we need to be able to handle this case independently
-    //          - Observer pattern, singleton with observer objects that get pinged
-    //      - if they tap it, or resume the app, the session continues.
-    //          - PendingIntent -- we have no desire to destroy the app so we can use onSave/onRestore to hold onto that info if we lose it,
-    //            and otherwise depend on the session to hold its state
-    //      - the notification updates to reflect the session -- it should probably have some reference to the session itself
-    //          - broadcast receiver triggers itself once every minute to update the notification text
-    //          - once done: read out that the session is done! :)
-    //  - ensure that only the activity or the notification attempts to save -- perhaps the session will have to do that on its own
-    //    and that would be best
-
     /**
      * Sets the callback for this runnable.
      * @param callback - the new callback for the runnable. Replaces the old callback if already set.
@@ -88,3 +73,6 @@ public class TimerRunner implements Runnable {
         }
     }
 }
+
+// callback behavior
+//  - display some "session finished" text

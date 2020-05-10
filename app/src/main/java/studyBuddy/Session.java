@@ -88,6 +88,8 @@ public class Session {
      * @param sessionName the name of the task for this session
      * @param expectedSessionTime the expected duration of this session /
      *                            expected time to complete task
+     * @param startTime the time at which this session started, if we are spinning up
+     *                  a session which was destroyed
      */
     public void startSession(String sessionName, long expectedSessionTime, long startTime) {
         // weird thing: inconsistent double/long units
@@ -127,28 +129,6 @@ public class Session {
                 TimeUnit.SECONDS.toSeconds(seconds) % 60);
     }
 
-    // TODO: some conditions to handle with session:
-    //       - user leaves the app (pauseSession + resumeSession)
-    //       - app is destroyed (saveInstanceState + loadInstanceState calls, allow user to recover state)
-    //          - this one is a todo until we can start making activities
-    //       - user terminates the session prematurely (endsession should handle this)
-    //          - another activity one -- onBackButton or some other calls
-
-    // TODO: handle the endSession case.
-    //       create a broadcastReceiver which gets pinged when our session ends
-    //       additionally, provide sufficient information so that if we open the app after a session has completed,
-    //       nothing weird happens
-
-    //       if the user exits the app / restarts their phone, all is lost unfortunately
-    //       but we should be able to store some data
-
-    // implementation
-    //      - pauseSession: stop the runnable but keep tracking time
-    //      - the way it was done on the branch was to just save the initialTime, then add a method
-    //        to the session which lets us update the current time
-    //        the session would then be created onCreate and we could update its time in the onRestore call if it was available
-    //      - resumeSession: update the runner's offset, figure out how much time until our next callback, then recreate the callback with that delay
-
     /**
      * If session is running and unpaused, pause it by removing the callback. Otherwise, do nothing.
      */
@@ -184,10 +164,9 @@ public class Session {
         if (sessionOngoing) {
             long currentTime = System.currentTimeMillis();
             endTime = new Date(currentTime);
-            double sessionMinutes = getMinutes(startTime, endTime);
             // there could be some loss of precision here but since our session times
             // will likely be relatively short? like max 8 hours it shouldn't be a problem
-            totalTime = sessionMinutes;
+            totalTime = getMinutes(startTime, endTime);
             sessionOngoing = false;
             // view should display this total time to user and then ask for percentProductiveTime
             // total time is in MINUTES

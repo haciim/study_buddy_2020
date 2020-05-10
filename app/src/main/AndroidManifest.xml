@@ -22,7 +22,6 @@
             android:label="Session View"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:launchMode="singleTop">
-            <!-- todo: override onNewIntent -->
             <intent-filter>
                 <action android:name="android.intent.category.DEFAULT" />
             </intent-filter>

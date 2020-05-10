@@ -41,6 +41,8 @@ public class EndSessionButtonListener implements View.OnTouchListener {
             animator.reverse();
             isOpen.set(false);
         };
+
+        // add notifications post-beta
     }
 
     @Override
@@ -50,17 +52,17 @@ public class EndSessionButtonListener implements View.OnTouchListener {
             if (isOpen.get() && (System.currentTimeMillis() - lastPress) < SECOND_TOUCH_CUTOFF) {
                 handler.removeCallbacks(runnable);
                 session.endSession();
-                System.out.println("its done!!!!!!!!");
             } else {
+                // edge case: tap after session ends
                 isOpen.set(true);
                 animator.start();
-                System.out.println("yeah");
                 lastPress = System.currentTimeMillis();
                 handler.postDelayed(runnable, SECOND_TOUCH_CUTOFF);
             }
 
             return true;
         }
+
         return false;
     }
 }

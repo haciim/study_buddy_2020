@@ -54,12 +54,9 @@ public class SessionActivity extends AppCompatActivity {
         endSessionText.setTranslationX(750);
 
         animator.setTarget(endSessionText);
-
-        // pass view
-        // pass session
-
-        // probably should use a looper on the ui thread to do the backwards anim
         button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
+
+        // todo: perform some sort of animation once our session is ended via the finishcallback
     }
 
     @Override
