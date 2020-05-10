@@ -1,6 +1,10 @@
 package studyBuddy;
 
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -8,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studdybuddy.R;
 
+import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
@@ -42,6 +47,19 @@ public class SessionActivity extends AppCompatActivity {
         } else {
             session.startSession("testname", 100000);
         }
+
+        View button = findViewById(R.id.fob);
+        View endSessionText = findViewById(R.id.endSessionText);
+        ObjectAnimator animator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.text_animator);
+        endSessionText.setTranslationX(750);
+
+        animator.setTarget(endSessionText);
+
+        // pass view
+        // pass session
+
+        // probably should use a looper on the ui thread to do the backwards anim
+        button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
     }
 
     @Override

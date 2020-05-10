@@ -59,10 +59,6 @@ public class Session {
         runner = new TimerRunner(handler);
     }
 
-    public static Session restoreSession(long startTime, long duration, String name) {
-        return null;
-    }
-
     /**
      * Sets the callback on this session, which will be called once per second while the session
      * is running. At most one callback can be set on a single session at a time.
@@ -95,21 +91,23 @@ public class Session {
      */
     public void startSession(String sessionName, long expectedSessionTime, long startTime) {
         // weird thing: inconsistent double/long units
-        this.startTime = new Date(startTime);
-        endTime = new Date(startTime + expectedSessionTime);
-        name = sessionName;
-        expectedTime = expectedSessionTime;
-        sessionOngoing = true;
+        if (!sessionOngoing) {
+            this.startTime = new Date(startTime);
+            endTime = new Date(startTime + expectedSessionTime);
+            name = sessionName;
+            expectedTime = expectedSessionTime;
+            sessionOngoing = true;
 
-        // if runner is null: create runner
-        // regardless: pass callback
-        // regardless: start runner
+            // if runner is null: create runner
+            // regardless: pass callback
+            // regardless: start runner
 
-        runner.setCallback(callback);
-        runner.setStartTime(this.startTime.getTime());
-        runner.setDuration(expectedSessionTime);
-        // the runner and the session are now synchronized
-        handler.post(runner);
+            runner.setCallback(callback);
+            runner.setStartTime(this.startTime.getTime());
+            runner.setDuration(expectedSessionTime);
+            // the runner and the session are now synchronized
+            handler.post(runner);
+        }
     }
 
     public void startSession(String sessionName, long expectedSessionTime) {
@@ -169,7 +167,11 @@ public class Session {
     public void resumeSession() {
         // call the runnable right away (get updated data onscreen instantly)
         // from there the runner will figure out when to call itself again
-        handler.post(runner);
+        if (sessionPaused) {
+            handler.post(runner);
+            sessionPaused = false;
+        }
+
     }
 
     /**
@@ -179,25 +181,31 @@ public class Session {
      * @return the duration of this session in minutes
      */
     public double endSession() {
-        long currentTime = System.currentTimeMillis();
-        endTime = new Date(currentTime);
-        double sessionMinutes = getMinutes(startTime, endTime);
-        // there could be some loss of precision here but since our session times
-        // will likely be relatively short? like max 8 hours it shouldn't be a problem
-        totalTime = sessionMinutes;
-        sessionOngoing = false;
-        // view should display this total time to user and then ask for percentProductiveTime
-        // total time is in MINUTES
+        if (sessionOngoing) {
+            long currentTime = System.currentTimeMillis();
+            endTime = new Date(currentTime);
+            double sessionMinutes = getMinutes(startTime, endTime);
+            // there could be some loss of precision here but since our session times
+            // will likely be relatively short? like max 8 hours it shouldn't be a problem
+            totalTime = sessionMinutes;
+            sessionOngoing = false;
+            // view should display this total time to user and then ask for percentProductiveTime
+            // total time is in MINUTES
 
-        // ensure that we do not cancel a callback
-        // callback is scheduled in synchro'd  run function
+            // ensure that we do not cancel a callback
+            // callback is scheduled in synchro'd  run function
 
-        synchronized (runner) {
-            handler.removeCallbacks(runner);
+            synchronized (runner) {
+                handler.removeCallbacks(runner);
+            }
+            if (completeCallback != null) {
+                completeCallback.callbackFunc();
+            }
+
+            return totalTime;
+        } else {
+            return -1;
         }
-
-        completeCallback.callbackFunc();
-        return totalTime;
     }
 
     /**
