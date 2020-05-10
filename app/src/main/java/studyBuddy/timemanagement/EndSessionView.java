@@ -34,7 +34,9 @@ public class EndSessionView extends LinearLayout {
         button.setOnTouchListener((View v, MotionEvent event) -> {
             v.performClick();
             System.out.println("you've touched the button!!!");
-            animator.start();
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                animator.start();
+            }
             return true;
         });
     }
