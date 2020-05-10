@@ -23,30 +23,12 @@ public class EndSessionView extends LinearLayout {
     public EndSessionView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
         inflateLayout(ctx);
-        View button = findViewById(R.id.fob);
-        View endSessionText = findViewById(R.id.endSessionText);
-        ObjectAnimator animator = (ObjectAnimator)AnimatorInflater.loadAnimator(ctx, R.animator.text_animator);
-        endSessionText.setTranslationX(750);
-
-        animator.setTarget(endSessionText);
-        // animator.start();
-        // probably should csutomize this
-        button.setOnTouchListener((View v, MotionEvent event) -> {
-            v.performClick();
-            System.out.println("you've touched the button!!!");
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                animator.start();
-            }
-            return true;
-        });
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         clippingPath.reset();
-        // find size and position of button
-        // set up so that we clip around it
         View button = findViewById(R.id.fob);
 
         // fix this once it works
