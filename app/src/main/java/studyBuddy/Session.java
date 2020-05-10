@@ -84,11 +84,10 @@ public class Session {
      * @param expectedSessionTime the expected duration of this session /
      *                            expected time to complete task
      */
-    public void startSession(String sessionName, long expectedSessionTime) {
+    public void startSession(String sessionName, long expectedSessionTime, long startTime) {
         // weird thing: inconsistent double/long units
-        long currentTime = System.currentTimeMillis();
-        startTime = new Date(currentTime);
-        endTime = new Date(currentTime + (long)expectedSessionTime);
+        this.startTime = new Date(startTime);
+        endTime = new Date(startTime + expectedSessionTime);
         name = sessionName;
         expectedTime = expectedSessionTime;
         sessionOngoing = true;
@@ -98,23 +97,14 @@ public class Session {
         // regardless: start runner
 
         runner.setCallback(callback);
-        runner.setStartTime(startTime.getTime());
-        runner.setDuration((long)expectedSessionTime);
+        runner.setStartTime(this.startTime.getTime());
+        runner.setDuration(expectedSessionTime);
         // the runner and the session are now synchronized
-        handler.postDelayed(runner, TimerRunner.SECOND_MILLIS);
+        handler.post(runner);
     }
 
-    /**
-     * Adjusts the start time of this session. Used to restore a session's state after
-     * onDestroy() is called.
-     * @param startTime - ms since epoch where this session began.
-     */
-    public void setStartTime(long startTime) {
-        this.startTime = new Date(startTime);
-        // todo: fix constructor so that we dont need to deal with this
-        synchronized (runner) {
-            runner.setStartTime(startTime);
-        }
+    public void startSession(String sessionName, long expectedSessionTime) {
+        startSession(sessionName, expectedSessionTime, System.currentTimeMillis());
     }
 
     /**
