@@ -46,6 +46,7 @@ public class TimelineView extends LinearLayout {
     }
 
     public void setPercentageCompletion(double percentageCompletion) {
+        // bind to 0 and 1
         if (timelineRange > 0) {
             LinearLayoutCompat.LayoutParams param = (LinearLayoutCompat.LayoutParams)marker.getLayoutParams();
             param.setMarginStart((int)(((percentageCompletion * 2.0) - 1.0) * timelineRange));
@@ -58,6 +59,6 @@ public class TimelineView extends LinearLayout {
     private void inflateLayouts(Context ctx) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View v = inflater.inflate(R.layout.session_timeline_view, this, false);
-        this.addView(v);
+        addView(v);
     }
 }

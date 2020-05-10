@@ -28,6 +28,7 @@ public class Session {
     private boolean sessionOngoing;
     private boolean sessionPaused;
     private SessionTimerCallback callback;
+    private SessionCompleteCallback completeCallback;
     private Handler handler;
 
     private final TimerRunner runner;
@@ -51,6 +52,7 @@ public class Session {
 
         // manage session events
         callback = null;
+        completeCallback = null;
 
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
@@ -70,6 +72,13 @@ public class Session {
         this.callback = callback;
         if (runner != null) {
             runner.setCallback(callback);
+        }
+    }
+
+    public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
+        completeCallback = callback;
+        if (runner != null) {
+            runner.setFinishedCallback(callback);
         }
     }
 
@@ -182,10 +191,12 @@ public class Session {
 
         // ensure that we do not cancel a callback
         // callback is scheduled in synchro'd  run function
+
         synchronized (runner) {
             handler.removeCallbacks(runner);
         }
 
+        completeCallback.callbackFunc();
         return totalTime;
     }
 

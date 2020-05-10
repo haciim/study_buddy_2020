@@ -28,14 +28,13 @@ public class SessionActivity extends AppCompatActivity {
 
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
-            timeline.setPercentageCompletion(percentage);
-            timer.setText(Session.formatTime(secondsPassed / 1000));
+            timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
+            timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
         };
 
         timer.setText(getResources().getText(R.string.zero_time));
         session.setTimerCallback(callback);
 
-        // move this "start session" call to like onResume or something
         if (savedInstanceBundle != null) {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
@@ -48,6 +47,7 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        session.resumeSession();
     }
 
     @Override

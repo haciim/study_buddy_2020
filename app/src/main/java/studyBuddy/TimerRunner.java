@@ -43,6 +43,10 @@ public class TimerRunner implements Runnable {
         this.callback = callback;
     }
 
+    public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
+        this.finishCall = callback;
+    }
+
     /**
      * Sets the start time for this runnable.
      * @param startTime - ms since epoch, used to synchronize timing calls.
