@@ -2,6 +2,14 @@ package studyBuddy;
 
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,15 +21,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.studdybuddy.R;
 
 import studyBuddy.timemanagement.EndSessionButtonListener;
+import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
 
     private Session session;
+    private NotificationChannel channel;
 
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
     static private String SESSION_NAME_KEY = "sessionName";
+
+    static public int INTENT_ID = 142857;
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
@@ -30,6 +42,8 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
+
+        createNotificationChannel();
 
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
@@ -55,14 +69,25 @@ public class SessionActivity extends AppCompatActivity {
 
         animator.setTarget(endSessionText);
         button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
-
-        // todo: perform some sort of animation once our session is ended via the finishcallback
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         session.resumeSession();
+        // clear notification
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // check for an intent
+        if (intent.hasExtra(SessionBroadcastReceiver.DELETE_INTENT)) {
+            AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+            assert alarmMgr != null;
+            // prevents notifications from being triggered
+            alarmMgr.cancel((PendingIntent)intent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
+        }
     }
 
     @Override
@@ -74,8 +99,46 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        // TODO: display a notification in this case and spin up a broadcast receiver
+        //       which will update that notification once a minute
+        //       make sure to stop that receiver on destroy and on resume
+        if (session.isSessionOngoing()) {
+            // if the user leaves the app, only display a notif if the session is still running
+            session.pauseSession();
+            Intent broadcastIntent = new Intent(this, SessionBroadcastReceiver.class);
+            broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
+            broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_END, session.getExpectedTime() + session.getStartTime().getTime());
+            PendingIntent pendingBroadcast = PendingIntent.getBroadcast(this, INTENT_ID, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            AlarmManager alarm_mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+            if (alarm_mgr == null) throw new AssertionError();
+            alarm_mgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, pendingBroadcast);
+        }
+    }
+
+    private void createNotificationChannel() {
+        // this pretty much gets tossed
+        NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        if (mgr == null) throw new AssertionError();
+        if (Build.VERSION.SDK_INT >= 26) {
+            channel = new NotificationChannel(SessionBroadcastReceiver.NOTIFICATION_CHANNEL,
+                                              SessionBroadcastReceiver.NOTIFICATION_CHANNEL,
+                                              NotificationManager.IMPORTANCE_DEFAULT);
+            mgr.createNotificationChannel(channel);
+        }
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
-        session.pauseSession();
     }
 }
