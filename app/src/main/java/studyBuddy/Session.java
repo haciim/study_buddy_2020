@@ -168,15 +168,11 @@ public class Session {
             // will likely be relatively short? like max 8 hours it shouldn't be a problem
             totalTime = getMinutes(startTime, endTime);
             sessionOngoing = false;
-            // view should display this total time to user and then ask for percentProductiveTime
-            // total time is in MINUTES
-
-            // ensure that we do not cancel a callback
-            // callback is scheduled in synchro'd  run function
 
             synchronized (runner) {
                 handler.removeCallbacks(runner);
             }
+
             if (completeCallback != null) {
                 completeCallback.callbackFunc();
             }
@@ -185,6 +181,10 @@ public class Session {
         } else {
             return -1;
         }
+    }
+
+    public boolean isSessionOngoing() {
+        return sessionOngoing;
     }
 
     /**
