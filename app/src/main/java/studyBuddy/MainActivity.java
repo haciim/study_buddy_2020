@@ -21,12 +21,17 @@ public class MainActivity extends AppCompatActivity
      * Any data retrieval should start here.
      */
     protected void onCreate(Bundle savedInstanceState) {
+        // Setup Activity and Layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+
+        // Setup component interactions
         newSession = findViewById(R.id.new_session_outer);
         newSession.setOnClickListener(this);
+
+        // Setup pet animation
         pet = findViewById(R.id.home_pet_view);
-        Glide.with(this).load(R.drawable.pet_idle).into(pet);
+        Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
     }
 
     @Override
