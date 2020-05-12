@@ -19,14 +19,14 @@ public class TimerRunnerTests {
     private static SessionTimerCallback callback = new SessionTimerCallback() {
         public void callbackFunc(long secondsPassed, long secondsDuration) {
             System.out.println("called");
-            System.out.println(secondsPassed + " seconds");
+            System.out.println(secondsPassed + " ms");
             // figure out which second should be called
             // gauge offset based on that (like keep it under 100 ms off i guess)
             long diff = (System.currentTimeMillis() - currentTime);
             long seconds = Math.round(diff / 1000.0);
-            Assert.assertEquals(secondsPassed, seconds);
+            Assert.assertEquals((secondsPassed / 1000), seconds);
             // figure out offset
-            long offset = Math.abs(diff - (secondsPassed * 1000));
+            long offset = Math.abs(diff % 1000);
             // stay roughly synchronized
             System.out.println("offset (ms): " + offset);
             Assert.assertTrue(offset < 100);
