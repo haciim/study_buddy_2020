@@ -1,5 +1,6 @@
 # Study Buddy
-Study Buddy is a productivity app for Android that rewards user's productivity by tying their productivity to a virtual pet. When the user remains accountable for their tasks, their virtual pet will grow, improve in mood, and trust the user
+Study Buddy is an Android app that offers a reward for productivity by tying the user’s commitment to a virtual pet which directly benefits from their compliance. When the user remains accountable for their tasks, their virtual pet will grow, improve in mood, and trust the user.
+
 ## Important Links
 [Requirements](https://docs.google.com/document/d/17MSjLnf0IBkxtAoBxkW1J8jti30xX3Pm1pVyJA1Q3rA/edit?usp=sharing)
 
