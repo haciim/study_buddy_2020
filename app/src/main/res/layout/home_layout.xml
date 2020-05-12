@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/new_session_outer"
-        app:layout_constraintHorizontal_bias=".75"/>
+        app:layout_constraintHorizontal_bias=".5"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/new_session_outer"
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias=".75"
+        app:layout_constraintHorizontal_bias=".5"
         app:layout_constraintVertical_bias=".2">
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/home_new_session_inner_margin"
-                android:text="NEW SESSION"
+                android:text="START NEW SESSION"
                 android:fontFamily="@font/montserrat_light"
                 android:textColor="@color/red"
                 android:textSize="@dimen/home_new_session_text_size" />
@@ -125,15 +125,15 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/pet"
+        android:id="@+id/home_pet_view"
         android:layout_width="@dimen/home_pet_image_width"
         android:layout_height="@dimen/home_pet_image_height"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".4"
-        app:srcCompat="@drawable/cattronsuperscale" />
+        app:layout_constraintVertical_bias=".4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

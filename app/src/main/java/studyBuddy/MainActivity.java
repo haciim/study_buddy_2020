@@ -3,16 +3,18 @@ package studyBuddy;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
+import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 public class MainActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     private CardView newSession;
+    private ImageView pet;
     @Override
     /**
      * This method called when the app is opened.
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.home_layout);
         newSession = findViewById(R.id.new_session_outer);
         newSession.setOnClickListener(this);
+        pet = findViewById(R.id.home_pet_view);
+        Glide.with(this).load(R.drawable.pet_idle).into(pet);
     }
 
     @Override
