@@ -2,21 +2,33 @@
 
 package studyBuddy;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class Session {
     private Date startTime;
     private Date endTime;
     private String name;
-    // In minutes
-    private double expectedTime;
+    private long expectedTime;
     private double productiveTime;
     private double totalTime;
     // Expected value between 0 and 1
     private double percentProductive;
     // TODO: fill this in correctly according to implementation of Time Management module
     // private TimeManagement timeManager;
+
+    // handler vs thread: if this is created on the UI thread, the task runs on there
     private boolean sessionOngoing;
+    private boolean sessionPaused;
+    private SessionTimerCallback callback;
+    private SessionCompleteCallback completeCallback;
+    private Handler handler;
+
+    private final TimerRunner runner;
 
     /**
      * Constructs a new studyBuddy.Session
@@ -27,14 +39,40 @@ public class Session {
         startTime = null;
         endTime = null;
         name = null;
-        expectedTime = 0.0;
+        expectedTime = 0;
         productiveTime = 0.0;
         totalTime = 0.0;
-        // assume they were productive the whole time
         percentProductive = 1.0;
-        expectedTime = 0.0;
-        // timeManager = null;
         sessionOngoing = false;
+        sessionPaused = false;
+
+        // manage session events
+        callback = null;
+        completeCallback = null;
+
+        // runs on UI thread (intended for view updates)
+        handler = new Handler(Looper.getMainLooper());
+        runner = new TimerRunner(handler);
+
+        runner.setFinishedCallback((long l) -> {
+            this.endSession();
+        });
+    }
+
+    /**
+     * Sets the callback on this session, which will be called once per second while the session
+     * is running. At most one callback can be set on a single session at a time.
+     * @param callback -- the function which will be called.
+     */
+    public synchronized void setTimerCallback(SessionTimerCallback callback) {
+        this.callback = callback;
+        if (runner != null) {
+            runner.setCallback(callback);
+        }
+    }
+
+    public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
+        completeCallback = callback;
     }
 
 //    TODO
@@ -47,13 +85,70 @@ public class Session {
      * @param sessionName the name of the task for this session
      * @param expectedSessionTime the expected duration of this session /
      *                            expected time to complete task
+     * @param startTime the time at which this session started, if we are spinning up
+     *                  a session which was destroyed
      */
-    public void startSession(String sessionName, double expectedSessionTime) {
-        long currentTime = System.currentTimeMillis();
-        startTime = new Date(currentTime);
-        name = sessionName;
-        expectedTime = expectedSessionTime;
-        sessionOngoing = true;
+    public void startSession(String sessionName, long expectedSessionTime, long startTime) {
+        // weird thing: inconsistent double/long units
+        if (!sessionOngoing) {
+            this.startTime = new Date(startTime);
+            endTime = new Date(startTime + expectedSessionTime);
+            name = sessionName;
+            expectedTime = expectedSessionTime;
+            sessionOngoing = true;
+
+            // if runner is null: create runner
+            // regardless: pass callback
+            // regardless: start runner
+
+            runner.setCallback(callback);
+            runner.setStartTime(this.startTime.getTime());
+            runner.setDuration(expectedSessionTime);
+            // the runner and the session are now synchronized
+            handler.post(runner);
+        }
+    }
+
+    public void startSession(String sessionName, long expectedSessionTime) {
+        startSession(sessionName, expectedSessionTime, System.currentTimeMillis());
+    }
+
+    /**
+     * String formatting method
+     * Seemed pretty convenient at the time so i put it here :)
+     * @param seconds - Number of seconds
+     * @return - String representing `seconds` in HH:MM:SS format
+     */
+    public static String formatTime(long seconds) {
+        return String.format(Locale.US, "%02d:%02d:%02d",
+                TimeUnit.SECONDS.toHours(seconds),
+                TimeUnit.SECONDS.toMinutes(seconds) % 60,
+                TimeUnit.SECONDS.toSeconds(seconds) % 60);
+    }
+
+    /**
+     * If session is running and unpaused, pause it by removing the callback. Otherwise, do nothing.
+     */
+    public void pauseSession() {
+        if (!sessionPaused && sessionOngoing) {
+            sessionPaused = true;
+            synchronized (runner) {
+                handler.removeCallbacks(runner);
+            }
+        }
+    }
+
+    /**
+     * Resumes a session which has been paused, but not yet stopped.
+     */
+    public void resumeSession() {
+        // call the runnable right away (get updated data onscreen instantly)
+        // from there the runner will figure out when to call itself again
+        if (sessionPaused) {
+            handler.post(runner);
+            sessionPaused = false;
+        }
+
     }
 
     /**
@@ -63,16 +158,30 @@ public class Session {
      * @return the duration of this session in minutes
      */
     public double endSession() {
-        long currentTime = System.currentTimeMillis();
-        endTime = new Date(currentTime);
-        double sessionMinutes = getMinutes(startTime, endTime);
-        // there could be some loss of precision here but since our session times
-        // will likely be relatively short? like max 8 hours it shouldn't be a problem
-        totalTime = sessionMinutes;
-        sessionOngoing = false;
-        // view should display this total time to user and then ask for percentProductiveTime
-        // total time is in MINUTES
-        return totalTime;
+        if (sessionOngoing) {
+            long currentTime = System.currentTimeMillis();
+            endTime = new Date(currentTime);
+            // there could be some loss of precision here but since our session times
+            // will likely be relatively short? like max 8 hours it shouldn't be a problem
+            totalTime = getMinutes(startTime, endTime);
+            sessionOngoing = false;
+
+            synchronized (runner) {
+                handler.removeCallbacks(runner);
+            }
+
+            if (completeCallback != null) {
+                completeCallback.callbackFunc(getSeconds(startTime, endTime));
+            }
+
+            return totalTime;
+        } else {
+            return -1;
+        }
+    }
+
+    public boolean isSessionOngoing() {
+        return sessionOngoing;
     }
 
     /**
@@ -133,7 +242,7 @@ public class Session {
      * Returns the expected session time as indicated by the user on session start
      * @return expected time in minutes
      */
-    public double getExpectedTime() {
+    public long getExpectedTime() {
         return expectedTime;
     }
 
@@ -165,5 +274,22 @@ public class Session {
         long diff = end - start;
         double minutes = diff / (60.0 * 1000.0);
         return minutes;
+    }
+
+    /**
+     * Precondition: endTime is later than startTime
+     *
+     * Helper for formatting time
+     * Takes two dates and gets the number of seconds between them
+     * @param startTime earlier date
+     * @param endTime later date
+     * @return seconds
+     */
+    private long getSeconds(Date startTime, Date endTime) {
+        long start = startTime.getTime();
+        long end = endTime.getTime();
+        long diff = end - start;
+        long seconds = diff / (1000);
+        return seconds;
     }
 }

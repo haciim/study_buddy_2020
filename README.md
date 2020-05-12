@@ -1,4 +1,5 @@
 # Study Buddy
+Study Buddy is a productivity app for Android that rewards user's productivity by tying their productivity to a virtual pet. When the user remains accountable for their tasks, their virtual pet will grow, improve in mood, and trust the user
 ## Building and Testing the System
 Gradle automatically builds the system. To test the system, run the JUnit tests found within the testing folder (app >> src >> test).
 ## Running the System

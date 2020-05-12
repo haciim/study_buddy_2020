@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.new_session_outer:
-                Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                Intent intent = new Intent(this, SessionActivity.class);
                 startActivity(intent);
                 break;
         }
