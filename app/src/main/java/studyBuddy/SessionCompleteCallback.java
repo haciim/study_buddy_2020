@@ -1,5 +1,5 @@
 package studyBuddy;
 
 public interface SessionCompleteCallback {
-    void callbackFunc();
+    void callbackFunc(long elapsedTime);
 }

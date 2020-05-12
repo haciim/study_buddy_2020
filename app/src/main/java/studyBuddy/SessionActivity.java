@@ -70,6 +70,18 @@ public class SessionActivity extends AppCompatActivity {
 
         animator.setTarget(endSessionText);
         button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
+
+        // todo: perform some sort of animation once our session is ended via the finishcallback
+
+        SessionCompleteCallback completeCallback = (elapsedTime) -> {
+            setContentView(R.layout.finish_session_view);
+            TextView elapsedText = findViewById(R.id.sessionTime);
+            elapsedText.setText(Session.formatTime(elapsedTime));
+            View doneButton = findViewById(R.id.doneButton);
+            doneButton.setOnClickListener(new DoneButtonListener(this));
+        };
+
+        session.setFinishedCallback(completeCallback);
     }
 
     @Override

@@ -54,7 +54,9 @@ public class Session {
         handler = new Handler(Looper.getMainLooper());
         runner = new TimerRunner(handler);
 
-        runner.setFinishedCallback(this::endSession);
+        runner.setFinishedCallback((long l) -> {
+            this.endSession();
+        });
     }
 
     /**
@@ -169,7 +171,7 @@ public class Session {
             }
 
             if (completeCallback != null) {
-                completeCallback.callbackFunc();
+                completeCallback.callbackFunc(getSeconds(startTime, endTime));
             }
 
             return totalTime;
@@ -272,5 +274,22 @@ public class Session {
         long diff = end - start;
         double minutes = diff / (60.0 * 1000.0);
         return minutes;
+    }
+
+    /**
+     * Precondition: endTime is later than startTime
+     *
+     * Helper for formatting time
+     * Takes two dates and gets the number of seconds between them
+     * @param startTime earlier date
+     * @param endTime later date
+     * @return seconds
+     */
+    private long getSeconds(Date startTime, Date endTime) {
+        long start = startTime.getTime();
+        long end = endTime.getTime();
+        long diff = end - start;
+        long seconds = diff / (1000);
+        return seconds;
     }
 }
