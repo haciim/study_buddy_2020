@@ -57,6 +57,8 @@ public class Session {
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
         runner = new TimerRunner(handler);
+
+        runner.setFinishedCallback(this::endSession);
     }
 
     /**
@@ -73,9 +75,6 @@ public class Session {
 
     public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
         completeCallback = callback;
-        if (runner != null) {
-            runner.setFinishedCallback(callback);
-        }
     }
 
 //    TODO

@@ -69,7 +69,6 @@ public class TimerRunner implements Runnable {
             parent.postDelayed(this, Math.max(estimatedTime - currentTime, 0));
         } else if (finishCall != null) {
             finishCall.callbackFunc();
-            // call finished callback
         }
     }
 }
