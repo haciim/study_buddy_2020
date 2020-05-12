@@ -37,7 +37,7 @@ public class TimerRunnerTests {
     private static final int MAX_CALLBACKS = 5;
 
     @Test
-    public void TestTimerRunner() throws InterruptedException {
+    public void TestTimerRunner() {
         Handler handler = Mockito.mock(Handler.class);
         TimerRunner runner = new TimerRunner(handler);
         runner.setDuration(100000);
