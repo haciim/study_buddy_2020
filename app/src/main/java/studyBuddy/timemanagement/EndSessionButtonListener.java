@@ -14,6 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import studyBuddy.Session;
 
+// TODO: change onTouchListener to onClickListener
 public class EndSessionButtonListener implements View.OnTouchListener {
 
     private Handler handler;
@@ -41,8 +42,6 @@ public class EndSessionButtonListener implements View.OnTouchListener {
             animator.reverse();
             isOpen.set(false);
         };
-
-        // add notifications post-beta
     }
 
     @Override

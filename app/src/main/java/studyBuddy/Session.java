@@ -8,14 +8,11 @@ import android.os.Looper;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Session {
     private Date startTime;
     private Date endTime;
     private String name;
-    // In minutes
     private long expectedTime;
     private double productiveTime;
     private double totalTime;
@@ -32,7 +29,6 @@ public class Session {
     private Handler handler;
 
     private final TimerRunner runner;
-
 
     /**
      * Constructs a new studyBuddy.Session
@@ -57,6 +53,10 @@ public class Session {
         // runs on UI thread (intended for view updates)
         handler = new Handler(Looper.getMainLooper());
         runner = new TimerRunner(handler);
+
+        runner.setFinishedCallback((long l) -> {
+            this.endSession();
+        });
     }
 
     /**
@@ -73,9 +73,6 @@ public class Session {
 
     public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
         completeCallback = callback;
-        if (runner != null) {
-            runner.setFinishedCallback(callback);
-        }
     }
 
 //    TODO
@@ -168,15 +165,11 @@ public class Session {
             // will likely be relatively short? like max 8 hours it shouldn't be a problem
             totalTime = getMinutes(startTime, endTime);
             sessionOngoing = false;
-            // view should display this total time to user and then ask for percentProductiveTime
-            // total time is in MINUTES
-
-            // ensure that we do not cancel a callback
-            // callback is scheduled in synchro'd  run function
 
             synchronized (runner) {
                 handler.removeCallbacks(runner);
             }
+
             if (completeCallback != null) {
                 completeCallback.callbackFunc(getSeconds(startTime, endTime));
             }
@@ -185,6 +178,10 @@ public class Session {
         } else {
             return -1;
         }
+    }
+
+    public boolean isSessionOngoing() {
+        return sessionOngoing;
     }
 
     /**
