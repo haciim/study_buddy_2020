@@ -19,9 +19,11 @@ import com.example.studdybuddy.R;
 public class EndSessionView extends LinearLayout {
 
     final Path clippingPath = new Path();
+    private int[] buttonCoords;
 
     public EndSessionView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
+        buttonCoords = new int[2];
         inflateLayout(ctx);
     }
 
@@ -31,8 +33,6 @@ public class EndSessionView extends LinearLayout {
         clippingPath.reset();
         View button = findViewById(R.id.fob);
 
-        // fix this once it works
-        @SuppressLint("DrawAllocation") int[] buttonCoords = new int[2];
         button.getLocationOnScreen(buttonCoords);
 
         int buttonWidth = right - buttonCoords[0];
@@ -46,9 +46,6 @@ public class EndSessionView extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         canvas.clipPath(clippingPath);
         super.dispatchDraw(canvas);
-//        Paint p = new Paint();
-//        p.setColor(Color.BLUE);
-//        canvas.drawPath(clippingPath, p);
     }
 
     public void inflateLayout(Context ctx) {

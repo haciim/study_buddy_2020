@@ -8,14 +8,11 @@ import android.os.Looper;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Session {
     private Date startTime;
     private Date endTime;
     private String name;
-    // In minutes
     private long expectedTime;
     private double productiveTime;
     private double totalTime;
@@ -32,7 +29,6 @@ public class Session {
     private Handler handler;
 
     private final TimerRunner runner;
-
 
     /**
      * Constructs a new studyBuddy.Session

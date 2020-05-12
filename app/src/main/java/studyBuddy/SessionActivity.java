@@ -59,7 +59,8 @@ public class SessionActivity extends AppCompatActivity {
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
         } else {
-            session.startSession("testname", 100000);
+            // get these values from intent
+            session.startSession("testname", 1000000);
         }
 
         View button = findViewById(R.id.fob);
@@ -101,11 +102,8 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onUserLeaveHint() {
         super.onUserLeaveHint();
-        // TODO: display a notification in this case and spin up a broadcast receiver
-        //       which will update that notification once a minute
-        //       make sure to stop that receiver on destroy and on resume
         if (session.isSessionOngoing()) {
-            // if the user leaves the app, only display a notif if the session is still running
+            // if the user leaves the activity, only display a notif if the session is still running
             session.pauseSession();
             Intent broadcastIntent = new Intent(this, SessionBroadcastReceiver.class);
             broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
@@ -119,7 +117,6 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        // this pretty much gets tossed
         NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         if (mgr == null) throw new AssertionError();
         if (Build.VERSION.SDK_INT >= 26) {
@@ -129,8 +126,6 @@ public class SessionActivity extends AppCompatActivity {
             mgr.createNotificationChannel(channel);
         }
     }
-
-
 
     @Override
     protected void onPause() {
