@@ -13,11 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 import studyBuddy.timemanagement.EndSessionButtonListener;
@@ -28,6 +30,7 @@ public class SessionActivity extends AppCompatActivity {
 
     private Session session;
     private NotificationChannel channel;
+    private ImageView pet;
 
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
@@ -62,6 +65,10 @@ public class SessionActivity extends AppCompatActivity {
             // get these values from intent
             session.startSession("testname", 480000);
         }
+
+        // Setup pet animation
+        pet = findViewById(R.id.session_pet_image);
+        Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
 
         View button = findViewById(R.id.fob);
         View endSessionText = findViewById(R.id.endSessionText);
