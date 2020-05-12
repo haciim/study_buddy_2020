@@ -60,7 +60,7 @@ public class SessionActivity extends AppCompatActivity {
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
         } else {
             // get these values from intent
-            session.startSession("testname", 1000000);
+            session.startSession("testname", 480000);
         }
 
         View button = findViewById(R.id.fob);
