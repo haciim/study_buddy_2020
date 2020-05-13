@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 public class Pet {
     /* Instance Variables */ 
     private String name;
-    final private String ownerID; 
+    private String ownerID; 
     private int trustLevel; // ranges from -10 to 10
     private int moodLevel; // ranges from -10 to 10
     private String color;
@@ -25,7 +25,7 @@ public class Pet {
    
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
-    final private Date birthDate; // possible birthday tracker?
+    private Date birthDate; // possible birthday tracker?
 
     /* Constructor */
     public Pet(String userID) {
