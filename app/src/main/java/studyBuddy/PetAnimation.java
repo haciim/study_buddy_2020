@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import java.nio.charset.StandardCharsets;
 
 public class PetAnimation {
     /* Instance Variables */
@@ -133,6 +134,21 @@ public class PetAnimation {
         }
     }
 
+    public void loadFromJSONFile(String fname){
+
+        //load functionality should be a main method
+
+        String content = Files.readString(fname, StandardCharsets.US_ASCII);
+        
+        Gson gson = new Gson();
+        PetAnimation newPetAnimation = gson.fromJson(content, PetAnimation.class);
+
+        //set instance variables of saved object to this object
+        thePet = newPetAnimation.getPet();
+        curAnimation = newPetAnimation.getCurAnimation();
+        curSprite = newPetAnimation.getCurSprite();
+    }
+    
     public static void main(String[] args){
         
     }
