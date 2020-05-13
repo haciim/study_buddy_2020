@@ -30,8 +30,11 @@ public class EndSessionButtonListener implements View.OnTouchListener {
     private static final long SECOND_TOUCH_CUTOFF = 5000;
 
     public EndSessionButtonListener(Session session, View target, Context ctx) {
+        // runs the listener (UI)
         handler = new Handler(Looper.getMainLooper());
+        // animator assigned to this view
         this.target = target;
+        // ensures no thread conflicts
         this.isOpen = new AtomicBoolean(false);
         this.session = session;
         this.lastPress = 0;
@@ -61,7 +64,6 @@ public class EndSessionButtonListener implements View.OnTouchListener {
                 handler.removeCallbacks(runnable);
                 session.endSession();
             } else {
-                // edge case: tap after session ends
                 isOpen.set(true);
                 animator.start();
                 lastPress = System.currentTimeMillis();
