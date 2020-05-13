@@ -1,5 +1,11 @@
 import java.util.Arrays;
 
+// for reading from/writing to JSON files
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 
 public class PetAnimation {
     /* Instance Variables */
@@ -76,7 +82,7 @@ public class PetAnimation {
         return null;
     }
 
-
+    
     //a rough draft of what sprite animating would be like
     public void run(){
         String color = thePet.getColor();
@@ -111,6 +117,19 @@ public class PetAnimation {
                 i++;  
             }
 
+        }
+    }
+
+    public void saveToJSONFile(){
+
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        try (PrintWriter out = new PrintWriter("Pet.json")) {
+            out.println(json);
+            System.out.println("Pet.json updated.");
+        }
+        catch (Exception FileNotFoundException){
+            System.out.println("Pet.json could not be created.");
         }
     }
 
