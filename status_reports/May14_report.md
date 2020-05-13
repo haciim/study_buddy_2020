@@ -51,4 +51,4 @@
 
 <h3>Upcoming Goals</h3>
 
-- [ ] next weeks goals are more so group/collaborative based, see Team Report [Upcoming Goals](https://github.com/haciim/study_buddy_2020/new/master/status_reports#upcoming-goals)
+- [ ] Next weeks goals are more so group/collaborative based, see Team Report [Upcoming Goals](https://github.com/haciim/study_buddy_2020/new/master/status_reports#upcoming-goals)
