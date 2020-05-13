@@ -5,6 +5,8 @@ Study Buddy is an Android app that offers a reward for productivity by tying the
 [Requirements](https://docs.google.com/document/d/17MSjLnf0IBkxtAoBxkW1J8jti30xX3Pm1pVyJA1Q3rA/edit?usp=sharing)
 
 [Team Policies](https://docs.google.com/document/d/1g6Af2lr7RfceBt78roCZq0QuGHKQK92-_P4S3bElzJM/edit?usp=sharing)
+
+[Beta Release Presentation Slides](https://docs.google.com/presentation/d/1c-MSeEbuZIKKDbdN7N9VCPRTijrTlrTPUW3-zUKuEPw/edit?usp=sharing)
 ## Building and Testing the System
 Gradle automatically builds the system. To test the system, run the JUnit tests found within the testing folder (app >> src >> test).
 ## Running the System
