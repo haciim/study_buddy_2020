@@ -321,13 +321,36 @@ public class Pet {
         catch (Exception FileNotFoundException){
             System.out.println("Pet.json could not be created.");
         }
+        
     }
+
+    public void loadFromJSONFile(string fname){
+
+        //load functionality should be a main method
+
+        String content = Files.readString(fname, StandardCharsets.US_ASCII);
+        
+        Gson gson = new Gson();
+        Pet newPet = gson.fromJson(content, Pet.class);
+
+        //set instance variables of saved object to this object
+        name = newPet.getName();
+        ownerID = newPet.getOwnerID();
+        trustLevel = newPet.getTrustLevel();
+        moodLevel = newPet.getMoodLevel();
+        color = newPet.getColor();
+        isFed = newPet.getIsFed();
+        isBathed = newPet.getIsBathed();
+        daysAtWorstTrust = newPet.getDaysAtWorstTrust();
+        lastDAWT = newPet.getLastDAWT();
+        birthDate = newPet.getBirthDate();
+    }
+
+
     
     public static void main( String[] args){
-        Pet sparky = new Pet("21840");
-        sparky.feed();
-        sparky.saveToJSONFile();
     }
+
     
     
 }
