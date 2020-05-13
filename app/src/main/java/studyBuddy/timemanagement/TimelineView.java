@@ -45,17 +45,27 @@ public class TimelineView extends LinearLayout {
         timelineRange = (int)((getMeasuredWidth() / RANGE_DIVIDER) * 150);
     }
 
-    public void setPercentageCompletion(double percentageCompletion) {
+    /**
+     * Updates the time marker on the timeline view to represent some fraction of completion.
+     * @param completion - A floating-point value from 0 to 1.
+     */
+    public void setPercentageCompletion(double completion) {
         // bind to 0 and 1
+        completion = Math.max(Math.min(completion, 1.0), 0.0);
         if (timelineRange > 0) {
             LinearLayoutCompat.LayoutParams param = (LinearLayoutCompat.LayoutParams)marker.getLayoutParams();
-            param.setMarginStart((int)(((percentageCompletion * 2.0) - 1.0) * timelineRange));
+            param.setMarginStart((int)(((completion * 2.0) - 1.0) * timelineRange));
             marker.setLayoutParams(param);
             postInvalidate();
         }
     }
 
     // https://stackoverflow.com/questions/3820401/how-to-load-an-xml-inside-a-view-in-android
+
+    /**
+     * Used internally to inflate our timeline view layout.
+     * @param ctx - The currently active context.
+     */
     private void inflateLayouts(Context ctx) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View v = inflater.inflate(R.layout.session_timeline_view, this, false);

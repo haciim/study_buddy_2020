@@ -44,6 +44,15 @@ public class EndSessionButtonListener implements View.OnTouchListener {
         };
     }
 
+    /**
+     * When the button is pressed:
+     *  - On first press, opens up the "end session" window
+     *  - If a second press occurs within SECOND_TOUCH_CUTOFF ms, ends the session
+     *
+     * @param v - The view touched.
+     * @param e - The motion event dispatched.
+     * @return true if the event is consumed.
+     */
     @Override
     public boolean onTouch(View v, MotionEvent e) {
         v.performClick();

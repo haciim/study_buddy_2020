@@ -28,6 +28,10 @@ public class TimerRunner implements Runnable {
         this.callback = callback;
     }
 
+    /**
+     * Sets the callback which is called once the timer runner is stopped.
+     * @param callback - The function which will be called.
+     */
     public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
         this.finishCall = callback;
     }
@@ -40,6 +44,10 @@ public class TimerRunner implements Runnable {
         this.startTime = startTime;
     }
 
+    /**
+     * Sets the duration of this timer, in ms.
+     * @param duration - Session length.
+     */
     public synchronized void setDuration(long duration) {
         this.duration = duration;
     }
@@ -73,6 +81,3 @@ public class TimerRunner implements Runnable {
         }
     }
 }
-
-// callback behavior
-//  - display some "session finished" text

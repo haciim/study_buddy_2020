@@ -19,6 +19,11 @@ public class StandardStrategy implements Strategy {
         return result;
     }
 
+    /**
+     * Returns true if the length of this duration is valid for the strategy, false otherwise.
+     * @param duration - Length of the desired session.
+     * @return - True if valid, false otherwise.
+     */
     static boolean isDurationValid(long duration) {
         return (duration > 0);
     }

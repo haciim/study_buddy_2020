@@ -24,6 +24,11 @@ public class PomodoroStrategy implements Strategy {
         return duration;
     }
 
+    /**
+     * Returns true if the length of this duration is valid for the strategy, false otherwise.
+     * @param duration - Length of the desired session.
+     * @return - True if valid, false otherwise.
+     */
     static boolean isDurationValid(long duration) {
         return (duration % HALF_HOUR_MILLIS == 0 && duration > 0);
     }

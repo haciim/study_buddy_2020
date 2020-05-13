@@ -84,7 +84,7 @@ public class Session {
      * Records the real time session start time
      * @param sessionName the name of the task for this session
      * @param expectedSessionTime the expected duration of this session /
-     *                            expected time to complete task
+     *                            expected time to complete task (in milliseconds)
      * @param startTime the time at which this session started, if we are spinning up
      *                  a session which was destroyed
      */
