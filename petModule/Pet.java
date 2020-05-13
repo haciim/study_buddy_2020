@@ -1,7 +1,14 @@
+// for tracking days at worst trust level
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
+
+// for reading from/writing to JSON files
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 public class Pet {
     /* Instance Variables */ 
@@ -60,7 +67,7 @@ public class Pet {
     }
 
     public int getMoodLevel(){
-        return trustLevel;
+        return moodLevel;
     }
 
     public String getColor(){
@@ -302,9 +309,24 @@ public class Pet {
             return false;
         }
     }
+
+    public void saveToJSONFile(){
+
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        try (PrintWriter out = new PrintWriter("Pet.json")) {
+            out.println(json);
+            System.out.println("Pet.json updated.");
+        }
+        catch (Exception FileNotFoundException){
+            System.out.println("Pet.json could not be created.");
+        }
+    }
     
     public static void main( String[] args){
-
+        Pet sparky = new Pet("21840");
+        sparky.feed();
+        sparky.saveToJSONFile();
     }
     
     
