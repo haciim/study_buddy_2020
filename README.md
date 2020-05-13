@@ -22,3 +22,14 @@ The app can be run one of two ways: on an Android device or using an Android vir
  7. In the drop down menu to the right of where you selected 'app', select your Virtual Device
  8. Click the green play button next to where the virtual device was selected
  9. You should now be running Study Buddy on your Virtual Device
+ 
+To run Study Buddy on your Android device also requires Android Studio (for now). 
+
+ 1. First you must enable [developer mode](https://developer.android.com/studio/debug/dev-options) on your Android device.
+ 2. Open up Study Buddy master in Android studio.
+ 3. Connect your Android device to your computer.
+ 4. On your device, follow on-screen prompts to add the computer to your list of trusted devices for developing.
+ 5. Near the upper right corner of Android Studio, in the drop down menu next to the green hammer, select 'app'.
+ 6. In the drop down menu to the right of where you selected 'app', select your Android Device.
+ 7. Click the green play button next to where the virtual device was selected.
+ 8. You should now be running Study Buddy on your Android Device.
