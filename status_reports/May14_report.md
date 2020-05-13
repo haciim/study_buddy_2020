@@ -43,7 +43,7 @@
 
 - Andrew: Pet implementation
 
-- Kaytlin: Reflection, Status Report
+- Kaytlin: Reflection, Status Report, Policies doc. update
 
 - Georgie: Session functionality 
 
