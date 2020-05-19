@@ -10,10 +10,13 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Pet {
     /* Instance Variables */ 
     private String name;
-    final private String ownerID; 
+    private String ownerID; 
     private int trustLevel; // ranges from -10 to 10
     private int moodLevel; // ranges from -10 to 10
     private String color;
@@ -25,7 +28,7 @@ public class Pet {
    
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
-    final private Date birthDate; // possible birthday tracker?
+    private Date birthDate; // possible birthday tracker?
 
     /* Constructor */
     public Pet(String userID) {
@@ -321,13 +324,38 @@ public class Pet {
         catch (Exception FileNotFoundException){
             System.out.println("Pet.json could not be created.");
         }
+        
     }
+
+    public void loadFromJSONFile(String fname) throws FileNotFoundException {
+
+        //load functionality should be a main method
+
+        String path = "Pet.json";
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+
+        Gson gson = new Gson();
+        Pet newPet = gson.fromJson(bufferedReader, Pet.class);        
+
+        //set instance variables of saved object to this object
+        name = newPet.getName();
+        ownerID = newPet.getOwnerID();
+        trustLevel = newPet.getTrustLevel();
+        moodLevel = newPet.getMoodLevel();
+        color = newPet.getColor();
+        isFed = newPet.getIsFed();
+        isBathed = newPet.getIsBathed();
+        daysAtWorstTrust = newPet.getDaysAtWorstTrust();
+        lastDAWT = newPet.getLastDAWT();
+        birthDate = newPet.getBirthDate();
+    }
+
+
     
-    public static void main( String[] args){
-        Pet sparky = new Pet("21840");
-        sparky.feed();
-        sparky.saveToJSONFile();
+    public static void main( String[] args) throws FileNotFoundException{
+
     }
+
     
     
 }

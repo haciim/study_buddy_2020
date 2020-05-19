@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class PetAnimation {
     /* Instance Variables */
@@ -13,7 +15,7 @@ public class PetAnimation {
     private String curAnimation;
     private String curSprite;
     
-    //TODO: Subject to change
+    //TODO: Subject to changes
     final private String[] possibleAnimations =
     {"idle", "feeding", "bathing", "studying"};
     
@@ -124,16 +126,32 @@ public class PetAnimation {
 
         Gson gson = new Gson();
         String json = gson.toJson(this);
-        try (PrintWriter out = new PrintWriter("Pet.json")) {
+        try (PrintWriter out = new PrintWriter("PetAnimation.json")) {
             out.println(json);
-            System.out.println("Pet.json updated.");
+            System.out.println("PetAnimation.json updated.");
         }
         catch (Exception FileNotFoundException){
-            System.out.println("Pet.json could not be created.");
+            System.out.println("PetAnimation.json could not be created.");
         }
     }
 
-    public static void main(String[] args){
+    public void loadFromJSONFile(String fname) throws FileNotFoundException{
+
+        //load functionality should be a main method
+  
+        String path = "PetAnimation.json";
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+
+        Gson gson = new Gson();
+        PetAnimation newPetAnimation = gson.fromJson(bufferedReader, PetAnimation.class);     
+
+        //set instance variables of saved object to this object
+        thePet = newPetAnimation.getPet();
+        curAnimation = newPetAnimation.getCurAnimation();
+        curSprite = newPetAnimation.getCurSprite();
+    }
+    
+    public static void main(String[] args) throws FileNotFoundException{
         
     }
 
