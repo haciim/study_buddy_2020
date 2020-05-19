@@ -78,8 +78,6 @@ public class SessionActivity extends AppCompatActivity {
         animator.setTarget(endSessionText);
         button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
-        // todo: perform some sort of animation once our session is ended via the finishcallback
-
         SessionCompleteCallback completeCallback = (elapsedTime) -> {
             setContentView(R.layout.finish_session_view);
             TextView elapsedText = findViewById(R.id.sessionTime);
@@ -135,6 +133,9 @@ public class SessionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates as notification channel if the build version allows it.
+     */
     private void createNotificationChannel() {
         NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         if (mgr == null) throw new AssertionError();
