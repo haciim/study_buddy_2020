@@ -10,6 +10,9 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 public class Pet {
     /* Instance Variables */ 
     private String name;
@@ -324,14 +327,15 @@ public class Pet {
         
     }
 
-    public void loadFromJSONFile(string fname){
+    public void loadFromJSONFile(String fname) throws FileNotFoundException {
 
         //load functionality should be a main method
 
-        String content = Files.readString(fname, StandardCharsets.US_ASCII);
-        
+        String path = "Pet.json";
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+
         Gson gson = new Gson();
-        Pet newPet = gson.fromJson(content, Pet.class);
+        Pet newPet = gson.fromJson(bufferedReader, Pet.class);        
 
         //set instance variables of saved object to this object
         name = newPet.getName();
@@ -348,7 +352,8 @@ public class Pet {
 
 
     
-    public static void main( String[] args){
+    public static void main( String[] args) throws FileNotFoundException{
+
     }
 
     
