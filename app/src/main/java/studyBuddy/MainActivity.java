@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
 
         //load functionality should be a main method
 
-        String petPath = "Pet.json";
+        String petPath = getFilesDir() + "/Pet.json";
         String sessionsPath = "Sessions.json";
         //BufferedReader bufferedReader = new BufferedReader(new FileReader(petPath));
 
