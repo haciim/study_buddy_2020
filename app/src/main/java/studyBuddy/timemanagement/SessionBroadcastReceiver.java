@@ -21,6 +21,11 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
     static public String NOTIFICATION_ID = "notificationID";
     static public String SESSION_END = "sessionEnd";
 
+    /**
+     * Create a notification builder based on build version.
+     * @param ctx - The application context.
+     * @return - A new notification builder.
+     */
     private Notification.Builder getBuilder(Context ctx) {
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= 26) {
@@ -32,20 +37,28 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         return builder;
     }
 
+    /**
+     * On receiving the desired intent, creates a new notification representing the new number of
+     * seconds remaining, and sets up an alarm to ping itself in a minute.
+     * @param ctx - The current context.
+     * @param intent - The intent received.
+     */
     @Override
     public void onReceive(Context ctx, Intent intent) {
         // if intent dismissed: clear
         // clear alarm in
         intent.getAction();
 
+        // get alarm manager
         AlarmManager alarmMGR = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
         assert alarmMGR != null;
 
+        // get information from intent
         int notificationID = intent.getIntExtra(NOTIFICATION_ID, 0);
         long sessionEndTime = intent.getLongExtra(SESSION_END, System.currentTimeMillis());
         long duration = sessionEndTime - System.currentTimeMillis();
 
-        // set up the intent which will trigger the broadcastreceiver to update
+        // set up the intent which will trigger the broadcastreceiver to update in a minute
         Intent nextBroadcastIntent = new Intent(ctx, SessionBroadcastReceiver.class);
         nextBroadcastIntent.putExtra(NOTIFICATION_ID, notificationID);
         nextBroadcastIntent.putExtra(SESSION_END, sessionEndTime);
@@ -58,7 +71,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
 
         assert mgr != null;
 
-        // build a notification with the guarantees
+        // build a notification based on our incoming intent values
         Notification.Builder builder = getBuilder(ctx);
         builder.setContentIntent(PendingIntent.getActivity(ctx, SessionActivity.INTENT_ID, activityIntent, PendingIntent.FLAG_CANCEL_CURRENT));
         builder.setSmallIcon(R.drawable.cattronsuperscale);

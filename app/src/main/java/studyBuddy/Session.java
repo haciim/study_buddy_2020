@@ -84,9 +84,9 @@ public class Session {
      * Records the real time session start time
      * @param sessionName the name of the task for this session
      * @param expectedSessionTime the expected duration of this session /
-     *                            expected time to complete task
+     *                            expected time to complete task (in milliseconds)
      * @param startTime the time at which this session started, if we are spinning up
-     *                  a session which was destroyed
+     *                  a session which was destroyed (ms since epoch)
      */
     public void startSession(String sessionName, long expectedSessionTime, long startTime) {
         // weird thing: inconsistent double/long units
@@ -109,6 +109,11 @@ public class Session {
         }
     }
 
+    /**
+     * Overload for startSession which assumes that the session starts immediately.
+     * @param sessionName - Name of the session.
+     * @param expectedSessionTime - Duration of the session
+     */
     public void startSession(String sessionName, long expectedSessionTime) {
         startSession(sessionName, expectedSessionTime, System.currentTimeMillis());
     }

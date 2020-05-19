@@ -7,8 +7,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.Date;
 
+import studyBuddy.Session;
+
 /**
- * Stores all information necessary to represent a session at some point in time
+ * Represents a session at some point in time.
  */
 public class SessionRecord {
     public final SessionType type;
@@ -17,16 +19,22 @@ public class SessionRecord {
     public final Date end;
     public final double percentProductive;
 
-    public SessionRecord(Strategy strategy, String name,
-                          long start, long duration,
-                          double percentProductive) {
-        this.type = strategy.getSessionType();
-        this.name = name;
-        this.start = new Date(start);
-        this.end = new Date(start + duration);
-        this.percentProductive = percentProductive;
+    /**
+     * Constructs a new SessionRecord from a session.
+     * @param session - The session we are storing.
+     */
+    public SessionRecord(Session session) {
+        this.type = SessionType.NONE;
+        this.name = session.getName();
+        this.start = session.getStartTime();
+        this.end = new Date(session.getStartTime().getTime() + session.getExpectedTime());
+        this.percentProductive = session.getPercentProductive();
     }
 
+    /**
+     * Return a string representation of this SessionRecord as a JSON object.
+     * @return - JSON representation.
+     */
     @NonNull
     public String toString() {
         GsonBuilder builder = new GsonBuilder();
@@ -35,6 +43,11 @@ public class SessionRecord {
         return gson.toJson(this);
     }
 
+    /**
+     * Creates a new SessionRecord from a stored string record.
+     * @param input - A JSON representation of the SessionRecord.
+     * @return - The SessionRecord as a Java object.
+     */
     public static SessionRecord fromString(String input) {
         Gson gson = new Gson();
         return gson.fromJson(input, SessionRecord.class);
