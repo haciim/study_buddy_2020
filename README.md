@@ -11,7 +11,7 @@ Study Buddy is an Android app that offers a reward for productivity by tying the
 ## Building and Testing the System
 Gradle automatically builds the system. To test the system, run the JUnit tests found within the testing folder (app >> src >> test).
 ## Running the System
-First, the repository must be cloned to your system, which can be done via the following command:
+First, the repository must be cloned to your system, which can be done via the following command:  
 git clone https://github.com/haciim/study_buddy_2020.git
 
 After this, the app can be run one of two ways: on an Android device or using an Android virtual machine. To run Study Buddy on an Android virtual machine, a virtual machine must first be downloaded and installed. This can be done through Android Studio, which can be downloaded [here](https://developer.android.com/studio). The instructions to set up a virtual device through Android Studio are as follows:
