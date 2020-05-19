@@ -49,4 +49,8 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
     }
+
+    public void loadData() {
+
+    }
 }
