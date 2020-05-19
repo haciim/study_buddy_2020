@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         // Setup Activity and Layout
         loadData();
-        writeData();
+       // writeData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
 
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         }
         Log.i("Default pet name", testpet.getName());
         testpet.setTrustLevel(5);
-        testpet.setName("Bob");
+        testpet.setName("Robert");
         Log.i("changed pet name", testpet.getName());
 
     }
@@ -105,5 +105,11 @@ public class MainActivity extends AppCompatActivity
         }
         //Log.i("View JSON", fileContents);
 
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        writeData();
     }
 }
