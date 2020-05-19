@@ -1,3 +1,5 @@
+package studyBuddy;
+
 import java.util.Arrays;
 
 // for reading from/writing to JSON files
@@ -8,6 +10,8 @@ import java.io.PrintWriter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+
+import studyBuddy.Pet;
 
 public class PetAnimation {
     /* Instance Variables */
