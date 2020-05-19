@@ -2,19 +2,33 @@ package studyBuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class MainActivity extends AppCompatActivity
     implements View.OnClickListener {
 
     private CardView newSession;
     private ImageView pet;
+
+    private Pet testpet;
     @Override
     /**
      * This method called when the app is opened.
@@ -22,6 +36,8 @@ public class MainActivity extends AppCompatActivity
      */
     protected void onCreate(Bundle savedInstanceState) {
         // Setup Activity and Layout
+        loadData();
+        writeData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
 
@@ -51,6 +67,43 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void loadData() {
+
+        //load functionality should be a main method
+
+        String petPath = "Pet.json";
+        String sessionsPath = "Sessions.json";
+        //BufferedReader bufferedReader = new BufferedReader(new FileReader(petPath));
+
+        Gson gson = new Gson();
+
+        try {
+            testpet = gson.fromJson(new BufferedReader(new FileReader(petPath)), Pet.class);
+        } catch (FileNotFoundException e) {
+            testpet = new Pet("1234");
+            Log.i("File", "File not found");
+        }
+        Log.i("Default pet name", testpet.getName());
+        testpet.setTrustLevel(5);
+        testpet.setName("Bob");
+        Log.i("changed pet name", testpet.getName());
+
+    }
+
+    public void writeData() {
+        String filename = "Pet.json";
+        String fileContents = new Gson().toJson(testpet);
+        File file = new File(getFilesDir(), filename);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write(fileContents);
+            writer.close();
+            Log.i("JSON", "Written successfully");
+        } catch (IOException e) {
+            Log.i("JSON", "Write error");
+           // e.printStackTrace();
+        }
+        //Log.i("View JSON", fileContents);
 
     }
 }
