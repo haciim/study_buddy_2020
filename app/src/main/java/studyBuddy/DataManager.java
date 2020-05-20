@@ -1,10 +1,8 @@
 package studyBuddy;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,8 +13,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class DataManager {
-    private static final String PET_PATH = "Pet.json";
-    private static final String SESSION_PATH = "Sessions.json";
+    private static final String PET_FILE_NAME = "Pet.json";
+    private static final String SESSION_FILE_NAME = "Sessions.json";
     private static final String FILES_DIR = "/data/data/com.example.studdybuddy/files";
 
     public static void save(Pet pet) {
@@ -40,7 +38,7 @@ public class DataManager {
     public static Pet load() {
         //load functionality should be a main method
 
-        String petPath = FILES_DIR + "/" + PET_PATH;
+        String petPath = FILES_DIR + "/" + PET_FILE_NAME;
         String sessionsPath = "Sessions.json";
         //BufferedReader bufferedReader = new BufferedReader(new FileReader(petPath));
 
