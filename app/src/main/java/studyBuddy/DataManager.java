@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 
 /**
  * The DataManager class allows for the saving and loading of data used
- * within the study buddy  app
+ * within the study buddy app
  */
 
 public class DataManager {
