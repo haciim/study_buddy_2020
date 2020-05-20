@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 public class DataManager {
     private static final String PET_FILE_NAME = "Pet.json";
@@ -45,8 +46,8 @@ public class DataManager {
 
         String filePath = FILES_DIR + "/";
         Gson gson = new Gson();
-        D result ;
-
+        D result;
+        Log.i("Load", "getting started");
         if (type == Pet.class) {
             filePath += PET_FILE_NAME;
         } else {
@@ -54,15 +55,19 @@ public class DataManager {
         }
 
         try {
-            result = (D) gson.fromJson(new BufferedReader(new FileReader(filePath)), type);
+            Log.i("Load", "About to happen");
+            result = gson.fromJson(new BufferedReader(new FileReader(filePath)), (Type) type);
         } catch (FileNotFoundException e) {
             Log.i("File", "File not found");
             return  null;
         }
+
+        Log.i("Load", "Successful");
+
         if(result.getClass() == Pet.class) {
             Log.i("Default pet name", ((Pet) result).getName());
             ((Pet) result).setTrustLevel(5);
-            ((Pet) result).setName("Study");
+            ((Pet) result).setName("Buddy");
             Log.i("changed pet name", ((Pet) result).getName());
         }
         return result;

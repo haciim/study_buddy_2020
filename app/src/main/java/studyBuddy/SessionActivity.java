@@ -44,7 +44,7 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        testpet = DataManager.load(testpet.getClass());
+        testpet = DataManager.load(Pet.class);
         if(testpet == null) {
             testpet = new Pet("1234");
         }
