@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -32,6 +33,8 @@ public class SessionActivity extends AppCompatActivity {
     private NotificationChannel channel;
     private ImageView pet;
 
+    private Pet testpet;
+
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
     static private String SESSION_NAME_KEY = "sessionName";
@@ -41,6 +44,7 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
+        testpet = DataManager.load();
         setContentView(R.layout.session_layout);
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
@@ -155,5 +159,6 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        DataManager.save(testpet);
     }
 }
