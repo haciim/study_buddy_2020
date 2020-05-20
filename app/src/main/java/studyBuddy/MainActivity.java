@@ -2,31 +2,19 @@ package studyBuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class MainActivity extends AppCompatActivity
-    implements View.OnClickListener {
+        implements View.OnClickListener {
 
     private CardView newSession;
     private ImageView pet;
-
     @Override
     /**
      * This method called when the app is opened.
@@ -60,10 +48,5 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
                 break;
         }
-    }
-
-    @Override
-    protected void onStop(){
-        super.onStop();
     }
 }
