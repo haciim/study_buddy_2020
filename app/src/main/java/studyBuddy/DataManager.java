@@ -17,9 +17,14 @@ public class DataManager {
     private static final String SESSION_FILE_NAME = "Sessions.json";
     private static final String FILES_DIR = "/data/data/com.example.studdybuddy/files";
 
-    public static void save(Pet pet) {
-        String filename = "Pet.json";
-        String fileContents = new Gson().toJson(pet);
+    public static <D> void save(D data) {
+        String filename;
+        if (data instanceof Pet) {
+            filename = PET_FILE_NAME;
+        } else {
+            filename = SESSION_FILE_NAME;
+        }
+        String fileContents = new Gson().toJson(data);
         File file = new File(FILES_DIR, filename);
         BufferedWriter writer = null;
         try {
@@ -35,12 +40,14 @@ public class DataManager {
 
     }
 
-    public static Pet load() {
+    public static <D> D load() {
         //load functionality should be a main method
 
-        String petPath = FILES_DIR + "/" + PET_FILE_NAME;
-        String sessionsPath = "Sessions.json";
-        //BufferedReader bufferedReader = new BufferedReader(new FileReader(petPath));
+        String petPath = FILES_DIR + "/";
+
+        if (D instanceof Pet) {
+
+        }
 
         Gson gson = new Gson();
         Pet result;
