@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 public class MainActivity extends AppCompatActivity
-    implements View.OnClickListener {
+        implements View.OnClickListener {
 
     private CardView newSession;
     private ImageView pet;
