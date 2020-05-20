@@ -52,7 +52,7 @@ public class Pet {
 
         this.birthDate = new Date();
 
-    } 
+    }
 
     /* Getter Methods */
 

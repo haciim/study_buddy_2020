@@ -44,7 +44,10 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        testpet = DataManager.load();
+        testpet = DataManager.load(testpet.getClass());
+        if(testpet == null) {
+            testpet = new Pet("1234");
+        }
         setContentView(R.layout.session_layout);
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);

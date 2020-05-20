@@ -44,23 +44,20 @@ public class DataManager {
         //load functionality should be a main method
 
         String filePath = FILES_DIR + "/";
-        D result;
+        Gson gson = new Gson();
+        D result ;
 
         if (type == Pet.class) {
             filePath += PET_FILE_NAME;
-            result = (Pet) result;
         } else {
             filePath += SESSION_FILE_NAME;
         }
 
-        Gson gson = new Gson();
         try {
-            result = gson.fromJson(new BufferedReader(new FileReader(filePath)), Pet.class);
+            result = (D) gson.fromJson(new BufferedReader(new FileReader(filePath)), type);
         } catch (FileNotFoundException e) {
-            if(type == Pet.class) {
-                (Pet) result = new Pet("1234");
-            }
             Log.i("File", "File not found");
+            return  null;
         }
         if(result.getClass() == Pet.class) {
             Log.i("Default pet name", ((Pet) result).getName());
