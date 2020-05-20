@@ -20,34 +20,32 @@ public class DataManager {
 
     public static <D> void save(D data) {
         String filename;
+
         if (data instanceof Pet) {
             filename = PET_FILE_NAME;
         } else {
             filename = SESSION_FILE_NAME;
         }
+
         String fileContents = new Gson().toJson(data);
         File file = new File(FILES_DIR, filename);
-        BufferedWriter writer = null;
+
         try {
-            writer = new BufferedWriter(new FileWriter(file));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(fileContents);
             writer.close();
-            Log.i("JSON", "Written successfully");
+            Log.i("Save", "Written successfully");
         } catch (IOException e) {
-            Log.i("JSON", "Write error");
+            Log.i("Save", "Write error");
             // e.printStackTrace();
         }
-        //Log.i("View JSON", fileContents);
-
     }
 
     public static <D> D load(Class type) {
-        //load functionality should be a main method
-
         String filePath = FILES_DIR + "/";
         Gson gson = new Gson();
         D result;
-        Log.i("Load", "getting started");
+
         if (type == Pet.class) {
             filePath += PET_FILE_NAME;
         } else {
@@ -55,21 +53,13 @@ public class DataManager {
         }
 
         try {
-            Log.i("Load", "About to happen");
             result = gson.fromJson(new BufferedReader(new FileReader(filePath)), (Type) type);
+            Log.i("Load", "Successful");
         } catch (FileNotFoundException e) {
-            Log.i("File", "File not found");
+            Log.i("Load", "File not found");
             return  null;
         }
 
-        Log.i("Load", "Successful");
-
-        if(result.getClass() == Pet.class) {
-            Log.i("Default pet name", ((Pet) result).getName());
-            ((Pet) result).setTrustLevel(5);
-            ((Pet) result).setName("Buddy");
-            Log.i("changed pet name", ((Pet) result).getName());
-        }
         return result;
     }
 }
