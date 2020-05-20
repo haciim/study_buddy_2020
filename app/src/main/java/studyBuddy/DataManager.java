@@ -40,27 +40,34 @@ public class DataManager {
 
     }
 
-    public static <D> D load() {
+    public static <D> D load(Class type) {
         //load functionality should be a main method
 
-        String petPath = FILES_DIR + "/";
+        String filePath = FILES_DIR + "/";
+        D result;
 
-        if (D instanceof Pet) {
-
+        if (type == Pet.class) {
+            filePath += PET_FILE_NAME;
+            result = (Pet) result;
+        } else {
+            filePath += SESSION_FILE_NAME;
         }
 
         Gson gson = new Gson();
-        Pet result;
         try {
-            result = gson.fromJson(new BufferedReader(new FileReader(petPath)), Pet.class);
+            result = gson.fromJson(new BufferedReader(new FileReader(filePath)), Pet.class);
         } catch (FileNotFoundException e) {
-            result = new Pet("1234");
+            if(type == Pet.class) {
+                (Pet) result = new Pet("1234");
+            }
             Log.i("File", "File not found");
         }
-        Log.i("Default pet name", result.getName());
-        result.setTrustLevel(5);
-        result.setName("Study");
-        Log.i("changed pet name", result.getName());
+        if(result.getClass() == Pet.class) {
+            Log.i("Default pet name", ((Pet) result).getName());
+            ((Pet) result).setTrustLevel(5);
+            ((Pet) result).setName("Study");
+            Log.i("changed pet name", ((Pet) result).getName());
+        }
         return result;
     }
 }
