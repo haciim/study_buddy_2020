@@ -48,6 +48,10 @@ public class EndSessionView extends LinearLayout {
         super.dispatchDraw(canvas);
     }
 
+    /**
+     * Inflates the EndSessionView.
+     * @param ctx - Application context.
+     */
     public void inflateLayout(Context ctx) {
         LayoutInflater inflater = LayoutInflater.from(ctx);
         View v = inflater.inflate(R.layout.end_session_view, this, false);

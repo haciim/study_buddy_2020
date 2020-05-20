@@ -1,7 +1,12 @@
+
 # Study Buddy
 Study Buddy is an Android app that offers a reward for productivity by tying the user’s commitment to a virtual pet which directly benefits from their compliance. When the user remains accountable for their tasks, their virtual pet will grow, improve in mood, and trust the user.
 
 ## Important Links
+[User Manual](https://github.com/haciim/study_buddy_2020/blob/master/USER_MANUAL.md#user-manual)
+
+[Developer Documentation](https://github.com/haciim/study_buddy_2020/wiki/Developer-Documentation)
+
 [Requirements](https://docs.google.com/document/d/17MSjLnf0IBkxtAoBxkW1J8jti30xX3Pm1pVyJA1Q3rA/edit?usp=sharing)
 
 [Team Policies](https://docs.google.com/document/d/1g6Af2lr7RfceBt78roCZq0QuGHKQK92-_P4S3bElzJM/edit?usp=sharing)
@@ -10,7 +15,10 @@ Study Buddy is an Android app that offers a reward for productivity by tying the
 ## Building and Testing the System
 Gradle automatically builds the system. To test the system, run the JUnit tests found within the testing folder (app >> src >> test).
 ## Running the System
-The app can be run one of two ways: on an Android device or using an Android virtual machine. To run Study Buddy on an Android virtual machine, a virtual machine must first be downloaded and installed. This can be done through Android Studio, which can be downloaded [here](https://developer.android.com/studio). The instructions to set up a virtual device through Android Studio are as follows:
+First, the repository must be cloned to your system, which can be done via the following command:  
+git clone https://github.com/haciim/study_buddy_2020.git
+
+After this, the app can be run one of two ways: on an Android device or using an Android virtual machine. To run Study Buddy on an Android virtual machine, a virtual machine must first be downloaded and installed. This can be done through Android Studio, which can be downloaded [here](https://developer.android.com/studio). The instructions to set up a virtual device through Android Studio are as follows:
 
  1. In Android Studio, navigate to Tools in the toolbar and select AVD Manager
  2. Select Create Virtual Device

@@ -36,6 +36,7 @@ public class TimerRunnerTests {
 
     private static final int MAX_CALLBACKS = 5;
 
+    // ensure the timer runner is called on correct intervals
     @Test
     public void TestTimerRunner() {
         Handler handler = Mockito.mock(Handler.class);
