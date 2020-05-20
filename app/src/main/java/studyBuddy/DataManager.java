@@ -13,11 +13,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 
+/**
+ * The DataManager class allows for the saving and loading of data used
+ * within the study buddy  app
+ */
+
 public class DataManager {
     private static final String PET_FILE_NAME = "Pet.json";
     private static final String SESSION_FILE_NAME = "Sessions.json";
     private static final String FILES_DIR = "/data/data/com.example.studdybuddy/files";
 
+    /**
+     * Saves the given object to FILES_DIR in JSON format. The name of the stored file depends
+     * on the given object's type: If the object is a pet, then it is saved as
+     * PET_FILE_NAME, otherwise it is saved as SESSION_FILE_NAME.
+     *
+     * @param data the data to be saved
+     */
     public static <D> void save(D data) {
         String filename;
 
@@ -40,6 +52,12 @@ public class DataManager {
         }
     }
 
+    /**
+     * returns data of the given type stored on the device.
+     *
+     * @param type the type of the data to retrieve
+     * @return returns any stored data of the given type
+     */
     public static <D> D load(Class type) {
         String filePath = FILES_DIR + "/";
         Gson gson = new Gson();
