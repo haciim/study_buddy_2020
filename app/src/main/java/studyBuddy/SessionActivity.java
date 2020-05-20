@@ -33,8 +33,6 @@ public class SessionActivity extends AppCompatActivity {
     private NotificationChannel channel;
     private ImageView pet;
 
-    private Pet testpet;
-
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
     static private String SESSION_NAME_KEY = "sessionName";
@@ -44,10 +42,6 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        testpet = DataManager.load(Pet.class);
-        if(testpet == null) {
-            testpet = new Pet("1234");
-        }
         setContentView(R.layout.session_layout);
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
@@ -162,6 +156,5 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        DataManager.save(testpet);
     }
 }

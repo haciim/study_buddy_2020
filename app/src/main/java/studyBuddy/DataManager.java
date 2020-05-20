@@ -37,7 +37,6 @@ public class DataManager {
             Log.i("Save", "Written successfully");
         } catch (IOException e) {
             Log.i("Save", "Write error");
-            // e.printStackTrace();
         }
     }
 
