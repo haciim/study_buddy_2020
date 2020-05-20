@@ -1,5 +1,6 @@
 package studyBuddy;
 
+
 import java.util.Arrays;
 
 // for reading from/writing to JSON files
