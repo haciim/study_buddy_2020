@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
