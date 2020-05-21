@@ -314,7 +314,7 @@ public class Pet {
     }
 
     /* Save-load functionality */
-    
+
     /* While these methods are purposeful, it would make more
     sense to just enact save/load in a main method, rather than
     in an instance of an object like this. See said methods to replicate
@@ -362,7 +362,7 @@ public class Pet {
 
 
     
-    public static void main( String[] args) throws FileNotFoundException{
+    public static void main( String[] args){
 
     }
 
