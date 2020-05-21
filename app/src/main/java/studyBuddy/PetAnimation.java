@@ -33,10 +33,10 @@ public class PetAnimation {
 
     final private String[][] possibleGifs = 
 
-    {{"idle",     "default", "id.gif"},
-     {"feeding",  "default", "fd.gif"},
-     {"bathing",  "default", "bd.gif"},
-     {"studying", "default", "sd.gif"}};
+    {{"idle",     "default", "idle-default.gif"},
+     {"feeding",  "default", "feeding-default.gif"},
+     {"bathing",  "default", "bathing-default.gif"},
+     {"studying", "default", "studying-default.gif"}};
 
     /** Constructor */
 
@@ -45,7 +45,7 @@ public class PetAnimation {
     public PetAnimation(Pet theePet){
         thePet = theePet;
         curAnimation = "idle";
-        curGif = "id1.gif"; //idle animation, default color
+        curGif = "idle-default.gif"; //idle animation, default color
     }
 
     /** Getter methods */
@@ -63,7 +63,7 @@ public class PetAnimation {
 
     /** Setter methods */   
     
-    // helper search methods
+    // helper search method
     private boolean possibleAnimationsSearch(String key){
         for (int i = 0; i < possibleAnimations.length; i++){
             String curString = possibleAnimations[i];
@@ -73,39 +73,27 @@ public class PetAnimation {
         }
         return false;
     }
-    
-
-    private boolean possibleGifsSearch(String key){
-        for (int i = 0; i < possibleGifs.length; i++){
-            String curString = possibleGifs[i][2];
-            if(curString.equals(key)){
-                return true;
-            }
-        }
-        return false;
-    }
 
     //returns true on successful set, false on unsuccessful set
     public boolean setCurAnimation(String newAnimation){
-
+        
+        //making sure the newAnimation is a valid one
         if(possibleAnimationsSearch(newAnimation)){
             curAnimation = newAnimation;
-            return true;
-        }
-        return false;
 
-    }
+            // "bathing-default.gif" for example
+            String newGif = curAnimation + "-" + thePet.getColor() + ".gif";
 
-    //returns true on successful set, false on unsuccessful set
-    public boolean setCurGif(String newGif){
-        if(possibleGifsSearch(newGif)){
+            //gotta update the current gif accordingly too!
+            // no reason why you would change the current gif directly
+            // without changing the animation anyways
             curGif = newGif;
             return true;
         }
         return false;
 
     }
-
+    
     /* Save-load functionality */
 
     /* While these methods are purposeful, it would make more
