@@ -313,6 +313,16 @@ public class Pet {
         }
     }
 
+    /* Save-load functionality */
+    
+    /* While these methods are purposeful, it would make more
+    sense to just enact save/load in a main method, rather than
+    in an instance of an object like this. See said methods to replicate
+    said functionality.
+    
+    If needed, please use the PetAnimation save-load, as it is a 
+    wrapper object for a Pet object. */
+
     public void saveToJSONFile(){
 
         Gson gson = new Gson();
