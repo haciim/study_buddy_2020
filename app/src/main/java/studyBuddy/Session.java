@@ -28,7 +28,7 @@ public class Session {
     private SessionCompleteCallback completeCallback;
     private Handler handler;
 
-    private final TimerRunner runner;
+    private TimerRunner runner;
 
     /**
      * Constructs a new studyBuddy.Session
@@ -296,5 +296,15 @@ public class Session {
         long diff = end - start;
         long seconds = diff / (1000);
         return seconds;
+    }
+
+    /**
+     * Sets fields that cause issues for converting to JSON to null
+     */
+    public void clean() {
+        callback = null;
+        completeCallback = null;
+        handler = null;
+        runner = null;
     }
 }

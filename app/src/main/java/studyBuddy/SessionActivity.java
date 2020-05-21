@@ -37,8 +37,6 @@ public class SessionActivity extends AppCompatActivity {
     private ImageView pet;
     private List<Session> sessions;
 
-    private Pet testPet;
-
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
     static private String SESSION_NAME_KEY = "sessionName";
@@ -53,21 +51,10 @@ public class SessionActivity extends AppCompatActivity {
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
         sessions = DataManager.load(List.class);
-        testPet = DataManager.load(Pet.class);
 
         if(sessions == null) {
             sessions = new ArrayList<>();
         }
-
-        if(testPet == null) {
-            testPet = new Pet("1234");
-            testPet.setTrustLevel(5);
-            Log.i("Pet", "New pet created");
-        } else {
-            Log.i("Pet", "Initial name " + testPet.getName());
-        }
-
-        Log.i("Initial Session History", sessions.toString());
 
         createNotificationChannel();
 
@@ -179,12 +166,9 @@ public class SessionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(!session.isSessionOngoing()){
-            //sessions.add(session);
+            session.clean();
+            sessions.add(session);
             DataManager.save(sessions);
         }
-        Log.i("Final Session History", sessions.toString());
-        testPet.setName("Bob");
-        DataManager.save(testPet);
-        Log.i("Pet", "Final name is " + testPet.getName());
     }
 }
