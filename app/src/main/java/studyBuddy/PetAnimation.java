@@ -94,45 +94,6 @@ public class PetAnimation {
 
     }
     
-    /* Save-load functionality */
-
-    /* While these methods are purposeful, it would make more
-    sense to just enact save/load in a main method, rather than
-    in an instance of an object like this. See said methods to replicate
-    said functionality.
-    
-    If needed, please use the PetAnimation save-load, as it is a 
-    wrapper object for a Pet object. */
-
-    public void saveToJSONFile(){
-
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-        try (PrintWriter out = new PrintWriter("PetAnimation.json")) {
-            out.println(json);
-            System.out.println("PetAnimation.json updated.");
-        }
-        catch (Exception FileNotFoundException){
-            System.out.println("PetAnimation.json could not be created.");
-        }
-    }
-
-    public void loadFromJSONFile(String fname) throws FileNotFoundException{
-
-        //load functionality should be a main method
-  
-        String path = "PetAnimation.json";
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-
-        Gson gson = new Gson();
-        PetAnimation newPetAnimation = gson.fromJson(bufferedReader, PetAnimation.class);     
-
-        //set instance variables of saved object to this object
-        thePet = newPetAnimation.getPet();
-        curAnimation = newPetAnimation.getCurAnimation();
-        curGif = newPetAnimation.getCurGif();
-    }
-    
     public static void main(String[] args){
 
     }
