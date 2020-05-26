@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimelineView;
@@ -31,6 +35,7 @@ public class SessionActivity extends AppCompatActivity {
     private Session session;
     private NotificationChannel channel;
     private ImageView pet;
+    private List<Session> sessions;
 
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
@@ -45,6 +50,11 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
+        sessions = DataManager.load(List.class);
+
+        if(sessions == null) {
+            sessions = new ArrayList<>();
+        }
 
         createNotificationChannel();
 
@@ -155,5 +165,10 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if(!session.isSessionOngoing()){
+            session.clean();
+            sessions.add(session);
+            DataManager.save(sessions);
+        }
     }
 }
