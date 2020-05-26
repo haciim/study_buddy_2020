@@ -35,7 +35,7 @@ public class Session {
      * Parameters are initialized to somewhat meaningless values
      * Session needs to be started by user
      */
-    public Session() {
+    public Session(Handler handler) {
         startTime = null;
         endTime = null;
         name = null;
@@ -51,7 +51,7 @@ public class Session {
         completeCallback = null;
 
         // runs on UI thread (intended for view updates)
-        handler = new Handler(Looper.getMainLooper());
+        this.handler = handler;
         runner = new TimerRunner(handler);
 
         runner.setFinishedCallback((long l) -> {

@@ -1,10 +1,15 @@
+import android.os.Handler;
+import android.os.Looper;
+
 import org.junit.Test;
 import org.junit.Assert;
+import org.mockito.Mockito;
 
 import studyBuddy.Session;
 
 public class SessionTests {
-    public Session testSession = new Session();
+    private Handler handler = Mockito.mock(Handler.class);
+    private Session testSession = new Session(handler);
 
     @Test
     public void TestStartSession() {
