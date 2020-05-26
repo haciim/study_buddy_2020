@@ -1,10 +1,12 @@
 package studyBuddy;// for tracking days at worst trust level
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 // for reading from/writing to JSON files
+
 import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.io.PrintWriter;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+
 
 public class Pet {
     /* Instance Variables */ 
@@ -52,7 +55,7 @@ public class Pet {
 
         this.birthDate = new Date();
 
-    } 
+    }
 
     /* Getter Methods */
 
@@ -312,45 +315,6 @@ public class Pet {
             return false;
         }
     }
-
-    public void saveToJSONFile(){
-
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-        try (PrintWriter out = new PrintWriter("Pet.json")) {
-            out.println(json);
-            System.out.println("Pet.json updated.");
-        }
-        catch (Exception FileNotFoundException){
-            System.out.println("Pet.json could not be created.");
-        }
-        
-    }
-
-    public void loadFromJSONFile(String fname) throws FileNotFoundException {
-
-        //load functionality should be a main method
-
-        String path = "Pet.json";
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
-
-        Gson gson = new Gson();
-        Pet newPet = gson.fromJson(bufferedReader, Pet.class);        
-
-        //set instance variables of saved object to this object
-        name = newPet.getName();
-        ownerID = newPet.getOwnerID();
-        trustLevel = newPet.getTrustLevel();
-        moodLevel = newPet.getMoodLevel();
-        color = newPet.getColor();
-        isFed = newPet.getIsFed();
-        isBathed = newPet.getIsBathed();
-        daysAtWorstTrust = newPet.getDaysAtWorstTrust();
-        lastDAWT = newPet.getLastDAWT();
-        birthDate = newPet.getBirthDate();
-    }
-
-
     
     public static void main( String[] args) throws FileNotFoundException{
 
