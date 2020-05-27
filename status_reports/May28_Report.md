@@ -12,9 +12,13 @@
 
 - [x] Continuously implement JUnit tests 
 
-<h3>Status Report</h3>
+<h3>Status Report & Agenda</h3>
 
+- Peer Review Feedback
 
+- In Progress Items:
+  - Pet Trust/Mood levels
+  - UI for History, Pet
 
 <h3>Upcoming Goals</h3>
 
