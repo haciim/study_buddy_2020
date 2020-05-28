@@ -1,6 +1,5 @@
-package studyBuddy;// for tracking days at worst trust level
+package studyBuddy;
 
-import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,6 +7,13 @@ import java.util.concurrent.TimeUnit;
 
 // for reading from/writing to JSON files
 
+import com.google.gson.Gson;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 public class Pet {
     /* Instance Variables */ 
@@ -48,7 +54,7 @@ public class Pet {
 
         this.birthDate = new Date();
 
-    }
+    } 
 
     /* Getter Methods */
 
@@ -309,7 +315,7 @@ public class Pet {
         }
     }
     
-    public static void main( String[] args) throws FileNotFoundException{
+    public static void main( String[] args){
 
     }
 
