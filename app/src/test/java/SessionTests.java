@@ -51,7 +51,7 @@ public class SessionTests {
         Date secondTime = new Date(currentTime + oneMinute);
         double minutes = testSession.getMinutes(firstTime, secondTime);
         long seconds = testSession.getSeconds(firstTime, secondTime);
-        Assert.assertEquals(seconds, oneMinute, 0.001);
+        Assert.assertEquals(seconds, 60, 0.001);
         Assert.assertEquals(minutes, 1.0, 0.001);
     }
 }
