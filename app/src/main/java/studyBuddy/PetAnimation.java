@@ -1,12 +1,5 @@
 package studyBuddy;
 
-<<<<<<< HEAD
-=======
-
-import java.util.Arrays;
-
-// for reading from/writing to JSON files
->>>>>>> 6f96b910d354bad4981b805b35c599a52afd3342
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -14,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
+
+// for reading from/writing to JSON files
 
 // for reading from/writing to JSON files
 
