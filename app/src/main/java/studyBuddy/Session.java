@@ -273,7 +273,7 @@ public class Session {
      * @param endTime the later time
      * @return the number of minutes between the two times
      */
-    private double getMinutes(Date startTime, Date endTime) {
+    public double getMinutes(Date startTime, Date endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;
@@ -290,7 +290,7 @@ public class Session {
      * @param endTime later date
      * @return seconds
      */
-    private long getSeconds(Date startTime, Date endTime) {
+    public long getSeconds(Date startTime, Date endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;
