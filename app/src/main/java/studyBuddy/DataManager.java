@@ -19,8 +19,6 @@ import java.lang.reflect.Type;
  */
 
 public class DataManager {
-    private static final String PET_FILE_NAME = "Pet.json";
-    private static final String SESSION_FILE_NAME = "Sessions.json";
     private static final String FILES_DIR = "/data/data/com.example.studdybuddy/files";
 
     /**
@@ -31,13 +29,7 @@ public class DataManager {
      * @param data the data to be saved
      */
     public static <D> void save(D data) {
-        String filename;
-
-        if (data instanceof Pet) {
-            filename = PET_FILE_NAME;
-        } else {
-            filename = SESSION_FILE_NAME;
-        }
+        String filename = data.getClass().getSimpleName();
 
         String fileContents = new Gson().toJson(data);
         File file = new File(FILES_DIR, filename);
@@ -60,16 +52,9 @@ public class DataManager {
      *          no data of the given type is found in storage
      */
     public static <D> D load(Class type) {
-        String filePath = FILES_DIR + "/";
+        String filePath = FILES_DIR + "/" + type.getSimpleName();
         Gson gson = new Gson();
         D result;
-
-        if (type == Pet.class) {
-            filePath += PET_FILE_NAME;
-        } else {
-            filePath += SESSION_FILE_NAME;
-        }
-
         try {
             result = gson.fromJson(new BufferedReader(new FileReader(filePath)), (Type) type);
             Log.i("Load", "Successful");
