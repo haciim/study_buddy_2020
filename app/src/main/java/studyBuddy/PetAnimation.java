@@ -1,3 +1,5 @@
+package studyBuddy;
+
 import java.util.Arrays;
 
 // for reading from/writing to JSON files
@@ -91,12 +93,5 @@ public class PetAnimation {
             return true;
         }
         return false;
-
-    }
-    
-    public static void main(String[] args){
-
-    }
-
-    
+    }    
 }

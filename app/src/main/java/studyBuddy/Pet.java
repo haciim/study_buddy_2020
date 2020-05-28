@@ -1,3 +1,5 @@
+package studyBuddy;
+
 // for tracking days at worst trust level
 import java.util.Calendar;
 import java.util.Date;
