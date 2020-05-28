@@ -22,10 +22,10 @@ import java.lang.reflect.Type;
 public class DataManager {
 
     /**
-     * Saves the given object to FILES_DIR in JSON format. The name of the stored file depends
-     * on the given object's type: If the object is a pet, then it is saved as
-     * PET_FILE_NAME, otherwise it is saved as SESSION_FILE_NAME.
+     * Saves the given object to FILES_DIR in JSON format. The name of the stored file is
+     * "[simple name of the object's class].json"
      *
+     * @param context context so the method knows where to save the file
      * @param data the data to be saved
      */
     public static <D> void save(Context context, D data) {
@@ -47,6 +47,7 @@ public class DataManager {
     /**
      * returns data of the given type stored on the device.
      *
+     * @param context context so the method knows where to save the file
      * @param type the type of the data to retrieve
      * @return returns any stored data of the given type, null if
      *          no data of the given type is found in storage
