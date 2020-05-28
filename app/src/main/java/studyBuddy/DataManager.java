@@ -1,5 +1,6 @@
 package studyBuddy;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -19,7 +20,6 @@ import java.lang.reflect.Type;
  */
 
 public class DataManager {
-    private static final String FILES_DIR = "/data/data/com.example.studdybuddy/files";
 
     /**
      * Saves the given object to FILES_DIR in JSON format. The name of the stored file depends
@@ -28,17 +28,17 @@ public class DataManager {
      *
      * @param data the data to be saved
      */
-    public static <D> void save(D data) {
-        String filename = data.getClass().getSimpleName();
+    public static <D> void save(Context context, D data) {
+        String filename = data.getClass().getSimpleName() + ".json";
 
         String fileContents = new Gson().toJson(data);
-        File file = new File(FILES_DIR, filename);
+        File file = new File(context.getFilesDir(), filename);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(fileContents);
             writer.close();
-            Log.i("Save", "Written successfully");
+            Log.i("Save", "Written successfully, saved as: " + filename);
         } catch (IOException e) {
             Log.i("Save", "Write error");
         }
@@ -51,10 +51,11 @@ public class DataManager {
      * @return returns any stored data of the given type, null if
      *          no data of the given type is found in storage
      */
-    public static <D> D load(Class type) {
-        String filePath = FILES_DIR + "/" + type.getSimpleName();
+    public static <D> D load(Context context, Class type) {
+        String filePath = context.getFilesDir() + "/" + type.getSimpleName() + ".json";
         Gson gson = new Gson();
         D result;
+        Log.i("Load", "Loading from: " + filePath);
         try {
             result = gson.fromJson(new BufferedReader(new FileReader(filePath)), (Type) type);
             Log.i("Load", "Successful");
