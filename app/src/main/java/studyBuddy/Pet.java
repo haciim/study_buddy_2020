@@ -10,22 +10,22 @@ import java.util.concurrent.TimeUnit;
 import java.util.List;
 
 public class Pet {
-    /* Instance Variables */
-    private String name;
-    private int trustLevel; // ranges from -10 to 10
-    private int moodLevel; // ranges from -10 to 10
-    private String color;
-    private boolean isFed; // maintenance state 1
-    private boolean isBathed; // maintenance state 1
+    /** Instance Variables */
+    private String name; // name of the pet
+    private int trustLevel; // pet's trust level of the user, ranges from -10 to 10
+    private int moodLevel; // pet's mood level, ranges from -10 to 10
+    private String color; // pet's color
+    private boolean isFed; // has the pet been fed yet today?
+    private boolean isBathed; // has the pet been bathed yet today?
     
     /* days recorded at worst trust level */
     private int daysAtWorstTrust;
    
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
-    private Date birthDate; // possible birthday tracker?
+    private Date birthDate; // possible birthday tracker
 
-    /* Constructor */
+    /** Constructor */
     public Pet() {
         
         name = "Your pet";
@@ -45,7 +45,7 @@ public class Pet {
 
     } 
 
-    /* Getter Methods */
+    /** Getter Methods */
 
     public String getName(){
         return name;
@@ -83,7 +83,7 @@ public class Pet {
         return birthDate;
     }
 
-    /* Setter Methods */
+    /** Setter Methods */
     // methods that return booleans for fields that are changeable
     // dependent on certain pet conditions and will return false
     // if field cannot change due to condition
@@ -130,7 +130,7 @@ public class Pet {
         daysAtWorstTrust = n;
     } 
 
-    /* Other Functionality */
+    /** Other Functionality */
 
     public boolean feed(){
         // check if pet has been fed already
@@ -477,11 +477,5 @@ public class Pet {
             return false;
         }
     }
-    
-    public static void main( String[] args){
 
-    }
-
-    
-    
 }

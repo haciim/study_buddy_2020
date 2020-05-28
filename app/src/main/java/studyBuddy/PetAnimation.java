@@ -11,6 +11,8 @@ import java.io.PrintWriter;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import studyBuddy.Pet;
+
 public class PetAnimation {
     /* Instance Variables */
     private Pet thePet;
