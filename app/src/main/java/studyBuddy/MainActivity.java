@@ -12,6 +12,8 @@ import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         petView = findViewById(R.id.home_pet_view);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
 
-        pet = DataManager.load(Pet.class);
+        pet = DataManager.load(Pet.class, this.getApplicationContext());
         if (pet == null) {
             Log.i("Main", "Init new pet");
             pet = new Pet("Test");

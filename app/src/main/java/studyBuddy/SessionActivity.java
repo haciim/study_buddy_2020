@@ -52,7 +52,7 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        SessionRecord[] sessionRecords = DataManager.load(SessionRecord[].class);
+        SessionRecord[] sessionRecords = DataManager.load(SessionRecord[].class, this.getApplicationContext());
 
         if(sessionRecords == null) {
             sessions = new ArrayList<>();
@@ -172,7 +172,7 @@ public class SessionActivity extends AppCompatActivity {
         if(!session.isSessionOngoing()){
             session.clean();
             sessions.add(new SessionRecord(session));
-            DataManager.save(sessions.toArray());
+            DataManager.save(sessions.toArray(), this.getApplicationContext());
         }
     }
 }

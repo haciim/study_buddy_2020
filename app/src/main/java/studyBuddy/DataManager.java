@@ -1,5 +1,6 @@
 package studyBuddy;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -30,7 +31,7 @@ public class DataManager {
      *
      * @param data the data to be saved
      */
-    public static <D> void save(D data) {
+    public static <D> void save(D data, Context context) {
         String filename;
 
         if (data instanceof Pet) {
@@ -40,7 +41,7 @@ public class DataManager {
         }
 
         String fileContents = new Gson().toJson(data);
-        File file = new File(FILES_DIR, filename);
+        File file = new File(context.getFilesDir(), filename);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
@@ -59,8 +60,8 @@ public class DataManager {
      * @return returns any stored data of the given type, null if
      *          no data of the given type is found in storage
      */
-    public static <D> D load(Class type) {
-        String filePath = FILES_DIR + "/";
+    public static <D> D load(Class type, Context context) {
+        String filePath = context.getFilesDir() + "/";
         Gson gson = new Gson();
         D result;
 
