@@ -1,15 +1,20 @@
 package studyBuddy;
 
+
 import java.util.Arrays;
 
 // for reading from/writing to JSON files
 import com.google.gson.Gson;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.Arrays;
+
+// for reading from/writing to JSON files
+
+// for reading from/writing to JSON files
 
 import studyBuddy.Pet;
 
