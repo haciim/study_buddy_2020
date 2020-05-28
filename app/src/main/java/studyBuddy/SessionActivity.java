@@ -24,10 +24,12 @@ import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
+import studyBuddy.timemanagement.SessionRecord;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
@@ -35,7 +37,7 @@ public class SessionActivity extends AppCompatActivity {
     private Session session;
     private NotificationChannel channel;
     private ImageView pet;
-    private List<Session> sessions;
+    private List<SessionRecord> sessions;
 
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
@@ -50,10 +52,12 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        sessions = DataManager.load(List.class);
+        SessionRecord[] sessionRecords = DataManager.load(SessionRecord[].class);
 
-        if(sessions == null) {
+        if(sessionRecords == null) {
             sessions = new ArrayList<>();
+        } else {
+            sessions = new ArrayList<>(Arrays.asList(sessionRecords));
         }
 
         createNotificationChannel();
@@ -167,8 +171,8 @@ public class SessionActivity extends AppCompatActivity {
         super.onStop();
         if(!session.isSessionOngoing()){
             session.clean();
-            sessions.add(session);
-            DataManager.save(sessions);
+            sessions.add(new SessionRecord(session));
+            DataManager.save(sessions.toArray());
         }
     }
 }

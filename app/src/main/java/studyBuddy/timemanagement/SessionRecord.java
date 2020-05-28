@@ -52,4 +52,8 @@ public class SessionRecord {
         Gson gson = new Gson();
         return gson.fromJson(input, SessionRecord.class);
     }
+
+    public int getDurationMins() {
+        return this.end.getMinutes() - this.start.getMinutes();
+    }
 }

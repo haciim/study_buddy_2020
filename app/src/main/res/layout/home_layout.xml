@@ -52,7 +52,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/square_button_outer"
+        android:id="@+id/session_history_outer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:elevation="@dimen/home_button_elevation"
@@ -65,10 +65,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".7">
         <ImageView
-            android:id="@+id/square_button_inner"
+            android:id="@+id/session_history_inner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/square_button"/>
+            android:src="@drawable/session_history_button"/>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView

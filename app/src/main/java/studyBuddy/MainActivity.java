@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private CardView newSession;
+    private CardView sessionHistoryButton;
     private ImageView pet;
     @Override
     /**
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity
         newSession = findViewById(R.id.new_session_outer);
         newSession.setOnClickListener(this);
 
+        sessionHistoryButton = findViewById(R.id.session_history_outer);
+        sessionHistoryButton.setOnClickListener(this);
+
         // Setup pet animation
         pet = findViewById(R.id.home_pet_view);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
@@ -42,9 +46,14 @@ public class MainActivity extends AppCompatActivity
      * @param view The view that called this method
      */
     public void onClick(View view) {
+        Intent intent;
         switch (view.getId()) {
             case R.id.new_session_outer:
-                Intent intent = new Intent(this, SessionActivity.class);
+                intent = new Intent(this, SessionActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.session_history_outer:
+                intent = new Intent(this, SessionHistoryActivity.class);
                 startActivity(intent);
                 break;
         }
