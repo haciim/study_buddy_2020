@@ -2,6 +2,8 @@ package studyBuddy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,7 +17,8 @@ public class MainActivity extends AppCompatActivity
 
     private CardView newSession;
     private CardView sessionHistoryButton;
-    private ImageView pet;
+    private ImageView petView;
+    private Pet pet;
     @Override
     /**
      * This method called when the app is opened.
@@ -34,8 +37,15 @@ public class MainActivity extends AppCompatActivity
         sessionHistoryButton.setOnClickListener(this);
 
         // Setup pet animation
-        pet = findViewById(R.id.home_pet_view);
-        Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
+        petView = findViewById(R.id.home_pet_view);
+        Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
+
+        pet = DataManager.load(Pet.class);
+        if (pet == null) {
+            Log.i("Main", "Init new pet");
+            pet = new Pet("Test");
+            pet.setName("Buddy");
+        }
     }
 
     @Override

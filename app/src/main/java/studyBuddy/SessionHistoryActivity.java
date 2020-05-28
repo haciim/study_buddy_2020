@@ -1,10 +1,13 @@
 package studyBuddy;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,11 +16,13 @@ import com.example.studdybuddy.R;
 import studyBuddy.timemanagement.SessionRecord;
 
 
-public class SessionHistoryActivity extends AppCompatActivity {
+public class SessionHistoryActivity extends AppCompatActivity
+        implements View.OnClickListener {
     private RecyclerView records;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SessionRecord[] sessions;
+    private CardView homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,9 @@ public class SessionHistoryActivity extends AppCompatActivity {
             this.mAdapter = new RecordAdapter(this.sessions);
             this.records.setAdapter(this.mAdapter);
         }
+
+        homeButton = findViewById(R.id.session_history_home_button_outer);
+        homeButton.setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +51,15 @@ public class SessionHistoryActivity extends AppCompatActivity {
         super.onStop();
         if (this.sessions != null) {
             DataManager.save(this.sessions);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.session_history_home_button_outer:
+                this.finish();
+                break;
         }
     }
 }

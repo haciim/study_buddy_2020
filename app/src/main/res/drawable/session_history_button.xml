@@ -11,7 +11,7 @@
         android:start="12dp"
         android:top="12.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
     <item android:width="6dp"
@@ -19,7 +19,7 @@
         android:start="12dp"
         android:top="22dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
     <item android:width="6dp"
@@ -27,7 +27,7 @@
         android:start="12dp"
         android:top="31.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
 
@@ -36,7 +36,7 @@
         android:start="22dp"
         android:top="33.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
 
@@ -45,7 +45,7 @@
         android:start="22dp"
         android:top="23.5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
 
@@ -54,7 +54,7 @@
         android:start="22dp"
         android:top="14dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/test_colorPrimary" />
+            <solid android:color="@color/button_primary" />
         </shape>
     </item>
 
