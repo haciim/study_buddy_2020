@@ -1,6 +1,8 @@
+// Author: Andrew Calimlim
+
 package studyBuddy;
 
-// for tracking days at worst trust level
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -8,9 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.List;
 
 public class Pet {
-    /* Instance Variables */ 
+    /* Instance Variables */
     private String name;
-    private String ownerID; 
     private int trustLevel; // ranges from -10 to 10
     private int moodLevel; // ranges from -10 to 10
     private String color;
@@ -25,11 +26,9 @@ public class Pet {
     private Date birthDate; // possible birthday tracker?
 
     /* Constructor */
-    public Pet(String userID) {
+    public Pet() {
         
         name = "Your pet";
-        
-        ownerID = userID;
         
         trustLevel = 0;
 
@@ -40,9 +39,9 @@ public class Pet {
         isFed = false;
         isBathed = false;
 
-        this.daysAtWorstTrust = 0;
+        daysAtWorstTrust = 0;
 
-        this.birthDate = new Date();
+        birthDate = new Date();
 
     } 
 
@@ -50,11 +49,6 @@ public class Pet {
 
     public String getName(){
         return name;
-    }
-
-    public String getOwnerID(){
-        return ownerID;
-
     }
 
     public int getTrustLevel(){
@@ -160,21 +154,110 @@ public class Pet {
         }
     }
 
-    public void trustCheck(){
+    /**
+     * isSameWeek - Helper method for trust check
+     *
+     * Function: Checks if two dates are in the same week
+     */
+    private boolean isSameWeek(Date d1, Date d2){
+        Calendar d1_cal = Calendar.getInstance();
+        Calendar d2_cal = Calendar.getInstance();
 
-        // TODO: get hours done that week by user
-        // and hours user planned on using 
-        int committedHours = 10;
-        int hoursDone = 10;
+        d1_cal.setTime(d1);
+        d2_cal.setTime(d2);
 
-        if(hoursDone >= committedHours){
-            trustLevel++;
+        boolean sameWeek =
+                d1_cal.get(Calendar.WEEK_OF_MONTH) ==
+                d2_cal.get(Calendar.WEEK_OF_MONTH)
+                &&
+                d1_cal.get(Calendar.MONTH) ==
+                d2_cal.get(Calendar.MONTH)
+                &&
+                d1_cal.get(Calendar.YEAR) ==
+                d2_cal.get(Calendar.YEAR);
+
+        return sameWeek;
+    }
+
+    /**
+     * getWPA - Helper method for trust check
+     *
+     * Function: Calculates the Weekly Productivity Average by:
+     *
+     * -iterating through the list of recorded sessions
+     *
+     * -keeping a total sum of the productivity percentages
+     * from this week's sessions
+     *
+     * -keeping a count of this week's sessions
+     *
+     * -calculating the average by total sum / count
+     *
+     * Post-condition:
+     * returns -1 if no sessions occurred this week
+     */
+    private double getWPA(){
+        //Need a date to check this week
+        Date today = new Date();
+
+        // Loading session history
+        List<Session> sessions = DataManager.load(List.class);
+
+        int countedSessions = 0;
+        double cumulativeSum = 0;
+        //iterating through session history
+        for(int i = 0; i < sessions.size(); i++){
+            Session curSession = sessions.get(i);
+
+            // checking if current session is from this week
+            boolean sameWeekQuery = isSameWeek(today, curSession.getStartTime());
+
+            // if session occurred this week, add % productivity to
+            // average and count the session
+            if(sameWeekQuery){
+                cumulativeSum += curSession.getPercentProductive();
+                countedSessions++;
+            }
+        }
+
+        // null version of double
+        if(countedSessions == 0){
+            return -1;
         }
         else{
-            trustLevel--;
+            double WPA = cumulativeSum/countedSessions;
+            return WPA;
         }
     }
 
+    /**
+     * trust Check - main trust check method
+     *
+     * Function:
+     * Updated pet's trust level by calculating the weekly cumulative
+     * productivity average
+     *
+     * Post-condition:
+     * Should be called only once a week (end of day Friday or so)
+     */
+
+    public void trustCheck(){
+
+        double WPA = getWPA();
+
+        // no need to change pet trust level if no sessions happened that week
+        // though it would be weird if the user stopped using the app for a week
+        // i guess a vacation?
+
+        if(WPA != -1){
+            if(WPA >= 0.5){
+                trustLevel++;
+            }
+            else{
+                trustLevel--;
+            }
+        }
+    }
 
     /**
      * isSameDay - Helper method for mood check
@@ -262,14 +345,11 @@ public class Pet {
      */
 
     public void moodCheck(){
-
+        // getting the daily productivity average
         double DPA = getDPA();
 
         // no need to change mood if nothing happened today
-        if(DPA == -1){
-            return;
-        }
-        else{
+        if(DPA != -1){
             if(DPA >= 0.5){
                 moodLevel++;
             }
@@ -280,7 +360,7 @@ public class Pet {
     }
 
     // only for checking the current hour very quickly
-    private int getHourofDay(){
+    private int getHourOfDay(){
         Date now = new Date();
         //Stack overflow told me to use this object
         Calendar cal = GregorianCalendar.getInstance();
@@ -292,10 +372,10 @@ public class Pet {
     // pet feeds/bathes itself at a certain time if not fed
     // bathed at certain times
 
-    // move this method to PetAnim?
+    //TODO: move this method to PetAnim?
 
     public void maintenanceCheck(){
-        int curHour = getHourofDay();
+        int curHour = getHourOfDay();
 
         
         // checking app from 12am to 9am resets feeding/bathing
