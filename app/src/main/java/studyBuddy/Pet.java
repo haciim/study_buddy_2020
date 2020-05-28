@@ -5,15 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
-
-// for reading from/writing to JSON files
-import com.google.gson.Gson;
-
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.List;
 
 public class Pet {
     /* Instance Variables */ 
@@ -34,10 +26,8 @@ public class Pet {
 
     /* Constructor */
     public Pet(String userID) {
-        /*TODO: get user's name */
-        String userName = "Joe Mama";
         
-        name = userName + "\'s" + " pet";
+        name = "Your pet";
         
         ownerID = userID;
         
@@ -171,6 +161,7 @@ public class Pet {
     }
 
     public void trustCheck(){
+
         // TODO: get hours done that week by user
         // and hours user planned on using 
         int committedHours = 10;
@@ -184,17 +175,107 @@ public class Pet {
         }
     }
 
-    public void moodCheck(){
-        // TODO: get cumuluative current productivity average
-        // or whatever we are checking to change mood
 
-        double avgProd = 0.75;
+    /**
+     * isSameDay - Helper method for mood check
+     *
+     * Function: Checks if two dates are on the same day
+     */
 
-        if(avgProd >= 0.5){
-            moodLevel++;
+    private boolean isSameDay(Date d1, Date d2){
+        Calendar d1_cal = Calendar.getInstance();
+        Calendar d2_cal = Calendar.getInstance();
+
+        d1_cal.setTime(d1);
+        d2_cal.setTime(d2);
+
+        boolean sameDay = d1_cal.get(Calendar.DAY_OF_YEAR) ==
+                d2_cal.get(Calendar.DAY_OF_YEAR) &&
+                d1_cal.get(Calendar.YEAR)
+                        == d2_cal.get(Calendar.YEAR);
+
+        return sameDay;
+
+    }
+
+    /**
+     * getDPA - Helper method for mood check
+     *
+     * Function: Calculates the Daily Productivity Average by:
+     *
+     * -iterating through the list of recorded sessions
+     *
+     * -keeping a total sum of the productivity percentages
+     * from today's sessions
+     *
+     * -keeping a count of today's sessions
+     *
+     * -calculating the average by total sum / count
+     *
+     * Post-condition:
+     * returns -1 if no sessions occurred today
+     */
+
+    private double getDPA(){
+        //Need a date to check the day's timer
+        Date today = new Date();
+
+        // Loading session history
+        List<Session> sessions = DataManager.load(List.class);
+
+        int countedSessions = 0;
+        double cumulativeSum = 0;
+        //iterating through session history
+        for(int i = 0; i < sessions.size(); i++){
+            Session curSession = sessions.get(i);
+
+            // checking if current session is from today
+            boolean sameDayQuery = isSameDay(today, curSession.getStartTime());
+
+            // if session occurred today, add % productivity to
+            // average and count the session
+            if(sameDayQuery){
+                cumulativeSum += curSession.getPercentProductive();
+                countedSessions++;
+            }
+        }
+
+        // null version of double
+        if(countedSessions == 0){
+            return -1;
         }
         else{
-            moodLevel--;
+            double DPA = cumulativeSum/countedSessions;
+            return DPA;
+        }
+    }
+
+    /**
+     * moodCheck - main mood check method
+     *
+     * Function:
+     * Checks pet's mood by calculating the daily cumulative
+     * productivity average
+     *
+     * Post-condition:
+     * Should be called only once a day (5 PM to 11PM or so)
+     */
+
+    public void moodCheck(){
+
+        double DPA = getDPA();
+
+        // no need to change mood if nothing happened today
+        if(DPA == -1){
+            return;
+        }
+        else{
+            if(DPA >= 0.5){
+                moodLevel++;
+            }
+            else{
+                moodLevel--;
+            }
         }
     }
 
@@ -210,6 +291,9 @@ public class Pet {
 
     // pet feeds/bathes itself at a certain time if not fed
     // bathed at certain times
+
+    // move this method to PetAnim?
+
     public void maintenanceCheck(){
         int curHour = getHourofDay();
 
@@ -305,7 +389,6 @@ public class Pet {
     // aka resetTime
     public boolean isResetTime(){
         
-        //TODO: agree on said variable value
         int maxDaysAtWorst = 21; //blackjack!
         if(daysAtWorstTrust > 21){
             return true;
