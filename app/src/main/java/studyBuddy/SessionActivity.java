@@ -46,8 +46,10 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
+        // note: i'm pretty sure this will restore
         setContentView(R.layout.session_layout);
         session = new Session();
+        Intent sessionIntent = getIntent();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
         sessions = DataManager.load(List.class);
@@ -67,12 +69,19 @@ public class SessionActivity extends AppCompatActivity {
         timer.setText(getResources().getText(R.string.zero_time));
         session.setTimerCallback(callback);
 
+        // if the savedinstancebundle is there: read that (it probably wont be)
         if (savedInstanceBundle != null) {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
-        } else {
+        // if the intent information is there: use that
+        } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
             // get these values from intent
+            long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
+            session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
+                                 duration,
+                                 sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
+        } else {
             session.startSession("testname", 480000);
         }
 
@@ -107,18 +116,6 @@ public class SessionActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        // check for an intent
-        if (intent.hasExtra(SessionBroadcastReceiver.DELETE_INTENT)) {
-            AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
-            assert alarmMgr != null;
-            // prevents notifications from being triggered
-            alarmMgr.cancel((PendingIntent)intent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
-        }
-    }
-
-    @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putLong(SESSION_START_KEY, session.getStartTime().getTime());
@@ -134,7 +131,9 @@ public class SessionActivity extends AppCompatActivity {
             session.pauseSession();
             Intent broadcastIntent = new Intent(this, SessionBroadcastReceiver.class);
             broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
+            Log.e("Expected time", String.valueOf(session.getExpectedTime()));
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_END, session.getExpectedTime() + session.getStartTime().getTime());
+            broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_START, session.getStartTime().getTime());
             PendingIntent pendingBroadcast = PendingIntent.getBroadcast(this, INTENT_ID, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarm_mgr = (AlarmManager)getSystemService(ALARM_SERVICE);

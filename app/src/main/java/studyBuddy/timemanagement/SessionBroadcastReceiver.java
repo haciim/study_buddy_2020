@@ -8,9 +8,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import com.example.studdybuddy.R;
 
+import studyBuddy.MainActivity;
 import studyBuddy.SessionActivity;
 
 public class SessionBroadcastReceiver extends BroadcastReceiver {
@@ -20,6 +22,10 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
     public static String NOTIFICATION_CHANNEL = "studySession";
     static public String NOTIFICATION_ID = "notificationID";
     static public String SESSION_END = "sessionEnd";
+    static public String SESSION_START = "sessionStart";
+
+    // handle reopening
+    static public String REOPEN_SESSION = "reopenSession";
 
     /**
      * Create a notification builder based on build version.
@@ -56,17 +62,22 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         // get information from intent
         int notificationID = intent.getIntExtra(NOTIFICATION_ID, 0);
         long sessionEndTime = intent.getLongExtra(SESSION_END, System.currentTimeMillis());
+        long sessionStartTime = intent.getLongExtra(SESSION_START, System.currentTimeMillis());
         long duration = sessionEndTime - System.currentTimeMillis();
 
         // set up the intent which will trigger the broadcastreceiver to update in a minute
         Intent nextBroadcastIntent = new Intent(ctx, SessionBroadcastReceiver.class);
         nextBroadcastIntent.putExtra(NOTIFICATION_ID, notificationID);
         nextBroadcastIntent.putExtra(SESSION_END, sessionEndTime);
+        nextBroadcastIntent.putExtra(SESSION_START, sessionStartTime);
         PendingIntent broadIntent = PendingIntent.getBroadcast(ctx, SessionActivity.INTENT_ID, nextBroadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // set up the intent which triggers our session activity again
-        Intent activityIntent = new Intent(ctx, SessionActivity.class);
+        Intent activityIntent = new Intent(ctx, MainActivity.class);
         activityIntent.putExtra(DELETE_INTENT, broadIntent);
+        activityIntent.putExtra(REOPEN_SESSION, true);
+        activityIntent.putExtra(SESSION_END, sessionEndTime);
+        activityIntent.putExtra(SESSION_START, sessionStartTime);
         NotificationManager mgr = (NotificationManager)ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
         assert mgr != null;
