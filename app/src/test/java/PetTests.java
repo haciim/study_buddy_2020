@@ -9,10 +9,9 @@ public class PetTests {
 
     @Test
     public void initGetTest(){
-        Pet buddy = new Pet("k8lin");
+        Pet buddy = new Pet();
         Date today = new Date();
         Assert.assertEquals("Joe Mama's pet", buddy.getName());
-        Assert.assertEquals("k8lin",buddy.getOwnerID());
         Assert.assertEquals(0,buddy.getTrustLevel());
         Assert.assertEquals(0,buddy.getMoodLevel());
         Assert.assertEquals("default",buddy.getColor());
@@ -24,7 +23,7 @@ public class PetTests {
 
     @Test
     public void petHealthTest(){
-        Pet spot = new Pet("k8lin2");
+        Pet spot = new Pet();
         Assert.assertEquals(true,spot.feed());
         Assert.assertEquals(true,spot.bathe());
         Assert.assertEquals(true, spot.getIsFed());
@@ -33,7 +32,7 @@ public class PetTests {
 
     @Test
     public void trustTest(){
-        Pet spark = new Pet("k8lin3");
+        Pet spark = new Pet();
         Assert.assertEquals(false, spark.setName("spark"));
         spark.setTrustLevel(2);
         Assert.assertEquals(true,spark.setName("spark"));
@@ -46,7 +45,7 @@ public class PetTests {
 
     @Test
     public void moodTest(){
-        Pet spock = new Pet("k8lin4");
+        Pet spock = new Pet();
         Assert.assertEquals(0,spock.getMoodLevel());
         spock.moodCheck();
         Assert.assertEquals(1, spock.getMoodLevel());

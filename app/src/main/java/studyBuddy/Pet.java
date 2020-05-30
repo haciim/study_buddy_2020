@@ -1,45 +1,37 @@
+// Author: Andrew Calimlim
+
 package studyBuddy;
 
-// for tracking days at worst trust level
+import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
-// for reading from/writing to JSON files
-import com.google.gson.Gson;
+import java.util.List;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 public class Pet {
-    /* Instance Variables */ 
-    private String name;
-    private String ownerID; 
-    private int trustLevel; // ranges from -10 to 10
-    private int moodLevel; // ranges from -10 to 10
-    private String color;
-    private boolean isFed; // maintenance state 1
-    private boolean isBathed; // maintenance state 1
+    /** Instance Variables */
+    private String name; // name of the pet
+    private int trustLevel; // pet's trust level of the user, ranges from -10 to 10
+    private int moodLevel; // pet's mood level, ranges from -10 to 10
+    private String color; // pet's color
+    private boolean isFed; // has the pet been fed yet today?
+    private boolean isBathed; // has the pet been bathed yet today?
     
     /* days recorded at worst trust level */
     private int daysAtWorstTrust;
    
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
-    private Date birthDate; // possible birthday tracker?
+    private Date birthDate; // possible birthday tracker
 
-    /* Constructor */
-    public Pet(String userID) {
-        /*TODO: get user's name */
-        String userName = "Joe Mama";
+    /** Constructor */
+    public Pet() {
         
-        name = userName + "\'s" + " pet";
-        
-        ownerID = userID;
+        name = "Your pet";
         
         trustLevel = 0;
 
@@ -50,21 +42,16 @@ public class Pet {
         isFed = false;
         isBathed = false;
 
-        this.daysAtWorstTrust = 0;
+        daysAtWorstTrust = 0;
 
-        this.birthDate = new Date();
+        birthDate = new Date();
 
     } 
 
-    /* Getter Methods */
+    /** Getter Methods */
 
     public String getName(){
         return name;
-    }
-
-    public String getOwnerID(){
-        return ownerID;
-
     }
 
     public int getTrustLevel(){
@@ -99,7 +86,7 @@ public class Pet {
         return birthDate;
     }
 
-    /* Setter Methods */
+    /** Setter Methods */
     // methods that return booleans for fields that are changeable
     // dependent on certain pet conditions and will return false
     // if field cannot change due to condition
@@ -146,7 +133,7 @@ public class Pet {
         daysAtWorstTrust = n;
     } 
 
-    /* Other Functionality */
+    /** Other Functionality */
 
     public boolean feed(){
         // check if pet has been fed already
@@ -170,36 +157,213 @@ public class Pet {
         }
     }
 
-    public void trustCheck(){
-        // TODO: get hours done that week by user
-        // and hours user planned on using 
-        int committedHours = 10;
-        int hoursDone = 10;
+    /**
+     * isSameWeek - Helper method for trust check
+     *
+     * Function: Checks if two dates are in the same week
+     */
+    private boolean isSameWeek(Date d1, Date d2){
+        Calendar d1_cal = Calendar.getInstance();
+        Calendar d2_cal = Calendar.getInstance();
 
-        if(hoursDone >= committedHours){
-            trustLevel++;
+        d1_cal.setTime(d1);
+        d2_cal.setTime(d2);
+
+        boolean sameWeek =
+                d1_cal.get(Calendar.WEEK_OF_MONTH) ==
+                d2_cal.get(Calendar.WEEK_OF_MONTH)
+                &&
+                d1_cal.get(Calendar.MONTH) ==
+                d2_cal.get(Calendar.MONTH)
+                &&
+                d1_cal.get(Calendar.YEAR) ==
+                d2_cal.get(Calendar.YEAR);
+
+        return sameWeek;
+    }
+
+    /**
+     * getWPA - Helper method for trust check
+     *
+     * Function: Calculates the Weekly Productivity Average by:
+     *
+     * -iterating through the list of recorded sessions
+     *
+     * -keeping a total sum of the productivity percentages
+     * from this week's sessions
+     *
+     * -keeping a count of this week's sessions
+     *
+     * -calculating the average by total sum / count
+     *
+     * Post-condition:
+     * returns -1 if no sessions occurred this week
+     */
+    private double getWPA(){
+        //Need a date to check this week
+        Date today = new Date();
+
+        // Loading session history
+        List<Session> sessions = DataManager.load(List.class);
+
+        int countedSessions = 0;
+        double cumulativeSum = 0;
+        //iterating through session history
+        for(int i = 0; i < sessions.size(); i++){
+            Session curSession = sessions.get(i);
+
+            // checking if current session is from this week
+            boolean sameWeekQuery = isSameWeek(today, curSession.getStartTime());
+
+            // if session occurred this week, add % productivity to
+            // average and count the session
+            if(sameWeekQuery){
+                cumulativeSum += curSession.getPercentProductive();
+                countedSessions++;
+            }
+        }
+
+        // null version of double
+        if(countedSessions == 0){
+            return -1;
         }
         else{
-            trustLevel--;
+            double WPA = cumulativeSum/countedSessions;
+            return WPA;
         }
     }
 
-    public void moodCheck(){
-        // TODO: get cumuluative current productivity average
-        // or whatever we are checking to change mood
+    /**
+     * trust Check - main trust check method
+     *
+     * Function:
+     * Updated pet's trust level by calculating the weekly cumulative
+     * productivity average
+     *
+     * Post-condition:
+     * Should be called only once a week (end of day Friday or so)
+     */
 
-        double avgProd = 0.75;
+    public void trustCheck(){
 
-        if(avgProd >= 0.5){
-            moodLevel++;
+        double WPA = getWPA();
+
+        // no need to change pet trust level if no sessions happened that week
+        // though it would be weird if the user stopped using the app for a week
+        // i guess a vacation?
+
+        if(WPA != -1){
+            if(WPA >= 0.5){
+                trustLevel++;
+            }
+            else{
+                trustLevel--;
+            }
+        }
+    }
+
+    /**
+     * isSameDay - Helper method for mood check
+     *
+     * Function: Checks if two dates are on the same day
+     */
+
+    private boolean isSameDay(Date d1, Date d2){
+        Calendar d1_cal = Calendar.getInstance();
+        Calendar d2_cal = Calendar.getInstance();
+
+        d1_cal.setTime(d1);
+        d2_cal.setTime(d2);
+
+        boolean sameDay = d1_cal.get(Calendar.DAY_OF_YEAR) ==
+                d2_cal.get(Calendar.DAY_OF_YEAR) &&
+                d1_cal.get(Calendar.YEAR)
+                        == d2_cal.get(Calendar.YEAR);
+
+        return sameDay;
+
+    }
+
+    /**
+     * getDPA - Helper method for mood check
+     *
+     * Function: Calculates the Daily Productivity Average by:
+     *
+     * -iterating through the list of recorded sessions
+     *
+     * -keeping a total sum of the productivity percentages
+     * from today's sessions
+     *
+     * -keeping a count of today's sessions
+     *
+     * -calculating the average by total sum / count
+     *
+     * Post-condition:
+     * returns -1 if no sessions occurred today
+     */
+
+    private double getDPA(){
+        //Need a date to check the day's timer
+        Date today = new Date();
+
+        // Loading session history
+        List<Session> sessions = DataManager.load(List.class);
+
+        int countedSessions = 0;
+        double cumulativeSum = 0;
+        //iterating through session history
+        for(int i = 0; i < sessions.size(); i++){
+            Session curSession = sessions.get(i);
+
+            // checking if current session is from today
+            boolean sameDayQuery = isSameDay(today, curSession.getStartTime());
+
+            // if session occurred today, add % productivity to
+            // average and count the session
+            if(sameDayQuery){
+                cumulativeSum += curSession.getPercentProductive();
+                countedSessions++;
+            }
+        }
+
+        // null version of double
+        if(countedSessions == 0){
+            return -1;
         }
         else{
-            moodLevel--;
+            double DPA = cumulativeSum/countedSessions;
+            return DPA;
+        }
+    }
+
+    /**
+     * moodCheck - main mood check method
+     *
+     * Function:
+     * Checks pet's mood by calculating the daily cumulative
+     * productivity average
+     *
+     * Post-condition:
+     * Should be called only once a day (5 PM to 11PM or so)
+     */
+
+    public void moodCheck(){
+        // getting the daily productivity average
+        double DPA = getDPA();
+
+        // no need to change mood if nothing happened today
+        if(DPA != -1){
+            if(DPA >= 0.5){
+                moodLevel++;
+            }
+            else{
+                moodLevel--;
+            }
         }
     }
 
     // only for checking the current hour very quickly
-    private int getHourofDay(){
+    private int getHourOfDay(){
         Date now = new Date();
         //Stack overflow told me to use this object
         Calendar cal = GregorianCalendar.getInstance();
@@ -210,8 +374,11 @@ public class Pet {
 
     // pet feeds/bathes itself at a certain time if not fed
     // bathed at certain times
+
+    //TODO: move this method to PetAnim?
+
     public void maintenanceCheck(){
-        int curHour = getHourofDay();
+        int curHour = getHourOfDay();
 
         
         // checking app from 12am to 9am resets feeding/bathing
@@ -305,7 +472,6 @@ public class Pet {
     // aka resetTime
     public boolean isResetTime(){
         
-        //TODO: agree on said variable value
         int maxDaysAtWorst = 21; //blackjack!
         if(daysAtWorstTrust > 21){
             return true;
@@ -314,11 +480,5 @@ public class Pet {
             return false;
         }
     }
-    
-    public static void main( String[] args){
 
-    }
-
-    
-    
 }
