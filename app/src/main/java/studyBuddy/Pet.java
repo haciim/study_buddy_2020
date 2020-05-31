@@ -1,12 +1,11 @@
-
 // Author: Andrew Calimlim
 
-        package studyBuddy;
+package studyBuddy;
 
-        import java.util.Calendar;
-        import java.util.Date;
-        import java.util.concurrent.TimeUnit;
-        import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class Pet {
@@ -24,6 +23,11 @@ public class Pet {
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
     private Date birthDate; // possible birthday tracker
+
+    private final int MOOD_SCALE = 10;
+    private final int TRUST_SCALE = 10;
+    private final int MAX_DAYS_AT_WORST = 21;
+
 
     /** Constructor */
     public Pet() {
@@ -89,33 +93,37 @@ public class Pet {
     // if field cannot change due to condition
 
     public boolean setName(String newName){
-
+        if(newName == null || newName.isEmpty()){
+            return false;
+        }
         if(trustLevel >= 2){
             name = newName;
             return true;
         }
-
-        else{
-            return false;
-        }
+        return false;
     }
 
     public void setTrustLevel(int newTrustLevel){
-        trustLevel = newTrustLevel;
+        if(newTrustLevel >= (TRUST_SCALE*-1) && newTrustLevel <= TRUST_SCALE){
+            trustLevel = newTrustLevel;
+        }
     }
 
     public void setMoodLevel(int newMoodLevel){
-        moodLevel = newMoodLevel;
+        if(newMoodLevel >= (MOOD_SCALE*-1) && newMoodLevel <= MOOD_SCALE){
+            moodLevel = newMoodLevel;
+        }
     }
 
     public boolean setColor(String newColor){
+        if(newColor == null || newColor.isEmpty()){
+            return false;
+        }
         if(trustLevel >= 4){
             color = newColor;
             return true;
         }
-        else{
-            return false;
-        }
+        return false;
     }
 
     public void setIsFed(boolean newState){
@@ -127,7 +135,9 @@ public class Pet {
     }
 
     public void setDaysAtWorstTrust(int n){
-        daysAtWorstTrust = n;
+        if(n >= 0){
+            daysAtWorstTrust = n;
+        }
     }
 
     /** Other Functionality */
@@ -251,10 +261,14 @@ public class Pet {
 
         if(WPA != -1){
             if(WPA >= 0.5){
-                trustLevel++;
+                if(trustLevel < TRUST_SCALE){
+                    trustLevel++;
+                }
             }
             else{
-                trustLevel--;
+                if(trustLevel > TRUST_SCALE*-1){
+                    trustLevel--;
+                }
             }
         }
     }
@@ -351,10 +365,14 @@ public class Pet {
         // no need to change mood if nothing happened today
         if(DPA != -1){
             if(DPA >= 0.5){
-                moodLevel++;
+                if(moodLevel < MOOD_SCALE){
+                    moodLevel++;
+                }
             }
             else{
-                moodLevel--;
+                if(moodLevel > MOOD_SCALE*-1){
+                    moodLevel--;
+                }
             }
         }
     }
@@ -366,7 +384,7 @@ public class Pet {
 
     public void worstTrustCheck(){
         // if trust level is at the lowest
-        if(trustLevel == -10){
+        if(trustLevel == TRUST_SCALE*-1){
             Date now = new Date();
 
             //if this is the first day
@@ -422,9 +440,7 @@ public class Pet {
     // is at trust level -10
     // aka resetTime
     public boolean isResetTime(){
-
-        int maxDaysAtWorst = 21; //blackjack!
-        if(daysAtWorstTrust > 21){
+        if(daysAtWorstTrust > MAX_DAYS_AT_WORST){
             return true;
         }
         else{
