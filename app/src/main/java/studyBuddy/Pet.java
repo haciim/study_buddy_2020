@@ -1,15 +1,12 @@
+
 // Author: Andrew Calimlim
 
-package studyBuddy;
+        package studyBuddy;
 
-import java.util.ArrayList;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.concurrent.TimeUnit;
-
-import java.util.List;
+        import java.util.Calendar;
+        import java.util.Date;
+        import java.util.concurrent.TimeUnit;
+        import java.util.List;
 
 
 public class Pet {
@@ -20,19 +17,19 @@ public class Pet {
     private String color; // pet's color
     private boolean isFed; // has the pet been fed yet today?
     private boolean isBathed; // has the pet been bathed yet today?
-    
+
     /* days recorded at worst trust level */
     private int daysAtWorstTrust;
-   
+
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
     private Date birthDate; // possible birthday tracker
 
     /** Constructor */
     public Pet() {
-        
+
         name = "Your pet";
-        
+
         trustLevel = 0;
 
         moodLevel = 0;
@@ -46,7 +43,7 @@ public class Pet {
 
         birthDate = new Date();
 
-    } 
+    }
 
     /** Getter Methods */
 
@@ -76,7 +73,7 @@ public class Pet {
 
     public int getDaysAtWorstTrust(){
         return daysAtWorstTrust;
-    } 
+    }
 
     public Date getLastDAWT(){
         return lastDAWT;
@@ -90,9 +87,9 @@ public class Pet {
     // methods that return booleans for fields that are changeable
     // dependent on certain pet conditions and will return false
     // if field cannot change due to condition
-    
+
     public boolean setName(String newName){
-        
+
         if(trustLevel >= 2){
             name = newName;
             return true;
@@ -131,7 +128,7 @@ public class Pet {
 
     public void setDaysAtWorstTrust(int n){
         daysAtWorstTrust = n;
-    } 
+    }
 
     /** Other Functionality */
 
@@ -171,13 +168,13 @@ public class Pet {
 
         boolean sameWeek =
                 d1_cal.get(Calendar.WEEK_OF_MONTH) ==
-                d2_cal.get(Calendar.WEEK_OF_MONTH)
-                &&
-                d1_cal.get(Calendar.MONTH) ==
-                d2_cal.get(Calendar.MONTH)
-                &&
-                d1_cal.get(Calendar.YEAR) ==
-                d2_cal.get(Calendar.YEAR);
+                        d2_cal.get(Calendar.WEEK_OF_MONTH)
+                        &&
+                        d1_cal.get(Calendar.MONTH) ==
+                                d2_cal.get(Calendar.MONTH)
+                        &&
+                        d1_cal.get(Calendar.YEAR) ==
+                                d2_cal.get(Calendar.YEAR);
 
         return sameWeek;
     }
@@ -362,52 +359,6 @@ public class Pet {
         }
     }
 
-    // only for checking the current hour very quickly
-    private int getHourOfDay(){
-        Date now = new Date();
-        //Stack overflow told me to use this object
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(now);
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        return hour;
-    }
-
-    // pet feeds/bathes itself at a certain time if not fed
-    // bathed at certain times
-
-    //TODO: move this method to PetAnim?
-
-    public void maintenanceCheck(){
-        int curHour = getHourOfDay();
-
-        
-        // checking app from 12am to 9am resets feeding/bathing
-        // again, minor cosmetic feature so it doesn't matter too much
-        if(curHour <= 9){
-            
-            isFed = false;
-            isBathed = false;
-        }
-
-
-        if(curHour >= 12 && !isFed){
-            //pet feeds itself after noon
-            //TODO: updatePetAnimation on self-feeding animation
-            //do in main i guess
-            feed();
-
-        }
-
-        if(curHour >= (9 + 12) && !isBathed){
-            //pet bathes itself after 9 pm
-            //TODO: updatePetAnimation on self-bathing animation
-            //do in main i guess
-            bathe();
-
-        }
-    
-    }
-
     public void updateLastDAWT(){
         Date now = new Date();
         lastDAWT = now;
@@ -436,11 +387,11 @@ public class Pet {
 
                 Calendar lastWorstDay = Calendar.getInstance();
                 lastWorstDay.setTime(lastDAWT);
-                
+
                 int tDay = today.get(Calendar.DAY_OF_YEAR);
-                int tYear = today.get(Calendar.YEAR); 
+                int tYear = today.get(Calendar.YEAR);
                 int lDay = lastWorstDay.get(Calendar.DAY_OF_YEAR);
-                int lYear = lastWorstDay.get(Calendar.YEAR); 
+                int lYear = lastWorstDay.get(Calendar.YEAR);
 
                 // if today and last recorded worst day are different days
                 // Stack overflow told me to do it this way
@@ -451,7 +402,7 @@ public class Pet {
                     //don't worry this should work unless the user opens the app
                     // after 5,883,516 years
                     int daysAdd = Math.toIntExact(time.toDays(millis));
-                    
+
                     // but just in case things get weird
                     daysAdd = Math.abs(daysAdd);
 
@@ -471,7 +422,7 @@ public class Pet {
     // is at trust level -10
     // aka resetTime
     public boolean isResetTime(){
-        
+
         int maxDaysAtWorst = 21; //blackjack!
         if(daysAtWorstTrust > 21){
             return true;
