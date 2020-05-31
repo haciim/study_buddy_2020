@@ -54,6 +54,7 @@ public class SessionActivity extends AppCompatActivity {
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
         sessions = DataManager.load(List.class);
+        Intent sessionIntent = getIntent();
 
         if(sessions == null) {
             sessions = new ArrayList<>();
