@@ -362,52 +362,6 @@ public class Pet {
         }
     }
 
-    // only for checking the current hour very quickly
-    private int getHourOfDay(){
-        Date now = new Date();
-        //Stack overflow told me to use this object
-        Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(now);
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
-        return hour;
-    }
-
-    // pet feeds/bathes itself at a certain time if not fed
-    // bathed at certain times
-
-    //TODO: move this method to PetAnim?
-
-    public void maintenanceCheck(){
-        int curHour = getHourOfDay();
-
-        
-        // checking app from 12am to 9am resets feeding/bathing
-        // again, minor cosmetic feature so it doesn't matter too much
-        if(curHour <= 9){
-            
-            isFed = false;
-            isBathed = false;
-        }
-
-
-        if(curHour >= 12 && !isFed){
-            //pet feeds itself after noon
-            //TODO: updatePetAnimation on self-feeding animation
-            //do in main i guess
-            feed();
-
-        }
-
-        if(curHour >= (9 + 12) && !isBathed){
-            //pet bathes itself after 9 pm
-            //TODO: updatePetAnimation on self-bathing animation
-            //do in main i guess
-            bathe();
-
-        }
-    
-    }
-
     public void updateLastDAWT(){
         Date now = new Date();
         lastDAWT = now;
