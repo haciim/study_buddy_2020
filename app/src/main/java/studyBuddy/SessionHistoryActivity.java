@@ -31,7 +31,7 @@ public class SessionHistoryActivity extends AppCompatActivity
 
         this.records = findViewById(R.id.session_record_recycler);
 
-        this.sessions = DataManager.load(SessionRecord[].class);
+        this.sessions = DataManager.load(this, SessionRecord[].class);
         if (this.sessions != null) {
             Log.i("session_records", "loaded existing records");
 
@@ -50,7 +50,7 @@ public class SessionHistoryActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         if (this.sessions != null) {
-            DataManager.save(this.sessions);
+            DataManager.save(this, this.sessions);
         }
     }
 

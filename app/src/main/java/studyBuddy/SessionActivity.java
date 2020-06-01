@@ -55,7 +55,7 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        SessionRecord[] sessionRecords = DataManager.load(SessionRecord[].class);
+        SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
         Intent sessionIntent = getIntent();
 
         if(sessionRecords == null) {
@@ -185,10 +185,12 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!session.isSessionOngoing()){
+        if(!session.isSessionOngoing()) {
             session.clean();
             sessions.add(new SessionRecord(session));
-            DataManager.save(sessions.toArray());
+            Log.d("Session", "Storing session data...");
+            SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
+            DataManager.save(this, arr);
         }
     }
 }

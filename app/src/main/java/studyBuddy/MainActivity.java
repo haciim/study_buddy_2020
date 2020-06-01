@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity
         petView = findViewById(R.id.home_pet_view);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
 
-        pet = DataManager.load(Pet.class);
+        pet = DataManager.load(this, Pet.class);
         if (pet == null) {
             Log.i("Main", "Init new pet");
-            pet = new Pet("Test");
+            pet = new Pet();
             pet.setName("Buddy");
         }
     }
