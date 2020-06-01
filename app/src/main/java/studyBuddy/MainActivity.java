@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,7 +25,9 @@ public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private CardView newSession;
-    private ImageView pet;
+    private CardView sessionHistoryButton;
+    private ImageView petView;
+    private Pet pet;
 
     private boolean timeSelectorIsOpen;
     int timerId;
@@ -68,38 +71,54 @@ public class MainActivity extends AppCompatActivity
         newSession = findViewById(R.id.new_session_outer);
         newSession.setOnClickListener(this);
 
+        sessionHistoryButton = findViewById(R.id.session_history_outer);
+        sessionHistoryButton.setOnClickListener(this);
+
         // Setup pet animation
-        pet = findViewById(R.id.home_pet_view);
-        Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
+        petView = findViewById(R.id.home_pet_view);
+        Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
+
+        pet = DataManager.load(this, Pet.class);
+        if (pet == null) {
+            Log.i("Main", "Init new pet");
+            pet = new Pet();
+            pet.setName("Buddy");
+        }
     }
 
     @Override
     public void onClick(View view) {
         // create this intent
-        System.out.println(view.getId());
-        if (view.getId() == R.id.new_session_outer) {
-            if (!timeSelectorIsOpen) {
-                TimeSelectView timerView = new TimeSelectView(this);
-                timerId = View.generateViewId();
-                timerView.setId(timerId);
-                ConstraintLayout layout = findViewById(R.id.base_layer);
-                layout.addView(timerView);
-                ConstraintSet timerConstraints = new ConstraintSet();
-                timerConstraints.clone(layout);
-                timerConstraints.connect(timerView.getId(), ConstraintSet.TOP, R.id.new_session_outer, ConstraintSet.BOTTOM, 0);
-                timerConstraints.connect(timerView.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
-                timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
-                timerConstraints.applyTo(layout);
-                timeSelectorIsOpen = true;
-            } else {
-                Intent intent = new Intent(this, SessionActivity.class);
-                TimeSelectView selectView = findViewById(timerId);
-                Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
-                intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
-                ((ConstraintLayout) findViewById(R.id.base_layer)).removeView(selectView);
+        Intent intent;
+        switch (view.getId()) {
+            case R.id.new_session_outer:
+                if (!timeSelectorIsOpen) {
+                    TimeSelectView timerView = new TimeSelectView(this);
+                    timerId = View.generateViewId();
+                    timerView.setId(timerId);
+                    ConstraintLayout layout = findViewById(R.id.base_layer);
+                    layout.addView(timerView);
+                    ConstraintSet timerConstraints = new ConstraintSet();
+                    timerConstraints.clone(layout);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.TOP, R.id.new_session_outer, ConstraintSet.BOTTOM, 0);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
+                    timerConstraints.applyTo(layout);
+                    timeSelectorIsOpen = true;
+                } else {
+                    intent = new Intent(this, SessionActivity.class);
+                    TimeSelectView selectView = findViewById(timerId);
+                    Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
+                    intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
+                    ((ConstraintLayout) findViewById(R.id.base_layer)).removeView(selectView);
+                    startActivity(intent);
+                    timeSelectorIsOpen = false;
+                }
+                break;
+            case R.id.session_history_outer:
+                intent = new Intent(this, SessionHistoryActivity.class);
                 startActivity(intent);
-                timeSelectorIsOpen = false;
-            }
+                break;
         }
     }
 }

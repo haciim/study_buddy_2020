@@ -252,6 +252,17 @@ public class Session {
     }
 
     /**
+     * @return the actual duration of the session if its complete, and -1 otherwise.
+     */
+    public long getActualTime() {
+        if (!sessionOngoing) {
+            return endTime.getTime() - startTime.getTime();
+        }
+
+        return -1;
+    }
+
+    /**
      * Precondition: session is not ongoing
      *
      * @return the percent productive time for this session

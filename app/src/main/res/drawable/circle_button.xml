@@ -13,7 +13,7 @@
         android:top="@dimen/home_button_inner_margin">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="oval">
-            <stroke android:color="@color/test_colorPrimary" android:width="3dp" />
+            <stroke android:color="@color/button_primary" android:width="3dp" />
         </shape>
     </item>
 

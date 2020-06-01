@@ -27,7 +27,7 @@ public class SessionRecord {
         this.type = SessionType.NONE;
         this.name = session.getName();
         this.start = session.getStartTime();
-        this.end = new Date(session.getStartTime().getTime() + session.getExpectedTime());
+        this.end = new Date(session.getStartTime().getTime() + session.getActualTime());
         this.percentProductive = session.getPercentProductive();
     }
 
@@ -51,5 +51,9 @@ public class SessionRecord {
     public static SessionRecord fromString(String input) {
         Gson gson = new Gson();
         return gson.fromJson(input, SessionRecord.class);
+    }
+
+    public int getDurationMins() {
+        return this.end.getMinutes() - this.start.getMinutes();
     }
 }
