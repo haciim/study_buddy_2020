@@ -5,5 +5,8 @@
     <color name="red">#DD0000</color>
     <color name="dark_grey">#777777</color>
     <color name="transparent">#00000000</color>
+    <color name="transparent_white">#80ffffff</color>
+    <color name="gray_50_percent_alpha">#80808080</color>
+    <color name="black">#000000</color>
     <color name="button_primary">#FF9000</color>
 </resources>

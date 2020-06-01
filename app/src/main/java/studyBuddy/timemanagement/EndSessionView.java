@@ -30,16 +30,19 @@ public class EndSessionView extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        clippingPath.reset();
-        View button = findViewById(R.id.fob);
 
-        button.getLocationOnScreen(buttonCoords);
+        if (changed) {
+            clippingPath.reset();
+            View button = findViewById(R.id.fob);
 
-        int buttonWidth = right - buttonCoords[0];
-        System.out.println("button width: " + buttonWidth);
-        clippingPath.addRect(0, 0, (right - left) - (buttonWidth / 2.0f), (bottom - top), Path.Direction.CW);
-        // add circle for button
-        clippingPath.addCircle((buttonCoords[0] - left) + (buttonWidth / 2.0f), (buttonWidth / 2.0f), buttonWidth / 2.0f, Path.Direction.CW);
+            button.getLocationOnScreen(buttonCoords);
+
+            int buttonWidth = right - buttonCoords[0];
+            System.out.println("button width: " + buttonWidth);
+            clippingPath.addRect(0, 0, (right - left) - (buttonWidth / 2.0f), (bottom - top), Path.Direction.CW);
+            // add circle for button
+            clippingPath.addCircle((buttonCoords[0] - left) + (buttonWidth / 2.0f), (buttonWidth / 2.0f), buttonWidth / 2.0f, Path.Direction.CW);
+        }
     }
 
     @Override

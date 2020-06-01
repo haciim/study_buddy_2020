@@ -42,7 +42,9 @@ public class SessionActivity extends AppCompatActivity {
     private List<SessionRecord> sessions;
 
     static private String SESSION_START_KEY = "sessionStart";
-    static private String SESSION_DURATION_KEY = "sessionDuration";
+
+    static public String SESSION_DURATION_KEY = "sessionDuration";
+
     static private String SESSION_NAME_KEY = "sessionName";
 
     static public int INTENT_ID = 142857;
@@ -80,15 +82,13 @@ public class SessionActivity extends AppCompatActivity {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
-        // if the intent information is there: use that
         } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
-            // get these values from intent
             long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
             session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
                                  duration,
                                  sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
         } else {
-            session.startSession("testname", 480000);
+            session.startSession("testname", getIntent().getLongExtra(SESSION_DURATION_KEY, 480000));
         }
 
         // Setup pet animation
