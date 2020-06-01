@@ -5,31 +5,36 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
+import studyBuddy.timemanagement.TimeSelectView;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
 
     private CardView newSession;
     private ImageView pet;
+
+    private boolean timeSelectorIsOpen;
+    int timerId;
+
     @Override
-    /**
-     * This method called when the app is opened.
-     * Any data retrieval should start here.
-     */
     protected void onCreate(Bundle savedInstanceState) {
         // Setup Activity and Layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
-        System.out.println("new activity created");
+        timeSelectorIsOpen = false;
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();
@@ -69,18 +74,34 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    /**
-     * This method is called when any clickable item
-     * in the home_layout is pressed.
-     * Each item results in a different action taken.
-     * @param view The view that called this method
-     */
     public void onClick(View view) {
         // create this intent
         switch (view.getId()) {
             case R.id.new_session_outer:
-                Intent intent = new Intent(this, SessionActivity.class);
-                startActivity(intent);
+                if (!timeSelectorIsOpen) {
+                    TimeSelectView timerView = new TimeSelectView(this);
+                    timerId = View.generateViewId();
+                    timerView.setId(timerId);
+                    ConstraintLayout layout = findViewById(R.id.base_layer);
+                    layout.addView(timerView);
+                    ConstraintSet timerConstraints = new ConstraintSet();
+                    timerConstraints.clone(layout);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.TOP, R.id.new_session_outer, ConstraintSet.BOTTOM, 0);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
+                    timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
+                    timerConstraints.applyTo(layout);
+                    timeSelectorIsOpen = true;
+                } else {
+                    Intent intent = new Intent(this, SessionActivity.class);
+                    TimeSelectView selectView = findViewById(timerId);
+                    Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
+                    intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long)(selectView.getDuration() * 60 * 1000));
+                    ((ConstraintLayout)findViewById(R.id.base_layer)).removeView(selectView);
+                    startActivity(intent);
+                    timeSelectorIsOpen = false;
+                }
+                // deploy the slider view, if it hasn't been deployed already
+
                 break;
         }
     }

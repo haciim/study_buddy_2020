@@ -38,7 +38,9 @@ public class SessionActivity extends AppCompatActivity {
     private List<Session> sessions;
 
     static private String SESSION_START_KEY = "sessionStart";
-    static private String SESSION_DURATION_KEY = "sessionDuration";
+
+    static public String SESSION_DURATION_KEY = "sessionDuration";
+
     static private String SESSION_NAME_KEY = "sessionName";
 
     static public int INTENT_ID = 142857;
@@ -46,6 +48,7 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
+        Log.e("hello", "moto");
         // note: i'm pretty sure this will restore
         setContentView(R.layout.session_layout);
         session = new Session();
@@ -60,12 +63,8 @@ public class SessionActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
-        SliderView temporaryEraseThisPlease = findViewById(R.id.delete);
-
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
-            temporaryEraseThisPlease.setOffset(5f);
-            Log.d(temporaryEraseThisPlease.getCurrentEntry(), "entry");
             timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
             timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
         };
@@ -78,15 +77,13 @@ public class SessionActivity extends AppCompatActivity {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
-        // if the intent information is there: use that
         } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
-            // get these values from intent
             long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
             session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
                                  duration,
                                  sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
         } else {
-            session.startSession("testname", 480000);
+            session.startSession("testname", getIntent().getLongExtra(SESSION_DURATION_KEY, 480000));
         }
 
         // Setup pet animation
