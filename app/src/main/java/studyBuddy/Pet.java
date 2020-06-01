@@ -388,7 +388,7 @@ public class Pet {
             Date now = new Date();
 
             //if this is the first day
-            if (lastDAWT != null){
+            if (lastDAWT == null){
                 lastDAWT = now;
                 daysAtWorstTrust++;
             }
