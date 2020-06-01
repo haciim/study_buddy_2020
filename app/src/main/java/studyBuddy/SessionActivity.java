@@ -99,12 +99,19 @@ public class SessionActivity extends AppCompatActivity {
         animator.setTarget(endSessionText);
         button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
+        final PendingIntent deleteIntent = getIntent().getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT);
+
         SessionCompleteCallback completeCallback = (elapsedTime) -> {
             setContentView(R.layout.finish_session_view);
             TextView elapsedText = findViewById(R.id.sessionTime);
             elapsedText.setText(Session.formatTime(elapsedTime));
             View doneButton = findViewById(R.id.doneButton);
             doneButton.setOnClickListener(new DoneButtonListener(this));
+//            if (deleteIntent != null) {
+//                AlarmManager mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+//                assert mgr != null;
+//                mgr.cancel(deleteIntent);
+//            }
         };
 
         session.setFinishedCallback(completeCallback);
@@ -114,6 +121,14 @@ public class SessionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         session.resumeSession();
+        Intent broadcast = new Intent(this, SessionBroadcastReceiver.class);
+        AlarmManager mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+        assert mgr != null;
+        // prevent notification from updating
+        mgr.cancel(PendingIntent.getBroadcast(this, SessionActivity.INTENT_ID, broadcast, PendingIntent.FLAG_UPDATE_CURRENT));
+        NotificationManager notifMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        assert notifMgr != null;
+        notifMgr.cancel(SessionActivity.INTENT_ID);
         // clear notification
     }
 
