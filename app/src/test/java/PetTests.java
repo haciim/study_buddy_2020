@@ -103,7 +103,7 @@ public class PetTests {
         spark.setTrustLevel(TRUSTSCALE*-1);
         spark.worstTrustCheck();
         Assert.assertEquals(2,spark.getDaysAtWorstTrust());
-        Assert.assertEquals(0,today.compareTo(spark.getLastDAWT()));
+        Assert.assertEquals(today.getDate(),spark.getLastDAWT().getDate());
     }
 
     @Test
