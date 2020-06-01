@@ -76,33 +76,30 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         // create this intent
-        switch (view.getId()) {
-            case R.id.new_session_outer:
-                if (!timeSelectorIsOpen) {
-                    TimeSelectView timerView = new TimeSelectView(this);
-                    timerId = View.generateViewId();
-                    timerView.setId(timerId);
-                    ConstraintLayout layout = findViewById(R.id.base_layer);
-                    layout.addView(timerView);
-                    ConstraintSet timerConstraints = new ConstraintSet();
-                    timerConstraints.clone(layout);
-                    timerConstraints.connect(timerView.getId(), ConstraintSet.TOP, R.id.new_session_outer, ConstraintSet.BOTTOM, 0);
-                    timerConstraints.connect(timerView.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
-                    timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
-                    timerConstraints.applyTo(layout);
-                    timeSelectorIsOpen = true;
-                } else {
-                    Intent intent = new Intent(this, SessionActivity.class);
-                    TimeSelectView selectView = findViewById(timerId);
-                    Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
-                    intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long)(selectView.getDuration() * 60 * 1000));
-                    ((ConstraintLayout)findViewById(R.id.base_layer)).removeView(selectView);
-                    startActivity(intent);
-                    timeSelectorIsOpen = false;
-                }
-                // deploy the slider view, if it hasn't been deployed already
-
-                break;
+        System.out.println(view.getId());
+        if (view.getId() == R.id.new_session_outer) {
+            if (!timeSelectorIsOpen) {
+                TimeSelectView timerView = new TimeSelectView(this);
+                timerId = View.generateViewId();
+                timerView.setId(timerId);
+                ConstraintLayout layout = findViewById(R.id.base_layer);
+                layout.addView(timerView);
+                ConstraintSet timerConstraints = new ConstraintSet();
+                timerConstraints.clone(layout);
+                timerConstraints.connect(timerView.getId(), ConstraintSet.TOP, R.id.new_session_outer, ConstraintSet.BOTTOM, 0);
+                timerConstraints.connect(timerView.getId(), ConstraintSet.LEFT, ConstraintSet.PARENT_ID, ConstraintSet.LEFT, 0);
+                timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
+                timerConstraints.applyTo(layout);
+                timeSelectorIsOpen = true;
+            } else {
+                Intent intent = new Intent(this, SessionActivity.class);
+                TimeSelectView selectView = findViewById(timerId);
+                Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
+                intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
+                ((ConstraintLayout) findViewById(R.id.base_layer)).removeView(selectView);
+                startActivity(intent);
+                timeSelectorIsOpen = false;
+            }
         }
     }
 }
