@@ -25,6 +25,7 @@ public class SliderView extends LinearLayoutCompat {
     private int offsetHeight;
 
     private float textHeight;
+    private int textIntervalDistance;
 
     private Paint textPaintPrimary = new Paint();
     private Paint textPaintBackground = new Paint();
@@ -37,7 +38,8 @@ public class SliderView extends LinearLayoutCompat {
         entries.add("the");
         entries.add("monkeybank");
         offsetHeight = 128;
-        textHeight = 96.0f;
+        textHeight = 96.0f + 8;
+        textIntervalDistance = (int)textHeight;
         textPaintPrimary.setColor(ContextCompat.getColor(ctx, R.color.black));
         textPaintPrimary.setTextSize(textHeight);
         textPaintPrimary.setTextAlign(Paint.Align.CENTER);
@@ -64,11 +66,11 @@ public class SliderView extends LinearLayoutCompat {
         int offset = (int)(offsetHeight * (centerIndex - offsetValue + 0.5));
         centerIndex += entries.size();
         int centerPoint = getHeight() / 2 - (int)(textHeight / 2);
-        canvas.drawText(entries.get((centerIndex - 2) % entries.size()), getWidth() / 2.0f, centerPoint - (textHeight + 8) * 2 + offset, textPaintBackground);
-        canvas.drawText(entries.get((centerIndex - 1) % entries.size()), getWidth() / 2.0f, centerPoint - (textHeight + 8) + offset, textPaintBackground);
+        canvas.drawText(entries.get((centerIndex - 2) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) * 2 + offset, textPaintBackground);
+        canvas.drawText(entries.get((centerIndex - 1) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) + offset, textPaintBackground);
         canvas.drawText(entries.get(centerIndex % entries.size()), getWidth() / 2.0f, centerPoint + offset, textPaintPrimary);
-        canvas.drawText(entries.get((centerIndex + 1) % entries.size()), getWidth() / 2.0f, centerPoint + (textHeight + 8) + offset, textPaintBackground);
-        canvas.drawText(entries.get((centerIndex + 2) % entries.size()), getWidth() / 2.0f, centerPoint + (textHeight + 8) * 2 + offset, textPaintBackground);
+        canvas.drawText(entries.get((centerIndex + 1) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) + offset, textPaintBackground);
+        canvas.drawText(entries.get((centerIndex + 2) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) * 2 + offset, textPaintBackground);
         super.onDraw(canvas);
 
         // set the top margin on the top view?
@@ -87,6 +89,15 @@ public class SliderView extends LinearLayoutCompat {
         entries = newEntries;
     }
 
+    public void setTextHeight(float textHeight) {
+        this.textHeight = textHeight;
+        postInvalidate();
+    }
+
+    public void setTextIntervalDistance(int textIntervalDistance) {
+        this.textIntervalDistance = textIntervalDistance;
+    }
+
     /**
      * Modifies the offset of the slider view in response to (for instance) a touch event.
      * @param deltaY - The change in position along the y axis.
@@ -99,12 +110,7 @@ public class SliderView extends LinearLayoutCompat {
         postInvalidate();
     }
 
-    /**
-     * Directly sets the slider value to a new index.
-     * @param index - The index which we are setting the slider value to.
-     */
-    public void setIndex(int index) {
-        offsetValue = (index % entries.size());
+    public void roundIndex() {
+        offsetValue = Math.round(offsetValue);
     }
-
 }
