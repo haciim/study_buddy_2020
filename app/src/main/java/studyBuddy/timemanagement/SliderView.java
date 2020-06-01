@@ -27,11 +27,8 @@ class SliderView extends LinearLayoutCompat {
 
     public SliderView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
-        entries = new ArrayList<>();
+        entries = null;
         setWillNotDraw(false);
-        entries.add("hello");
-        entries.add("the");
-        entries.add("monkeybank");
         textHeight = 96.0f + 8;
         textIntervalDistance = (int)textHeight;
         textPaintPrimary.setColor(ContextCompat.getColor(ctx, R.color.black));
@@ -44,12 +41,15 @@ class SliderView extends LinearLayoutCompat {
 
     /**
      * Return the string associated with the currently selected slider entry.
-     * @return String associated with current entry
+     * @return String associated with current entry, or null if no entries.
      */
     public String getCurrentEntry() {
-        int index = Math.round(offsetValue) % entries.size();
-        Log.e("index", String.valueOf(index));
-        return entries.get(index);
+        if (entries.size() > 0) {
+            int index = Math.round(offsetValue) % entries.size();
+            return entries.get(index);
+        }
+
+        return null;
     }
 
     @Override
@@ -59,18 +59,20 @@ class SliderView extends LinearLayoutCompat {
         if (offsetValue < 0) {
             offsetValue += (entries.size());
         }
-        int centerIndex = Math.round(offsetValue);
-        int offset = (int)(textIntervalDistance * (centerIndex - offsetValue + 0.5));
-        centerIndex += entries.size();
-        int centerPoint = getHeight() / 2 - (textIntervalDistance / 2);
-        canvas.drawText(entries.get((centerIndex - 2) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) * 2 + offset, textPaintBackground);
-        canvas.drawText(entries.get((centerIndex - 1) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) + offset, textPaintBackground);
-        canvas.drawText(entries.get(centerIndex % entries.size()), getWidth() / 2.0f, centerPoint + offset, textPaintPrimary);
-        canvas.drawText(entries.get((centerIndex + 1) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) + offset, textPaintBackground);
-        canvas.drawText(entries.get((centerIndex + 2) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) * 2 + offset, textPaintBackground);
-        super.onDraw(canvas);
 
-        // set the top margin on the top view?
+        if (entries != null) {
+            int centerIndex = Math.round(offsetValue);
+            int offset = (int)(textIntervalDistance * (centerIndex - offsetValue + 0.5));
+            centerIndex += entries.size();
+            int centerPoint = getHeight() / 2 - (textIntervalDistance / 2);
+            canvas.drawText(entries.get((centerIndex - 2) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) * 2 + offset, textPaintBackground);
+            canvas.drawText(entries.get((centerIndex - 1) % entries.size()), getWidth() / 2.0f, centerPoint - (textIntervalDistance) + offset, textPaintBackground);
+            canvas.drawText(entries.get(centerIndex % entries.size()), getWidth() / 2.0f, centerPoint + offset, textPaintPrimary);
+            canvas.drawText(entries.get((centerIndex + 1) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) + offset, textPaintBackground);
+            canvas.drawText(entries.get((centerIndex + 2) % entries.size()), getWidth() / 2.0f, centerPoint + (textIntervalDistance) * 2 + offset, textPaintBackground);
+        }
+
+        super.onDraw(canvas);
     }
 
     /**

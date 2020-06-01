@@ -50,7 +50,6 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        Log.e("hello", "moto");
         // note: i'm pretty sure this will restore
         setContentView(R.layout.session_layout);
         session = new Session(new Handler(Looper.getMainLooper()));
