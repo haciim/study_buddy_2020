@@ -89,25 +89,31 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         builder.setContentTitle(ctx.getResources().getString(R.string.app_name));
         builder.setAutoCancel(true);
 
-        if (duration > EPS_INTERVAL) {
+        long nextNotificationDuration = (long)(60000 * Math.ceil(duration / 60000.0) - 60000);
+        // difference between current "time remaining" and when we send the notif
+        long timeToNextUpdate = (duration - nextNotificationDuration);
+
+        if (duration <= 0) {
+            String timeBuilder = "You are " + (int) Math.ceil(duration / 60000.0) + " minute(s) into your session!";
+            builder.setContentText(timeBuilder);
+            builder.setOngoing(true);
+            alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
+        } else if (duration > EPS_INTERVAL) {
             // session is incomplete -- remind the user that it is in progress
             // duration rounded down -- time at which we will send the next notification
-            long nextNotificationDuration = (long)(60000 * Math.ceil(duration / 60000.0) - 60000);
-            // difference between current "time remaining" and when we send the notif
-            long timeToNextUpdate = (duration - nextNotificationDuration);
 
             String timeBuilder = (int) Math.ceil(duration / 60000.0) +
                     " minute(s) remaining!";
             builder.setContentText(timeBuilder);
             builder.setOngoing(true);
-            mgr.notify(notificationID, builder.build());
             alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
         } else {
             // session is over -- let the user know
             builder.setOngoing(false);
             builder.setContentText("Session complete!");
-            mgr.notify(notificationID, builder.build());
             // let them know that we're done
         }
+
+        mgr.notify(notificationID, builder.build());
     }
 }

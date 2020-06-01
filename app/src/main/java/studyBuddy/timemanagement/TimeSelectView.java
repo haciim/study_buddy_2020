@@ -14,7 +14,7 @@ import java.util.Arrays;
 public class TimeSelectView extends LinearLayout implements View.OnTouchListener {
 
     private SliderView duration;
-    private static String[] time_durations = {"5", "10", "20", "30", "40", "50", "60"};
+    private static String[] time_durations = {"∞", "5", "10", "20", "30", "40", "50", "60"};
 
     private float oldY;
 
@@ -53,6 +53,10 @@ public class TimeSelectView extends LinearLayout implements View.OnTouchListener
      */
     public int getDuration() {
         String time = duration.getCurrentEntry();
+        if (time.equals("∞")) {
+            return 0;
+        }
+
         return Integer.parseInt(time);
     }
 
