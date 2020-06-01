@@ -26,6 +26,8 @@
                 <action android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name="studyBuddy.SessionHistoryActivity" />
+
         <receiver android:name="studyBuddy.timemanagement.SessionBroadcastReceiver"
                   android:exported="true">
             <intent-filter>

@@ -26,10 +26,12 @@ import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
+import studyBuddy.timemanagement.SessionRecord;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
@@ -37,7 +39,7 @@ public class SessionActivity extends AppCompatActivity {
     private Session session;
     private NotificationChannel channel;
     private ImageView pet;
-    private List<Session> sessions;
+    private List<SessionRecord> sessions;
 
     static private String SESSION_START_KEY = "sessionStart";
     static private String SESSION_DURATION_KEY = "sessionDuration";
@@ -53,11 +55,13 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        sessions = DataManager.load(getApplicationContext(), ArrayList.class);
+        SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
         Intent sessionIntent = getIntent();
 
-        if(sessions == null) {
+        if(sessionRecords == null) {
             sessions = new ArrayList<>();
+        } else {
+            sessions = new ArrayList<>(Arrays.asList(sessionRecords));
         }
 
         createNotificationChannel();
@@ -181,10 +185,12 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!session.isSessionOngoing()){
+        if(!session.isSessionOngoing()) {
             session.clean();
-            sessions.add(session);
-            DataManager.save(getApplicationContext(), sessions);
+            sessions.add(new SessionRecord(session));
+            Log.d("Session", "Storing session data...");
+            SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
+            DataManager.save(this, arr);
         }
     }
 }
