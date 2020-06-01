@@ -1,15 +1,19 @@
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import studyBuddy.Pet;
+import studyBuddy.*;
 
 public class PetTests {
 
     private int MOODSCALE = 10;
     private int TRUSTSCALE =10;
     private Date today = new Date();
+    private List<Session> sess = new ArrayList<>();
+
 
     @Test
     public void initGetTest(){
@@ -67,6 +71,7 @@ public class PetTests {
         Assert.assertEquals(false,spark.setColor(""));
         Assert.assertEquals(true,spark.setColor("blue"));
 
+
         //test trustcheck around bounds
 //        spark.setTrustLevel(TRUSTSCALE);
 //        spark.trustCheck();
@@ -123,13 +128,22 @@ public class PetTests {
         spock.setMoodLevel((MOODSCALE*-1)-2);
         Assert.assertEquals(MOODSCALE*-1,spock.getMoodLevel());
 
+//        Session s1 = new Session();
+//        s1.startSession("one",500);
+//        s1.endSession();
+//        s1.setTotalProductiveTime(0.4);
+//        sess.add(s1);
+
         //test mood check bounds
 //        spock.setMoodLevel(MOODSCALE);
-//        spock.moodCheck();
-//        Assert.assertTrue(spock.getMoodLevel()==MOODSCALE || spock.getMoodLevel()==MOODSCALE-1);
+//        spock.moodCheck(sess);
+//        Assert.assertTrue(spock.getMoodLevel()==MOODSCALE-1);
+//        Session s2 = new Session();
+//        s2.startSession("two",500);
+//        s2.setTotalProductiveTime(1.0);
 //        spock.setMoodLevel(MOODSCALE*-1);
-//        spock.moodCheck();
-//        Assert.assertTrue(spock.getMoodLevel()==MOODSCALE*-1 || spock.getMoodLevel()==(MOODSCALE*-1)-1);
+//        spock.moodCheck(sess);
+//        Assert.assertTrue(spock.getMoodLevel()==(MOODSCALE*-1)-1);
     }
 }
 
