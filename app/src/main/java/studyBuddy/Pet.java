@@ -196,12 +196,9 @@ public class Pet {
      * Post-condition:
      * returns -1 if no sessions occurred this week
      */
-    private double getWPA(){
+    private double getWPA(List<Session> sessions){
         //Need a date to check this week
         Date today = new Date();
-
-        // Loading session history
-        List<Session> sessions = DataManager.load(List.class);
 
         int countedSessions = 0;
         double cumulativeSum = 0;
@@ -241,9 +238,9 @@ public class Pet {
      * Should be called only once a week (end of day Friday or so)
      */
 
-    public void trustCheck(){
+    public void trustCheck(List<Session> sessions){
 
-        double WPA = getWPA();
+        double WPA = getWPA(sessions);
 
         // no need to change pet trust level if no sessions happened that week
         // though it would be weird if the user stopped using the app for a week
@@ -299,12 +296,10 @@ public class Pet {
      * returns -1 if no sessions occurred today
      */
 
-    private double getDPA(){
+    private double getDPA(List<Session> sessions){
         //Need a date to check the day's timer
         Date today = new Date();
 
-        // Loading session history
-        List<Session> sessions = DataManager.load(List.class);
 
         int countedSessions = 0;
         double cumulativeSum = 0;
@@ -344,9 +339,9 @@ public class Pet {
      * Should be called only once a day (5 PM to 11PM or so)
      */
 
-    public void moodCheck(){
+    public void moodCheck(List<Session> sessions){
         // getting the daily productivity average
-        double DPA = getDPA();
+        double DPA = getDPA(sessions);
 
         // no need to change mood if nothing happened today
         if(DPA != -1){
