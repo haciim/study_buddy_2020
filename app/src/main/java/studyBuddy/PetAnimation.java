@@ -1,26 +1,20 @@
+// Author: Andrew Calimlim
+
 package studyBuddy;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-import java.util.Arrays;
-
-// for reading from/writing to JSON files
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.util.Arrays;
-
-// for reading from/writing to JSON files
-
-// for reading from/writing to JSON files
 
 public class PetAnimation {
-    /* Instance Variables */
+    /** Instance Variables */
     private Pet thePet;
     private String curAnimation;
     private String curGif;
+
+    private Date lastFed;
+    private Date lastBathed;
     
     //TODO: Subject to change
 
@@ -53,6 +47,8 @@ public class PetAnimation {
         thePet = theePet;
         curAnimation = "idle";
         curGif = "idle-default.gif"; //idle animation, default color
+        lastFed = new Date();
+        lastBathed = new Date();
     }
 
     /** Getter methods */
@@ -98,5 +94,68 @@ public class PetAnimation {
             return true;
         }
         return false;
-    }    
+    }
+
+    // pet feeds/bathes itself at a certain time if not fed
+    // bathed at certain times
+
+    // only for checking the current hour very quickly
+    private int getHourOfDay(){
+        Date now = new Date();
+        //Stack overflow told me to use this object
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(now);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        return hour;
+    }
+    // should be called at the beginning of every pet screen pull
+    public void maintenanceCheck(){
+
+        Date now = new Date();
+
+        long fedDiff = now.getTime() - lastFed.getTime();
+        long fedDiffMin = fedDiff/ (60 * 60 * 1000);
+
+        if (fedDiffMin > 30){
+            setCurAnimation("idle");
+        }
+
+        long bathedDiff = now.getTime() - lastBathed.getTime();
+        long bathedDiffMin = fedDiff/ (60 * 60 * 1000);
+        if (bathedDiffMin > 30){
+            setCurAnimation("idle");
+        }
+
+        int curHour = getHourOfDay();
+
+        // checking app from 12am to 9am resets feeding/bathing
+        // again, minor cosmetic feature so it doesn't matter too much
+        if(curHour <= 9){
+
+            thePet.setIsFed(false);
+            thePet.setIsBathed(false);
+        }
+
+
+        if(curHour >= 12 && !thePet.getIsFed()){
+            //pet feeds itself after noon
+
+            //do in main i guess
+            thePet.feed();
+            setCurAnimation("feeding");
+            lastFed = new Date();
+
+        }
+
+        if(curHour >= (9 + 12) && !thePet.getIsBathed()){
+            //pet bathes itself after 9 pm
+
+            thePet.bathe();
+            setCurAnimation("bathing");
+            lastBathed = new Date();
+
+        }
+
+    }
+
 }
