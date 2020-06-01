@@ -60,8 +60,12 @@ public class SessionActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
+        SliderView temporaryEraseThisPlease = findViewById(R.id.delete);
+
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
+            temporaryEraseThisPlease.setOffset(5f);
+            Log.d(temporaryEraseThisPlease.getCurrentEntry(), "entry");
             timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
             timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
         };
