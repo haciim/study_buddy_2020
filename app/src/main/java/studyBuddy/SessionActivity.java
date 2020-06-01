@@ -53,7 +53,7 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        sessions = DataManager.load(List.class);
+        sessions = DataManager.load(getApplicationContext(), ArrayList.class);
         Intent sessionIntent = getIntent();
 
         if(sessions == null) {
@@ -169,7 +169,7 @@ public class SessionActivity extends AppCompatActivity {
         if(!session.isSessionOngoing()){
             session.clean();
             sessions.add(session);
-            DataManager.save(sessions);
+            DataManager.save(getApplicationContext(), sessions);
         }
     }
 }
