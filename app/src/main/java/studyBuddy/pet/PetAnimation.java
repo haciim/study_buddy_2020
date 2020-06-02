@@ -21,7 +21,7 @@ public class PetAnimation implements Serializable {
 
     // a master list of animations that the pet can do
     final private String[] possibleAnimations =
-    {"idle_neutral", "idle_happy", "idle_sad", "feeding", "bathing", "studying"};
+    {"idle_neutral", "idle_happy", "idle_sad", "feed", "bathing", "study"};
     
     //TODO: Subject to change
     
@@ -35,12 +35,12 @@ public class PetAnimation implements Serializable {
 
     final private String[][] possibleGifs = 
 
-    {{"idle_neutral", "default", "idle_neutral-default.gif"},
-     {"idle_happy", "default", "idle_happy-default.gif"},
-     {"idle_sad", "default", "idle_sad-default.gif"},
-     {"feeding",  "default", "feeding-default.gif"},
-     {"bathing",  "default", "bathing-default.gif"},
-     {"studying", "default", "studying-default.gif"}};
+    {{"idle_neutral", "default", "idle_neutral_default.gif"},
+     {"idle_happy", "default", "idle_happy_default.gif"},
+     {"idle_sad", "default", "idle_sad_default.gif"},
+     {"feeding",  "default", "feeding_default.gif"},
+     {"bathing",  "default", "bathing_default.gif"},
+     {"studying", "default", "studying_default.gif"}};
 
     /** Constructor */
 
@@ -49,7 +49,7 @@ public class PetAnimation implements Serializable {
     public PetAnimation(Pet theePet){
         thePet = theePet;
         curAnimation = "idle_neutral";
-        curGif = "idle_neutral-default.gif"; //idle animation, default color
+        curGif = "idle_neutral_default.gif"; //idle animation, default color
         lastFed = new Date();
         lastBathed = new Date();
     }
@@ -90,7 +90,7 @@ public class PetAnimation implements Serializable {
             curAnimation = newAnimation;
 
             // "bathing-default.gif" for example
-            String newGif = curAnimation + "-" + thePet.getColor() + ".gif";
+            String newGif = curAnimation + "_" + thePet.getColor() + ".gif";
 
             //gotta update the current gif accordingly too!
             // no reason why you would change the current gif directly
