@@ -50,7 +50,7 @@ public class PomodoroStrategy implements Strategy {
         return (duration % HALF_HOUR_MILLIS == 0 && duration > 0);
     }
 
-    PomodoroStrategy(long duration) {
+    public PomodoroStrategy(long duration) {
         this.duration = duration;
         this.intervals = new LinkedList<>();
         int intervalCount = (int)(duration / HALF_HOUR_MILLIS);

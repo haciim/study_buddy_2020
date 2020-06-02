@@ -72,6 +72,7 @@ public class TimeSelectView extends LinearLayout {
         if (strategy.getCurrentEntry().equals("Standard")) {
             return null;
         } else {
+            // should be ok
             return new PomodoroStrategy(getDuration() * 60 * 1000);
         }
     }

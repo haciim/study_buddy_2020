@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import studyBuddy.timemanagement.PomodoroStrategy;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimeSelectView;
 
@@ -43,9 +44,12 @@ public class MainActivity extends AppCompatActivity
         Intent appIntent = getIntent();
         if (appIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
             Intent startSession = new Intent(this, SessionActivity.class);
+            // give field access to sessionactivity
             startSession.putExtra(SessionBroadcastReceiver.SESSION_START, appIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
             startSession.putExtra(SessionBroadcastReceiver.SESSION_END, appIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()));
             startSession.putExtra(SessionBroadcastReceiver.REOPEN_SESSION, true);
+            // the strategy was lost in translation -- the duration is used instead.
+            startSession.putExtra(SessionActivity.SESSION_STRATEGY_KEY, appIntent.getLongExtra(SessionActivity.SESSION_STRATEGY_KEY, -1));
             if (appIntent.hasExtra(SessionBroadcastReceiver.DELETE_INTENT)) {
                 startSession.putExtra(SessionBroadcastReceiver.DELETE_INTENT, (PendingIntent) appIntent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
                 AlarmManager alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -110,6 +114,9 @@ public class MainActivity extends AppCompatActivity
                     TimeSelectView selectView = findViewById(timerId);
                     Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
                     intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
+                    if (selectView.getStrategy() != null) {
+                        intent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, (long) (selectView.getDuration() * 60 * 1000));
+                    }
                     ((ConstraintLayout) findViewById(R.id.base_layer)).removeView(selectView);
                     startActivity(intent);
                     timeSelectorIsOpen = false;

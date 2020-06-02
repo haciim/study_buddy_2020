@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.example.studdybuddy.R;
 
+import java.util.List;
+
 import studyBuddy.MainActivity;
 import studyBuddy.SessionActivity;
 
@@ -63,6 +65,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         int notificationID = intent.getIntExtra(NOTIFICATION_ID, 0);
         long sessionEndTime = intent.getLongExtra(SESSION_END, System.currentTimeMillis());
         long sessionStartTime = intent.getLongExtra(SESSION_START, System.currentTimeMillis());
+        Strategy strategy = StrategyFactory.getStrategy(SessionType.POMODORO, intent.getLongExtra(SessionActivity.SESSION_STRATEGY_KEY, -1));
         long duration = sessionEndTime - System.currentTimeMillis();
 
         // set up the intent which will trigger the broadcastreceiver to update in a minute
@@ -70,6 +73,10 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         nextBroadcastIntent.putExtra(NOTIFICATION_ID, notificationID);
         nextBroadcastIntent.putExtra(SESSION_END, sessionEndTime);
         nextBroadcastIntent.putExtra(SESSION_START, sessionStartTime);
+        if (strategy != null) {
+            nextBroadcastIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
+        }
+
         PendingIntent broadIntent = PendingIntent.getBroadcast(ctx, SessionActivity.INTENT_ID, nextBroadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // set up the intent which triggers our session activity again
@@ -78,6 +85,9 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         activityIntent.putExtra(REOPEN_SESSION, true);
         activityIntent.putExtra(SESSION_END, sessionEndTime);
         activityIntent.putExtra(SESSION_START, sessionStartTime);
+        if (strategy != null) {
+            nextBroadcastIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
+        }
         NotificationManager mgr = (NotificationManager)ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 
         assert mgr != null;
@@ -93,25 +103,58 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         // difference between current "time remaining" and when we send the notif
         long timeToNextUpdate = (duration - nextNotificationDuration);
 
-        if (duration <= 0) {
-            String timeBuilder = "You are " + (int) Math.ceil(duration / 60000.0) + " minute(s) into your session!";
-            builder.setContentText(timeBuilder);
-            builder.setOngoing(true);
-            alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
-        } else if (duration > EPS_INTERVAL) {
-            // session is incomplete -- remind the user that it is in progress
-            // duration rounded down -- time at which we will send the next notification
+        if (strategy == null) {
+            // standard session
+            if (sessionStartTime >= sessionEndTime) {
+                String timeBuilder = "You are " + (int) Math.ceil(duration / 60000.0) + " minute(s) into your session!";
+                builder.setContentText(timeBuilder);
+                builder.setOngoing(true);
+                alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
+            } else if (duration > EPS_INTERVAL) {
+                // session is incomplete -- remind the user that it is in progress
+                // duration rounded down -- time at which we will send the next notification
 
-            String timeBuilder = (int) Math.ceil(duration / 60000.0) +
-                    " minute(s) remaining!";
-            builder.setContentText(timeBuilder);
-            builder.setOngoing(true);
-            alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
+                String timeBuilder = (int) Math.ceil(duration / 60000.0) +
+                        " minute(s) remaining!";
+                builder.setContentText(timeBuilder);
+                builder.setOngoing(true);
+                alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
+            } else {
+                // session is over -- let the user know
+                builder.setOngoing(false);
+                builder.setContentText("Session complete!");
+                // let them know that we're done
+            }
         } else {
-            // session is over -- let the user know
-            builder.setOngoing(false);
-            builder.setContentText("Session complete!");
-            // let them know that we're done
+            // pomodoro session
+            if (duration > EPS_INTERVAL) {
+                // figure out whether we're in a break or not
+                long timePassed = (sessionEndTime - sessionStartTime) - duration;
+                List<StudyInterval> intervals = strategy.getTimeTable();
+                String message = "Default message :)";
+                for (StudyInterval interval : intervals) {
+                    timePassed -= (interval.end - interval.start);
+                    if (timePassed < 0) {
+                        // build the notification
+                        // break
+                        int ceil = (int)Math.ceil((-timePassed) / 60000.0);
+                        if (interval.isActive) {
+                            message = "Only " + ceil + " minute(s) left until break time!";
+                        } else {
+                            message = "Take " + ceil + " more minute(s) to reflect.";
+                        }
+
+                        break;
+                    }
+                }
+
+                builder.setContentText(message);
+                builder.setOngoing(true);
+                alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
+            } else {
+                builder.setOngoing(false);
+                builder.setContentText("Session complete!");
+            }
         }
 
         mgr.notify(notificationID, builder.build());
