@@ -48,6 +48,10 @@ public class SessionActivity extends AppCompatActivity {
 
     static private String SESSION_NAME_KEY = "sessionName";
 
+    static public String SESSION_TYPE_KEY = "sessionType";
+
+    static public String SESSION_STRATEGY_KEY = "sessionStrategy";
+
     static public int INTENT_ID = 142857;
 
     @Override
