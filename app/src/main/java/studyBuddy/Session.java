@@ -180,7 +180,12 @@ public class Session {
             }
 
             if (completeCallback != null) {
-                completeCallback.callbackFunc(Math.min(getSeconds(startTime, endTime), expectedTime / 1000));
+                if (expectedTime == 0) {
+                    // duration is 0
+                    completeCallback.callbackFunc(getSeconds(startTime, endTime));
+                } else {
+                    completeCallback.callbackFunc(Math.min(getSeconds(startTime, endTime), expectedTime / 1000));
+                }
             }
 
             return totalTime;
