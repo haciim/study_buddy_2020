@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="@dimen/home_button_outer_size"
+    android:width="@dimen/home_button_outer_size"
+    android:viewportHeight="100"
+    android:viewportWidth="100">
+    <group
+        android:name="bath_group">
+        <path
+            android:name="bath"
+            android:strokeColor="@color/button_primary"
+            android:strokeWidth="5"
+            android:strokeLineJoin="round"
+            android:fillColor="@color/button_primary"
+            android:pathData="M90,45
+                      C85,35 80,35 70,35
+                      L30,35
+                      C20,35 15,35 10,45
+                      L20,70
+                      A10,-2 0 0,0 20,70
+                      L80,70 z"/>
+
+        <path android:name="water"
+            android:fillColor="@color/water"
+            android:strokeWidth="5"
+            android:pathData="M10,45
+                        C15,55 20,55 30,55
+                        L70,55
+                        C80,55 85,55 90,45
+                        C85,35 80,35 70,35
+                        L30,35
+                        C20,35 15,35 10,45"/>
+        <path
+            android:name="bath_front"
+            android:strokeColor="@color/button_primary"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="M10,45
+                      C15,55 20,55 30,55
+                      L70,55
+                      C80,55 85,55 90,45
+                      C85,35 80,35 70,35
+                      L30,35
+                      C20,35 15,35 10,45"/>
+    </group>
+</vector>
