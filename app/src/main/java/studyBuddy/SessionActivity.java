@@ -61,7 +61,6 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
-        // note: i'm pretty sure this will restore
         setContentView(R.layout.session_layout);
         View background = findViewById(R.id.session_base);
         background.setBackgroundColor(PrimaryColorPicker.getDayColorInt(this));
@@ -78,6 +77,7 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
+      
         SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
         Intent sessionIntent = getIntent();
 
@@ -108,12 +108,10 @@ public class SessionActivity extends AppCompatActivity {
         timer.setText(getResources().getText(R.string.zero_time));
         session.setTimerCallback(callback);
 
-        // if the savedinstancebundle is there: read that (it probably wont be)
         if (savedInstanceBundle != null) {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
-            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (savedInstanceBundle.getLong(SESSION_STRATEGY_KEY)));
         } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
             long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
             if (duration == 0) {
@@ -140,19 +138,12 @@ public class SessionActivity extends AppCompatActivity {
         animator.setTarget(endSessionText);
         fob.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
-        final PendingIntent deleteIntent = getIntent().getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT);
-
         SessionCompleteCallback completeCallback = (elapsedTime) -> {
             setContentView(R.layout.finish_session_view);
             TextView elapsedText = findViewById(R.id.sessionTime);
             elapsedText.setText(Session.formatTime(elapsedTime));
             View doneButton = findViewById(R.id.doneButton);
             doneButton.setOnClickListener(new DoneButtonListener(this));
-//            if (deleteIntent != null) {
-//                AlarmManager mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
-//                assert mgr != null;
-//                mgr.cancel(deleteIntent);
-//            }
         };
 
         session.setFinishedCallback(completeCallback);
@@ -162,15 +153,19 @@ public class SessionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         session.resumeSession();
-        Intent broadcast = new Intent(this, SessionBroadcastReceiver.class);
-        AlarmManager mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
-        assert mgr != null;
-        // prevent notification from updating
-        mgr.cancel(PendingIntent.getBroadcast(this, SessionActivity.INTENT_ID, broadcast, PendingIntent.FLAG_UPDATE_CURRENT));
-        NotificationManager notifMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        assert notifMgr != null;
-        notifMgr.cancel(SessionActivity.INTENT_ID);
         // clear notification
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // check for an intent
+        if (intent.hasExtra(SessionBroadcastReceiver.DELETE_INTENT)) {
+            AlarmManager alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+            assert alarmMgr != null;
+            // prevents notifications from being triggered
+            alarmMgr.cancel((PendingIntent)intent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
+        }
     }
 
     @Override

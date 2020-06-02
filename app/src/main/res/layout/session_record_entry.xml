@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/session_record_entry_height"
-    android:background="@color/red">
+    android:orientation="horizontal">
+
     <TextView
-        android:id="@+id/session_record_date_box"
+        android:layout_width="90dp"
         android:layout_height="match_parent"
-        android:layout_width="@dimen/session_record_date_width"
-        android:textColor="@android:color/black"
-        android:textSize="25sp"/>
-    <TextView
-        android:id="@+id/session_record_info_box"
-        android:layout_width="@dimen/session_record_info_width"
+        android:fontFamily="@font/montserrat_light"
+        android:textColor="@color/dark_grey"
+        android:textSize="35sp"
+        android:textAlignment="center"
+        android:layout_marginHorizontal="15dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="@android:color/black"
-        android:textSize="25sp"/>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_light"
+            android:textColor="@color/dark_grey"
+            android:textSize="25sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_light"
+            android:textColor="@color/dark_grey"
+            android:textSize="20sp"/>
+    </LinearLayout>
 </LinearLayout>

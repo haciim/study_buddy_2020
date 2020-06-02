@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import studyBuddy.session_history_ui.SessionHistoryActivity;
 import studyBuddy.pet_activity_ui.PetActivity;
 import studyBuddy.timemanagement.PomodoroStrategy;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         // Setup Activity and Layout
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
+        
         timeSelectorIsOpen = false;
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity
             assert notifMgr != null;
             notifMgr.cancel(SessionActivity.INTENT_ID);
         }
-
+        this.petAnimation = new PetAnimation(this.pet);
 
         // Setup component interactions
         newSession = findViewById(R.id.new_session_outer);
