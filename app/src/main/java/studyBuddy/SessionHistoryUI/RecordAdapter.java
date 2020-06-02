@@ -1,9 +1,9 @@
-package studyBuddy;
+package studyBuddy.SessionHistoryUI;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import java.time.*;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +20,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
     // you provide access to all the views for a data item in a view holder
     static class RecordViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        LinearLayout record;
         TextView date;
-        RecordViewHolder(TextView v) {
+        TextView name;
+        TextView info;
+        RecordViewHolder(LinearLayout v) {
             super(v);
-            this.date = v;
+            this.record = v;
+            this.date = (TextView) v.getChildAt(0);
+            LinearLayout inner = (LinearLayout) v.getChildAt(1);
+            this.name = (TextView) inner.getChildAt(0);
+            this.info = (TextView) inner.getChildAt(1);
         }
     }
 
@@ -38,8 +45,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
     public RecordAdapter.RecordViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.text_view_test, parent, false);
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.session_record_entry, parent, false);
         RecordViewHolder vh = new RecordViewHolder(v);
         return vh;
     }
@@ -50,10 +57,14 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         SessionRecord record = this.mDataset[position];
-        Month month = Month.of(record.start.getMonth());
-        String text = "" + month + " " + record.start.getDate()
-                + ": " + record.getDurationMins();
-        holder.date.setText(text);
+
+        String date = record.start.getMonth() + "/" + record.start.getDate();
+        holder.date.setText(date);
+
+        holder.name.setText(record.name);
+
+        String info = record.getDurationMins() + " Mins";
+        holder.info.setText(info);
     }
 
 

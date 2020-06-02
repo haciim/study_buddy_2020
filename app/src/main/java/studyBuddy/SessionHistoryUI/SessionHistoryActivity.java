@@ -1,18 +1,20 @@
-package studyBuddy;
+package studyBuddy.SessionHistoryUI;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studdybuddy.R;
 
+import studyBuddy.DataManager;
 import studyBuddy.timemanagement.SessionRecord;
 
 
@@ -29,6 +31,8 @@ public class SessionHistoryActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_history_layout);
 
+
+
         this.records = findViewById(R.id.session_record_recycler);
 
         this.sessions = DataManager.load(SessionRecord[].class, this.getApplicationContext());
@@ -40,6 +44,11 @@ public class SessionHistoryActivity extends AppCompatActivity
 
             this.mAdapter = new RecordAdapter(this.sessions);
             this.records.setAdapter(this.mAdapter);
+
+            DividerItemDecoration divider
+                = new DividerItemDecoration(records.getContext(), LinearLayoutManager.VERTICAL);
+            divider.setDrawable(getDrawable(R.drawable.session_record_divider));
+            records.addItemDecoration(divider);
         }
 
         homeButton = findViewById(R.id.session_history_home_button_outer);
