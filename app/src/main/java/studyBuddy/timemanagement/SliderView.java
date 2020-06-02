@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
@@ -22,12 +23,15 @@ class SliderView extends LinearLayoutCompat {
     private float textHeight;
     private int textIntervalDistance;
 
+    private String sliderName;
+
     private Paint textPaintPrimary = new Paint();
     private Paint textPaintBackground = new Paint();
 
     public SliderView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
         entries = null;
+        sliderName = "slider";
         setWillNotDraw(false);
         textHeight = 96.0f + 8;
         textIntervalDistance = (int)textHeight;
@@ -37,6 +41,10 @@ class SliderView extends LinearLayoutCompat {
         textPaintBackground.setTextSize(textHeight * 0.9f);
         textPaintBackground.setColor(ContextCompat.getColor(ctx, R.color.gray_50_percent_alpha));
         textPaintBackground.setTextAlign(Paint.Align.CENTER);
+    }
+
+    public void setSliderName(String name) {
+        this.sliderName = name;
     }
 
     /**
@@ -81,6 +89,12 @@ class SliderView extends LinearLayoutCompat {
      */
     public void setStringEntries(List<String> newEntries) {
         entries = newEntries;
+    }
+
+    @Override
+    public boolean performClick() {
+        Toast.makeText(getContext(), "Set " + sliderName + " to " + getCurrentEntry(), Toast.LENGTH_SHORT).show();
+        return super.performClick();
     }
 
     public void setTextHeight(float textHeight) {
