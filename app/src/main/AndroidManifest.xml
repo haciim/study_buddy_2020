@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="studyBuddy.MainActivity"
+            android:name="studyBuddy.main_activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="studyBuddy.SessionActivity"
+            android:name="studyBuddy.session_activity.SessionActivity"
             android:label="Session View"
             android:theme="@style/AppTheme"
             android:launchMode="singleTop">
@@ -26,9 +26,9 @@
                 <action android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="studyBuddy.session_history_ui.SessionHistoryActivity" />
-        <activity android:name="studyBuddy.pet_activity_ui.PetActivity" />
-        <receiver android:name="studyBuddy.timemanagement.SessionBroadcastReceiver"
+        <activity android:name="studyBuddy.session_history_activity.SessionHistoryActivity" />
+        <activity android:name="studyBuddy.pet_activity.PetActivity" />
+        <receiver android:name="studyBuddy.time_management.SessionBroadcastReceiver"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

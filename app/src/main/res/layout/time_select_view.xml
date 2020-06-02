@@ -38,7 +38,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <studyBuddy.timemanagement.SliderView
+        <studyBuddy.time_management.SliderView
             android:id="@+id/minute_counter"
             android:layout_width="120dp"
             android:layout_height="240dp"
@@ -57,7 +57,7 @@
             android:textColor="@color/black"
             />
 
-        <studyBuddy.timemanagement.SliderView
+        <studyBuddy.time_management.SliderView
             android:id="@+id/strategy_selector"
             android:layout_width="120dp"
             android:layout_height="240dp"

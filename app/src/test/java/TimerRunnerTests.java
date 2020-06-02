@@ -1,5 +1,4 @@
 import android.os.Handler;
-import android.os.Looper;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,8 +9,8 @@ import org.mockito.stubbing.Answer;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import studyBuddy.SessionTimerCallback;
-import studyBuddy.TimerRunner;
+import studyBuddy.session_activity.SessionTimerCallback;
+import studyBuddy.session_activity.TimerRunner;
 
 public class TimerRunnerTests {
 

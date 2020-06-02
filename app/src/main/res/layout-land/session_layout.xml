@@ -32,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:textSize="40sp"/>
 
-    <studyBuddy.timemanagement.TimelineView
+    <studyBuddy.time_management.TimelineView
         android:id="@+id/timeLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,9 +43,9 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time">
 
-    </studyBuddy.timemanagement.TimelineView>
+    </studyBuddy.time_management.TimelineView>
 
-    <studyBuddy.timemanagement.EndSessionView
+    <studyBuddy.time_management.EndSessionView
         android:id="@+id/stopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

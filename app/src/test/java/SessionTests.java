@@ -1,5 +1,4 @@
 import android.os.Handler;
-import android.os.Looper;
 
 import org.junit.Test;
 import org.junit.Assert;
@@ -7,7 +6,7 @@ import org.mockito.Mockito;
 
 import java.util.Date;
 
-import studyBuddy.Session;
+import studyBuddy.session_activity.Session;
 
 public class SessionTests {
     private Handler handler = Mockito.mock(Handler.class);

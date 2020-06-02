@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import studyBuddy.*;
+import studyBuddy.pet.Pet;
+import studyBuddy.session_activity.Session;
 
 public class PetTests {
 

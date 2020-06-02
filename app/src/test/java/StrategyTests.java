@@ -3,10 +3,10 @@ import org.junit.Assert;
 
 import java.util.List;
 
-import studyBuddy.timemanagement.SessionType;
-import studyBuddy.timemanagement.Strategy;
-import studyBuddy.timemanagement.StrategyFactory;
-import studyBuddy.timemanagement.StudyInterval;
+import studyBuddy.time_management.SessionType;
+import studyBuddy.time_management.Strategy;
+import studyBuddy.time_management.StrategyFactory;
+import studyBuddy.time_management.StudyInterval;
 
 public class StrategyTests {
 
