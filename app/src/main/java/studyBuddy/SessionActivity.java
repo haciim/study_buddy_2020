@@ -33,6 +33,9 @@ import java.util.List;
 import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.SessionRecord;
+import studyBuddy.timemanagement.SessionType;
+import studyBuddy.timemanagement.Strategy;
+import studyBuddy.timemanagement.StrategyFactory;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
@@ -41,12 +44,15 @@ public class SessionActivity extends AppCompatActivity {
     private NotificationChannel channel;
     private ImageView pet;
     private List<SessionRecord> sessions;
+    private Strategy strategy;
 
     static private String SESSION_START_KEY = "sessionStart";
 
     static public String SESSION_DURATION_KEY = "sessionDuration";
 
     static private String SESSION_NAME_KEY = "sessionName";
+
+    static public String SESSION_STRATEGY_KEY = "sessionStrategy";
 
     static public int INTENT_ID = 142857;
 
@@ -93,17 +99,20 @@ public class SessionActivity extends AppCompatActivity {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
+            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (savedInstanceBundle.getLong(SESSION_STRATEGY_KEY)));
         } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
             long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
             if (duration == 0) {
                 // lol
                 ((ConstraintLayout)timeline.getParent()).removeView(timeline);
             }
+            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
             session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
                                  duration,
                                  sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
         } else {
-            session.startSession("testname", getIntent().getLongExtra(SESSION_DURATION_KEY, 480000));
+            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
+            session.startSession("testname", sessionIntent.getLongExtra(SESSION_DURATION_KEY, 480000));
         }
 
         // Setup pet animation
@@ -157,6 +166,12 @@ public class SessionActivity extends AppCompatActivity {
         savedInstanceState.putLong(SESSION_START_KEY, session.getStartTime().getTime());
         savedInstanceState.putLong(SESSION_DURATION_KEY, session.getExpectedTime());
         savedInstanceState.putString(SESSION_NAME_KEY, session.getName());
+        if (strategy != null) {
+            savedInstanceState.putLong(SESSION_STRATEGY_KEY, strategy.getDuration());
+        } else {
+            savedInstanceState.putLong(SESSION_STRATEGY_KEY, -1);
+        }
+
     }
 
     @Override
@@ -167,9 +182,11 @@ public class SessionActivity extends AppCompatActivity {
             session.pauseSession();
             Intent broadcastIntent = new Intent(this, SessionBroadcastReceiver.class);
             broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
-            Log.e("Expected time", String.valueOf(session.getExpectedTime()));
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_END, session.getExpectedTime() + session.getStartTime().getTime());
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_START, session.getStartTime().getTime());
+            if (strategy != null) {
+                broadcastIntent.putExtra(SESSION_STRATEGY_KEY, strategy.getDuration());
+            }
             PendingIntent pendingBroadcast = PendingIntent.getBroadcast(this, INTENT_ID, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarm_mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -201,7 +218,6 @@ public class SessionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(!session.isSessionOngoing()) {
-            session.clean();
             sessions.add(new SessionRecord(session));
             Log.d("Session", "Storing session data...");
             SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);

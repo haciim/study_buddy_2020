@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import studyBuddy.timemanagement.Strategy;
+
 public class Session {
     private Date startTime;
     private Date endTime;
@@ -29,6 +31,8 @@ public class Session {
     private Handler handler;
 
     private TimerRunner runner;
+
+    private Strategy strategy;
 
     /**
      * Constructs a new studyBuddy.Session
@@ -176,7 +180,7 @@ public class Session {
             }
 
             if (completeCallback != null) {
-                completeCallback.callbackFunc(getSeconds(startTime, endTime));
+                completeCallback.callbackFunc(Math.min(getSeconds(startTime, endTime), expectedTime / 1000));
             }
 
             return totalTime;
@@ -307,15 +311,5 @@ public class Session {
         long diff = end - start;
         long seconds = diff / (1000);
         return seconds;
-    }
-
-    /**
-     * Sets fields that cause issues for converting to JSON to null
-     */
-    public void clean() {
-        callback = null;
-        completeCallback = null;
-        handler = null;
-        runner = null;
     }
 }
