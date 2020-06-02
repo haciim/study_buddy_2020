@@ -1,5 +1,6 @@
 package studyBuddy;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onClick(View view) {
         // create this intent
@@ -119,6 +122,10 @@ public class MainActivity extends AppCompatActivity
                     TimeSelectView timerView = new TimeSelectView(this);
                     timerId = View.generateViewId();
                     timerView.setId(timerId);
+                    timerView.setClearListener((View v) -> {
+                        ((ConstraintLayout)findViewById(R.id.base_layer)).removeView(timerView);
+                        timeSelectorIsOpen = false;
+                    });
                     ConstraintLayout layout = findViewById(R.id.base_layer);
                     layout.addView(timerView);
                     ConstraintSet timerConstraints = new ConstraintSet();
