@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_morning">#E2A632</color>
-    <color name="color_midday">#5eff74</color>
+    <color name="color_midday">#5ac776</color>
     <color name="color_afternoon">#55C9EE</color>
     <color name="color_sunset">#ff8742</color>
     <color name="color_evening">#492875</color>
