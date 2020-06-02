@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".7">
+        app:layout_constraintVertical_bias=".85">
         <ImageView
             android:id="@+id/session_history_inner"
             android:layout_width="wrap_content"
@@ -73,11 +73,12 @@
         android:id="@+id/home_pet_view"
         android:layout_width="@dimen/home_pet_image_width"
         android:layout_height="@dimen/home_pet_image_height"
+        android:background="@drawable/pet_frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".4" />
+        app:layout_constraintVertical_bias=".45"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
