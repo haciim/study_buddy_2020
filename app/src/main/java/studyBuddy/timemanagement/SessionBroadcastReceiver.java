@@ -106,7 +106,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         if (strategy == null) {
             // standard session
             if (sessionStartTime >= sessionEndTime) {
-                String timeBuilder = "You are " + (int) Math.ceil(duration / 60000.0) + " minute(s) into your session!";
+                String timeBuilder = "You are " + (int) Math.floor(-duration / 60000.0) + " minute(s) into your session!";
                 builder.setContentText(timeBuilder);
                 builder.setOngoing(true);
                 alarmMGR.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + timeToNextUpdate, broadIntent);
