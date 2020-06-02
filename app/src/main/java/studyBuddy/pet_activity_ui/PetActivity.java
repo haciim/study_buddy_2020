@@ -2,6 +2,7 @@ package studyBuddy.pet_activity_ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.studdybuddy.R;
 import studyBuddy.MainActivity;
 import studyBuddy.Pet;
 import studyBuddy.PetAnimation;
+import studyBuddy.PrimaryColorPicker;
 
 public class PetActivity extends AppCompatActivity
     implements View.OnClickListener{
@@ -65,6 +67,8 @@ public class PetActivity extends AppCompatActivity
         }
 
         this.pStatus = PetStatus.IDLE;
+
+        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(this);
 
         homeButton = findViewById(R.id.pet_home_button_outer);
         homeButton.setOnClickListener(this);
