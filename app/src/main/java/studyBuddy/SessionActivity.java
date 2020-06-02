@@ -106,7 +106,6 @@ public class SessionActivity extends AppCompatActivity {
                 // lol
                 ((ConstraintLayout)timeline.getParent()).removeView(timeline);
             }
-
             strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
             session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
                                  duration,
