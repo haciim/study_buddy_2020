@@ -2,24 +2,24 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:width="6dp"
         android:height="6dp"
-        android:start="12dp"
-        android:top="12.5dp">
+        android:start="0dp"
+        android:top="0.5dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>
     </item>
     <item android:width="6dp"
         android:height="6dp"
-        android:start="12dp"
-        android:top="22dp">
+        android:start="0dp"
+        android:top="10dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>
     </item>
     <item android:width="6dp"
         android:height="6dp"
-        android:start="12dp"
-        android:top="31.5dp">
+        android:start="0dp"
+        android:top="19.5dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>
@@ -27,8 +27,8 @@
 
     <item android:width="20dp"
         android:height="3dp"
-        android:start="22dp"
-        android:top="33.5dp">
+        android:start="10dp"
+        android:top="21.5dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>
@@ -36,8 +36,8 @@
 
     <item android:width="20dp"
         android:height="3dp"
-        android:start="22dp"
-        android:top="23.5dp">
+        android:start="10dp"
+        android:top="11.5dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>
@@ -45,8 +45,8 @@
 
     <item android:width="20dp"
         android:height="3dp"
-        android:start="22dp"
-        android:top="14dp">
+        android:start="10dp"
+        android:top="2dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/white" />
         </shape>

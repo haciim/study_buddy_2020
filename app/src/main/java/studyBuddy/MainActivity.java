@@ -48,12 +48,6 @@ public class MainActivity extends AppCompatActivity
         ImageView sessionHistory = findViewById(R.id.session_history_inner);
         sessionHistory.getDrawable().mutate().setColorFilter(filter);
 
-        ImageView circle = findViewById(R.id.circle_button_inner);
-        circle.getDrawable().mutate().setColorFilter(filter);
-
-        TextView info = findViewById(R.id.info_button_text);
-        info.setTextColor(PrimaryColorPicker.getDayColorInt(this));
-
         TextView newSessionText = findViewById(R.id.newSession);
         newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
 
