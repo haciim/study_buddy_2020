@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
@@ -30,6 +31,9 @@ import java.util.List;
 import studyBuddy.timemanagement.EndSessionButtonListener;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.SessionRecord;
+import studyBuddy.timemanagement.SessionType;
+import studyBuddy.timemanagement.Strategy;
+import studyBuddy.timemanagement.StrategyFactory;
 import studyBuddy.timemanagement.TimelineView;
 
 public class SessionActivity extends AppCompatActivity {
@@ -38,10 +42,15 @@ public class SessionActivity extends AppCompatActivity {
     private NotificationChannel channel;
     private ImageView pet;
     private List<SessionRecord> sessions;
+    private Strategy strategy;
 
     static private String SESSION_START_KEY = "sessionStart";
-    static private String SESSION_DURATION_KEY = "sessionDuration";
+
+    static public String SESSION_DURATION_KEY = "sessionDuration";
+
     static private String SESSION_NAME_KEY = "sessionName";
+
+    static public String SESSION_STRATEGY_KEY = "sessionStrategy";
 
     static public int INTENT_ID = 142857;
 
@@ -52,7 +61,9 @@ public class SessionActivity extends AppCompatActivity {
         session = new Session();
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
-        SessionRecord[] sessionRecords = DataManager.load(SessionRecord[].class, this.getApplicationContext());
+      
+        SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
+        Intent sessionIntent = getIntent();
 
         if(sessionRecords == null) {
             sessions = new ArrayList<>();
@@ -62,10 +73,20 @@ public class SessionActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
+        long sessionLength = getIntent().getLongExtra(SESSION_DURATION_KEY, 480000);
+
+        if (sessionLength == 0) {
+            ((ConstraintLayout)timeline.getParent()).removeView(timeline);
+        }
+
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
-            timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
-            timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
+            if (duration != 0) {
+                timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
+                timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
+            } else {
+                timer.setText(Session.formatTime(secondsPassed / 1000));
+            }
         };
 
         timer.setText(getResources().getText(R.string.zero_time));
@@ -75,9 +96,19 @@ public class SessionActivity extends AppCompatActivity {
             session.startSession(savedInstanceBundle.getString(SESSION_NAME_KEY),
                                  savedInstanceBundle.getLong(SESSION_DURATION_KEY),
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
+        } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
+            long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
+            if (duration == 0) {
+                // lol
+                ((ConstraintLayout)timeline.getParent()).removeView(timeline);
+            }
+            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
+            session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
+                                 duration,
+                                 sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
         } else {
-            // get these values from intent
-            session.startSession("testname", 480000);
+            strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
+            session.startSession("testname", sessionIntent.getLongExtra(SESSION_DURATION_KEY, 480000));
         }
 
         // Setup pet animation
@@ -128,6 +159,12 @@ public class SessionActivity extends AppCompatActivity {
         savedInstanceState.putLong(SESSION_START_KEY, session.getStartTime().getTime());
         savedInstanceState.putLong(SESSION_DURATION_KEY, session.getExpectedTime());
         savedInstanceState.putString(SESSION_NAME_KEY, session.getName());
+        if (strategy != null) {
+            savedInstanceState.putLong(SESSION_STRATEGY_KEY, strategy.getDuration());
+        } else {
+            savedInstanceState.putLong(SESSION_STRATEGY_KEY, -1);
+        }
+
     }
 
     @Override
@@ -139,6 +176,10 @@ public class SessionActivity extends AppCompatActivity {
             Intent broadcastIntent = new Intent(this, SessionBroadcastReceiver.class);
             broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_END, session.getExpectedTime() + session.getStartTime().getTime());
+            broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_START, session.getStartTime().getTime());
+            if (strategy != null) {
+                broadcastIntent.putExtra(SESSION_STRATEGY_KEY, strategy.getDuration());
+            }
             PendingIntent pendingBroadcast = PendingIntent.getBroadcast(this, INTENT_ID, broadcastIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
             AlarmManager alarm_mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
@@ -169,10 +210,11 @@ public class SessionActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(!session.isSessionOngoing()){
-            session.clean();
+        if(!session.isSessionOngoing()) {
             sessions.add(new SessionRecord(session));
-            DataManager.save(sessions.toArray(), this.getApplicationContext());
+            Log.d("Session", "Storing session data...");
+            SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
+            DataManager.save(this, arr);
         }
     }
 }

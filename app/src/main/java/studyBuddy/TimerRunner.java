@@ -32,7 +32,7 @@ public class TimerRunner implements Runnable {
      * Sets the callback which is called once the timer runner is stopped.
      * @param callback - The function which will be called.
      */
-    public synchronized void setFinishedCallback(SessionCompleteCallback callback) {
+    synchronized void setFinishedCallback(SessionCompleteCallback callback) {
         this.finishCall = callback;
     }
 
@@ -56,15 +56,15 @@ public class TimerRunner implements Runnable {
      * Runnable function -- called once per second
      */
     public synchronized void run() {
-            if (startTime == -1) {
-                // first run, not set
-                this.startTime = System.currentTimeMillis();
-            }
-            // increment internal timer
-            // pass to callback method
-            if (callback != null) {
-                callback.callbackFunc((System.currentTimeMillis() - startTime), duration);
-            }
+        if (startTime == -1) {
+            // first run, not set
+            this.startTime = System.currentTimeMillis();
+        }
+        // increment internal timer
+        // pass to callback method
+        if (callback != null) {
+            callback.callbackFunc((System.currentTimeMillis() - startTime), duration);
+        }
 
         long currentTime = System.currentTimeMillis() - startTime;
         // also works if we somehow skip a second, or if we fall short a second :)
@@ -73,10 +73,12 @@ public class TimerRunner implements Runnable {
         Log.d("TimerRunner", "est: " + estimatedTime);
         Log.d("TimerRunner", "cur: " + currentTime);
 
-        if (currentTime < duration && duration > 0) {
+        if (currentTime < duration || duration <= 0) {
             parent.postDelayed(this, Math.max(estimatedTime - currentTime, 0));
+            // if 0: never call it
         } else if (finishCall != null) {
-            finishCall.callbackFunc((currentTime - startTime) / 1000);
+            // ensures that we never report more than the planned session duration
+            finishCall.callbackFunc(Math.min(currentTime - startTime, duration) / 1000);
             // call finished callback
         }
     }

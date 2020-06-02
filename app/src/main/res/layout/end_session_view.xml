@@ -19,5 +19,6 @@
         android:layout_width="@dimen/home_button_outer_size"
         android:layout_height="@dimen/home_button_outer_size"
         android:src="@drawable/home_button_light" />
+        android:src="@drawable/home_button" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
