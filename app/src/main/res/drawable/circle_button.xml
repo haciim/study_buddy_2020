@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape xmlns:android="http://schemas.android.com/apk/res/android"
-            android:shape="oval">
-            <size android:width="@dimen/home_button_outer_size" android:height="@dimen/home_button_outer_size"/>
-            <solid android:color="@color/white" />
-        </shape>
-    </item>
     <item android:width="@dimen/home_button_inner_size"
         android:height="@dimen/home_button_inner_size"
         android:start="@dimen/home_button_inner_margin"
-        android:top="@dimen/home_button_inner_margin">
+        android:top="@dimen/home_button_inner_margin"
+        android:end="@dimen/home_button_inner_margin"
+        android:bottom="@dimen/home_button_inner_margin">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="oval">
-            <stroke android:color="@color/button_primary" android:width="3dp" />
+            <solid android:color="@color/transparent" />
+            <stroke android:color="@color/white" android:width="3dp" />
+
         </shape>
     </item>
 

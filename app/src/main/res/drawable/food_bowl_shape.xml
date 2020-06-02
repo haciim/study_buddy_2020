@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="@dimen/home_button_outer_size"
+    android:width="@dimen/home_button_outer_size"
+    android:viewportHeight="100"
+    android:viewportWidth="100">
+    <group
+        android:name="bowl_group">
+        <path
+            android:name="bowl"
+            android:strokeColor="@color/button_primary"
+            android:strokeWidth="5"
+            android:fillColor="@color/button_primary"
+            android:strokeLineJoin="round"
+            android:pathData="M80,60
+                      A10,-4 0 0,0 20,60
+                      A10,4 0 0,0 80,60
+                      A10,-4 0 0,0 20,60
+                      L80,60 L70,35
+                      L30,35 L20,60"/>
+        <path
+            android:name="bowl_top"
+            android:strokeColor="@color/button_primary"
+            android:strokeWidth="5"
+            android:fillColor="@color/black"
+            android:pathData="M70,35
+                        A10,4 0 0,0 30,35
+                        A10,4 0 0,0 70,35"/>
+    </group>
+</vector>

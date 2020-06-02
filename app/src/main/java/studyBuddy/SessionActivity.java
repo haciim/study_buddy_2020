@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +62,18 @@ public class SessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.session_layout);
+        View background = findViewById(R.id.session_base);
+        background.setBackgroundColor(PrimaryColorPicker.getDayColorInt(this));
+
+        View fob = findViewById(R.id.fob);
+        Drawable buttonContents = ((ImageView)fob).getDrawable();
+
+        buttonContents.mutate().setColorFilter(PrimaryColorPicker.getDayColorMatrixFilter(this));
+
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
         TextView timer = findViewById(R.id.time);
@@ -117,13 +131,12 @@ public class SessionActivity extends AppCompatActivity {
         pet = findViewById(R.id.session_pet_image);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(pet);
 
-        View button = findViewById(R.id.fob);
         View endSessionText = findViewById(R.id.endSessionText);
         ObjectAnimator animator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.text_animator);
         endSessionText.setTranslationX(750);
 
         animator.setTarget(endSessionText);
-        button.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
+        fob.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
         SessionCompleteCallback completeCallback = (elapsedTime) -> {
             setContentView(R.layout.finish_session_view);
@@ -213,10 +226,10 @@ public class SessionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(!session.isSessionOngoing()) {
-            sessions.add(new SessionRecord(session));
-            Log.d("Session", "Storing session data...");
-            SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
-            DataManager.save(this, arr);
+                sessions.add(0, new SessionRecord(session));
+                Log.d("Session", "Storing session data...");
+                SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
+                DataManager.save(this, arr);
         }
     }
 }
