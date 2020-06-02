@@ -50,7 +50,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         SessionRecord record = this.mDataset[position];
-        Month month = Month.of(record.start.getMonth());
+        Month month = Month.of(record.start.getMonth() + 1);
         String text = "" + month + " " + record.start.getDate()
                 + ": " + record.getDurationMins();
         holder.date.setText(text);
