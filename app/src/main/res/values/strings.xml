@@ -7,4 +7,5 @@
     <string name="min">MIN</string>
     <string name="pet_image_descrip">The image of the user\'s pet.</string>
     <string name="image_of_your_pet">Image of your pet</string>
+    <string name="application_background">application background</string>
 </resources>

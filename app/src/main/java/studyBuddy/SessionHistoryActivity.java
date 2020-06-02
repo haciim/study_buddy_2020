@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -44,6 +46,17 @@ public class SessionHistoryActivity extends AppCompatActivity
 
         homeButton = findViewById(R.id.session_history_home_button_outer);
         homeButton.setOnClickListener(this);
+
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+
+        ImageView background = findViewById(R.id.main_background);
+        background.getDrawable().mutate().setColorFilter(PrimaryColorPicker.getDayColorMatrixFilter(this));
+
+        ImageView homeButton = findViewById(R.id.session_history_home_button_inner);
+        homeButton.getDrawable().mutate().setColorFilter(PrimaryColorPicker.getDayColorMatrixFilter(this));
+
     }
 
     @Override

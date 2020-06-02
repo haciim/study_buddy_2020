@@ -4,11 +4,14 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -39,6 +42,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
         timeSelectorIsOpen = false;
+
+        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(this);
+
+        ImageView sessionHistory = findViewById(R.id.session_history_inner);
+        sessionHistory.getDrawable().mutate().setColorFilter(filter);
+
+        TextView newSessionText = findViewById(R.id.newSession);
+        newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
+
+        // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+
+        ImageView background = findViewById(R.id.main_background);
+        background.getDrawable().mutate().setColorFilter(filter);
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();
