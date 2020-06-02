@@ -6,8 +6,5 @@
             <solid android:color="@color/white" />
         </shape>
     </item>
-    <item android:drawable="@drawable/home_shape"
-        android:top="2dp">
-        <scale android:useIntrinsicSizeAsMinimum="true"/>
-    </item>
+
 </layer-list>

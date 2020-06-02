@@ -8,7 +8,7 @@
         android:name="home_group">
         <path
             android:name="home"
-            android:strokeColor="@color/button_primary"
+            android:strokeColor="@color/white"
             android:strokeWidth="7"
             android:strokeLineJoin="round"
             android:pathData="M50,17 L80,40 L70,40 L70,70 L57,70 L57,55 L43,55 L43,70 L30,70 L30,40 L20,40z"/>
