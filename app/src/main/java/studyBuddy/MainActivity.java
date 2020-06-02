@@ -47,10 +47,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.home_layout);
         timeSelectorIsOpen = false;
 
-        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(this);
-
-        ImageView sessionHistory = findViewById(R.id.session_history_inner);
-        sessionHistory.getDrawable().mutate().setColorFilter(filter);
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
 
         TextView newSessionText = findViewById(R.id.newSession);
         newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
@@ -60,8 +57,7 @@ public class MainActivity extends AppCompatActivity
 
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
-        ImageView background = findViewById(R.id.main_background);
-        background.getDrawable().mutate().setColorFilter(filter);
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();

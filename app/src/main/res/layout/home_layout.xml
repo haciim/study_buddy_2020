@@ -11,7 +11,7 @@
         android:id="@+id/main_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/test_background"
+        android:src="@drawable/home_background"
         android:contentDescription="@string/application_background"/>
 
     <TextClock

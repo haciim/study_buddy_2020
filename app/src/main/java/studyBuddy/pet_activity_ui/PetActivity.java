@@ -68,7 +68,8 @@ public class PetActivity extends AppCompatActivity
 
         this.pStatus = PetStatus.IDLE;
 
-        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(this);
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button_inner));
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_activity_background));
 
         homeButton = findViewById(R.id.pet_home_button_outer);
         homeButton.setOnClickListener(this);

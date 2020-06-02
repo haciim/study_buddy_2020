@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.core.content.ContextCompat;
 
@@ -49,5 +51,10 @@ public class PrimaryColorPicker {
 
         result.setScale(r, g, b, 1);
         return new ColorMatrixColorFilter(result);
+    }
+
+    public static void setBackgroundFilter(Context context, ImageView view) {
+        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(context);
+        view.getDrawable().mutate().setColorFilter(filter);
     }
 }
