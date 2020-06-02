@@ -87,6 +87,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         activityIntent.putExtra(SESSION_START, sessionStartTime);
         if (strategy != null) {
             nextBroadcastIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
+            activityIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
         }
         NotificationManager mgr = (NotificationManager)ctx.getSystemService(Context.NOTIFICATION_SERVICE);
 

@@ -180,7 +180,7 @@ public class Session {
             }
 
             if (completeCallback != null) {
-                completeCallback.callbackFunc(getSeconds(startTime, endTime));
+                completeCallback.callbackFunc(Math.min(getSeconds(startTime, endTime), expectedTime / 1000));
             }
 
             return totalTime;
