@@ -20,7 +20,7 @@ public class PetAnimation {
 
     // a master list of animations that the pet can do
     final private String[] possibleAnimations =
-    {"idle", "feeding", "bathing", "studying"};
+    {"idle_neutral", "idle_happy", "idle_sad", "feeding", "bathing", "studying"};
     
     //TODO: Subject to change
     
@@ -34,7 +34,9 @@ public class PetAnimation {
 
     final private String[][] possibleGifs = 
 
-    {{"idle",     "default", "idle-default.gif"},
+    {{"idle_neutral", "default", "idle_neutral-default.gif"},
+     {"idle_happy", "default", "idle_happy-default.gif"},
+     {"idle_sad", "default", "idle_sad-default.gif"},
      {"feeding",  "default", "feeding-default.gif"},
      {"bathing",  "default", "bathing-default.gif"},
      {"studying", "default", "studying-default.gif"}};
@@ -45,8 +47,8 @@ public class PetAnimation {
 
     public PetAnimation(Pet theePet){
         thePet = theePet;
-        curAnimation = "idle";
-        curGif = "idle-default.gif"; //idle animation, default color
+        curAnimation = "idle_neutral";
+        curGif = "idle_neutral-default.gif"; //idle animation, default color
         lastFed = new Date();
         lastBathed = new Date();
     }
@@ -64,8 +66,10 @@ public class PetAnimation {
         return curGif;
     }
 
-    /** Setter methods */   
-    
+    /** Setter methods */
+
+
+
     // helper search method
     private boolean possibleAnimationsSearch(String key){
         for (int i = 0; i < possibleAnimations.length; i++){
@@ -96,6 +100,27 @@ public class PetAnimation {
         return false;
     }
 
+    /**
+     * since we have happy and sad gifs for idle depending on mood level,
+     * this handles the different idle animations*/
+    public void setIdleType(){
+
+        int curMood = thePet.getMoodLevel();
+
+        // pet's mood > 2
+        if(curMood > 2){
+            setCurAnimation("idle_happy");
+        }
+        // if -2 <= pet's mood <= 2
+        else if(-2 <= curMood){
+            setCurAnimation("idle_neutral");
+        }
+        //pet mood is less than -2
+        else{
+            setCurAnimation("idle_sad");
+        }
+    }
+
     // pet feeds/bathes itself at a certain time if not fed
     // bathed at certain times
 
@@ -108,8 +133,15 @@ public class PetAnimation {
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         return hour;
     }
+
+
+
     // should be called at the beginning of every pet screen pull
     public void maintenanceCheck(){
+
+        //i know we're probably not making a screen for this but it doesn't hurt
+        thePet.worstTrustCheck();
+
 
         Date now = new Date();
 
@@ -117,13 +149,13 @@ public class PetAnimation {
         long fedDiffMin = fedDiff/ (60 * 60 * 1000);
 
         if (fedDiffMin > 30){
-            setCurAnimation("idle");
+            setIdleType();
         }
 
         long bathedDiff = now.getTime() - lastBathed.getTime();
         long bathedDiffMin = fedDiff/ (60 * 60 * 1000);
         if (bathedDiffMin > 30){
-            setCurAnimation("idle");
+            setIdleType();
         }
 
         int curHour = getHourOfDay();

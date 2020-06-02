@@ -103,7 +103,6 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         long nextNotificationDuration = (long)(60000 * Math.ceil(duration / 60000.0) - 60000);
         // difference between current "time remaining" and when we send the notif
         long timeToNextUpdate = (duration - nextNotificationDuration);
-
         if (strategy == null) {
             // standard session
             if (sessionStartTime >= sessionEndTime) {
