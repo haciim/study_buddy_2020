@@ -6,6 +6,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,6 +71,9 @@ public class PetActivity extends AppCompatActivity
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button_inner));
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_activity_background));
+
+        Window window = this.getWindow();
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         homeButton = findViewById(R.id.pet_home_button_outer);
         homeButton.setOnClickListener(this);

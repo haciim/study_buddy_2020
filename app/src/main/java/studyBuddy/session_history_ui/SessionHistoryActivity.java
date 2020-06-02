@@ -4,6 +4,7 @@ package studyBuddy.session_history_ui;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studdybuddy.R;
 
 import studyBuddy.DataManager;
+import studyBuddy.PrimaryColorPicker;
 import studyBuddy.timemanagement.SessionRecord;
 
 
@@ -29,8 +31,6 @@ public class SessionHistoryActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.session_history_layout);
-
-
 
         this.records = findViewById(R.id.session_record_recycler);
 
@@ -52,6 +52,10 @@ public class SessionHistoryActivity extends AppCompatActivity
 
         homeButton = findViewById(R.id.session_history_home_button_outer);
         homeButton.setOnClickListener(this);
+
+        Window window = this.getWindow();
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_home_button_inner));
     }
 
     @Override
