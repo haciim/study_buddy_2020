@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import studyBuddy.main_activity.MainActivity;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
@@ -84,8 +85,8 @@ public class SessionActivity extends AppCompatActivity {
         SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
         Intent sessionIntent = getIntent();
 
-        this.pet = (Pet) sessionIntent.getSerializableExtra("pet");
-        this.petAnimation = (PetAnimation) sessionIntent.getSerializableExtra("pet_animation");
+        this.pet = (Pet) sessionIntent.getSerializableExtra(MainActivity.PET_KEY);
+        this.petAnimation = (PetAnimation) sessionIntent.getSerializableExtra(MainActivity.PET_ANIMATION_KEY);
 
         if(sessionRecords == null) {
             sessions = new ArrayList<>();
@@ -134,6 +135,7 @@ public class SessionActivity extends AppCompatActivity {
         }
 
         // Setup pet animation
+        this.petAnimation.maintenanceCheck();
         petView = findViewById(R.id.session_pet_image);
         Glide.with(this).asGif().load(this.petAnimation.getCurGif()).into(petView);
 

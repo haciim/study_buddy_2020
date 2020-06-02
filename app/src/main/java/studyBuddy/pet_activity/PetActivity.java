@@ -17,6 +17,7 @@ import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import studyBuddy.main_activity.MainActivity;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
 import studyBuddy.util.PrimaryColorPicker;
@@ -56,8 +57,8 @@ public class PetActivity extends AppCompatActivity
         setContentView(R.layout.pet_layout);
         Intent intent = getIntent();
         if (intent != null) {
-            pet = (Pet) intent.getSerializableExtra("pet");
-            petAnimation = (PetAnimation) intent.getSerializableExtra("petAnimation");
+            pet = (Pet) intent.getSerializableExtra(MainActivity.PET_KEY);
+            petAnimation = (PetAnimation) intent.getSerializableExtra(MainActivity.PET_ANIMATION_KEY);
         } else {
             Log.i("PET_ACTIVITY", "Bad Parent, Could not load pet");
             this.finish();
@@ -90,6 +91,7 @@ public class PetActivity extends AppCompatActivity
         petNameButton = findViewById(R.id.pet_name_outer);
         petNameButton.setOnClickListener(this);
 
+        petAnimation.maintenanceCheck();
         petView = findViewById(R.id.pet_pet_image);
         Glide.with(this).asGif().load(petAnimation.getCurGif()).into(petView);
     }

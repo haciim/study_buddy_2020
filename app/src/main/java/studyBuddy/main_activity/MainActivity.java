@@ -32,6 +32,8 @@ import studyBuddy.time_management.TimeSelectView;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
+    public static final String PET_KEY = "pet";
+    public static final String PET_ANIMATION_KEY = "pet_animation";
 
     private CardView newSession;
     private CardView sessionHistoryButton;
@@ -106,6 +108,7 @@ public class MainActivity extends AppCompatActivity
             this.pet.setName("Buddy");
         }
         this.petAnimation = new PetAnimation(this.pet);
+        petAnimation.maintenanceCheck();
 
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
@@ -142,6 +145,8 @@ public class MainActivity extends AppCompatActivity
                     TimeSelectView selectView = findViewById(timerId);
                     Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
                     intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
+                    intent.putExtra(PET_KEY, this.pet);
+                    intent.putExtra(PET_ANIMATION_KEY, this.petAnimation);
                     if (selectView.getStrategy() != null) {
                         intent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, (long) (selectView.getDuration() * 60 * 1000));
                     }
@@ -156,8 +161,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.home_pet_view:
                 intent = new Intent(this, PetActivity.class);
-                intent.putExtra("pet", this.pet);
-                intent.putExtra("petAnimator", this.petAnimation);
+                intent.putExtra(PET_KEY, this.pet);
+                intent.putExtra(PET_ANIMATION_KEY, this.petAnimation);
                 startActivity(intent);
                 break;
         }

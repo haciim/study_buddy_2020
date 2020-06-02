@@ -73,7 +73,7 @@
             android:id="@+id/session_history_inner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/session_history_button"
+            android:src="@drawable/session_history_shape"
             android:background="@drawable/button_base"
             android:padding="12dp"/>
     </androidx.cardview.widget.CardView>
