@@ -231,10 +231,10 @@ public class SessionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(!session.isSessionOngoing()) {
-            sessions.add(0, new SessionRecord(session));
-            Log.d("Session", "Storing session data...");
-            SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
-            DataManager.save(this, arr);
+                sessions.add(0, new SessionRecord(session));
+                Log.d("Session", "Storing session data...");
+                SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
+                DataManager.save(this, arr);
         }
     }
 }
