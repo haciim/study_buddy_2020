@@ -35,7 +35,7 @@ public class Session {
      * Parameters are initialized to somewhat meaningless values
      * Session needs to be started by user
      */
-    public Session() {
+    public Session(Handler handler) {
         startTime = null;
         endTime = null;
         name = null;
@@ -51,7 +51,7 @@ public class Session {
         completeCallback = null;
 
         // runs on UI thread (intended for view updates)
-        handler = new Handler(Looper.getMainLooper());
+        this.handler = handler;
         runner = new TimerRunner(handler);
 
         runner.setFinishedCallback((long l) -> {
@@ -252,6 +252,17 @@ public class Session {
     }
 
     /**
+     * @return the actual duration of the session if its complete, and -1 otherwise.
+     */
+    public long getActualTime() {
+        if (!sessionOngoing) {
+            return endTime.getTime() - startTime.getTime();
+        }
+
+        return -1;
+    }
+
+    /**
      * Precondition: session is not ongoing
      *
      * @return the percent productive time for this session
@@ -273,7 +284,7 @@ public class Session {
      * @param endTime the later time
      * @return the number of minutes between the two times
      */
-    private double getMinutes(Date startTime, Date endTime) {
+    public double getMinutes(Date startTime, Date endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;
@@ -290,7 +301,7 @@ public class Session {
      * @param endTime later date
      * @return seconds
      */
-    private long getSeconds(Date startTime, Date endTime) {
+    public long getSeconds(Date startTime, Date endTime) {
         long start = startTime.getTime();
         long end = endTime.getTime();
         long diff = end - start;

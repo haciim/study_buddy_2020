@@ -27,7 +27,7 @@ public class SessionRecord {
         this.type = SessionType.NONE;
         this.name = session.getName();
         this.start = session.getStartTime();
-        this.end = new Date(session.getStartTime().getTime() + session.getExpectedTime());
+        this.end = new Date(session.getStartTime().getTime() + session.getActualTime());
         this.percentProductive = session.getPercentProductive();
     }
 
