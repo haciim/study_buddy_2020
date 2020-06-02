@@ -1,8 +1,10 @@
 package studyBuddy.timemanagement;
 
+import android.os.Parcelable;
+
 import java.util.List;
 
-public interface Strategy {
+public interface Strategy extends Parcelable {
 
     /**
      * Returns the type of a given strategy.
