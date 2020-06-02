@@ -1,8 +1,10 @@
 package studyBuddy;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,8 +17,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
-import studyBuddy.SessionHistoryUI.SessionHistoryActivity;
-import studyBuddy.timemanagement.PomodoroStrategy;
+import studyBuddy.session_history_ui.SessionHistoryActivity;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimeSelectView;
 

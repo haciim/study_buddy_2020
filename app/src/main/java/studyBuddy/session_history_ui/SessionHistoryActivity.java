@@ -1,10 +1,9 @@
-package studyBuddy.SessionHistoryUI;
+package studyBuddy.session_history_ui;
 
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -35,7 +34,7 @@ public class SessionHistoryActivity extends AppCompatActivity
 
         this.records = findViewById(R.id.session_record_recycler);
 
-        this.sessions = DataManager.load(SessionRecord[].class, this.getApplicationContext());
+        this.sessions = DataManager.load(this, SessionRecord[].class);
         if (this.sessions != null) {
             Log.i("session_records", "loaded existing records");
 
@@ -59,7 +58,7 @@ public class SessionHistoryActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         if (this.sessions != null) {
-            DataManager.save(this.sessions, this.getApplicationContext());
+            DataManager.save(this, this.sessions);
         }
     }
 

@@ -1,4 +1,4 @@
-package studyBuddy.SessionHistoryUI;
+package studyBuddy.session_history_ui;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
