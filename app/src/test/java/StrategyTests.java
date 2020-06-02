@@ -31,12 +31,7 @@ public class StrategyTests {
     @Test
     public void TestStandardCalls() {
         Strategy std = StrategyFactory.getStrategy(SessionType.STANDARD, HOUR_MILLIS);
-        Assert.assertNotNull(std);
-        List<StudyInterval> intervalList = std.getTimeTable();
-        Assert.assertEquals(1, intervalList.size());
-        StudyInterval interval = intervalList.get(0);
-        Assert.assertEquals(HOUR_MILLIS, interval.end - interval.start);
-        Assert.assertEquals(HOUR_MILLIS, std.getDuration());
+        Assert.assertNull(std);
     }
 
     @Test
