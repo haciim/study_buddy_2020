@@ -1,14 +1,19 @@
 package studyBuddy;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -18,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import studyBuddy.pet_activity_ui.PetActivity;
 import studyBuddy.timemanagement.PomodoroStrategy;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimeSelectView;
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private CardView sessionHistoryButton;
     private ImageView petView;
     private Pet pet;
+    private PetAnimation petAnimation;
 
     private boolean timeSelectorIsOpen;
     int timerId;
@@ -39,6 +46,22 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_layout);
         timeSelectorIsOpen = false;
+
+        ColorMatrixColorFilter filter = PrimaryColorPicker.getDayColorMatrixFilter(this);
+
+        ImageView sessionHistory = findViewById(R.id.session_history_inner);
+        sessionHistory.getDrawable().mutate().setColorFilter(filter);
+
+        TextView newSessionText = findViewById(R.id.newSession);
+        newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
+
+        // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+
+        ImageView background = findViewById(R.id.main_background);
+        background.getDrawable().mutate().setColorFilter(filter);
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();
@@ -80,16 +103,19 @@ public class MainActivity extends AppCompatActivity
 
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
+        petView.setOnClickListener(this);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
 
-        pet = DataManager.load(this, Pet.class);
-        if (pet == null) {
+        this.pet = DataManager.load(this, Pet.class);
+        if (this.pet == null) {
             Log.i("Main", "Init new pet");
-            pet = new Pet();
-            pet.setName("Buddy");
+            this.pet = new Pet();
+            this.pet.setName("Buddy");
         }
+        this.petAnimation = new PetAnimation(this.pet);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onClick(View view) {
         // create this intent
@@ -100,6 +126,10 @@ public class MainActivity extends AppCompatActivity
                     TimeSelectView timerView = new TimeSelectView(this);
                     timerId = View.generateViewId();
                     timerView.setId(timerId);
+                    timerView.setClearListener((View v) -> {
+                        ((ConstraintLayout)findViewById(R.id.base_layer)).removeView(timerView);
+                        timeSelectorIsOpen = false;
+                    });
                     ConstraintLayout layout = findViewById(R.id.base_layer);
                     layout.addView(timerView);
                     ConstraintSet timerConstraints = new ConstraintSet();
@@ -124,6 +154,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.session_history_outer:
                 intent = new Intent(this, SessionHistoryActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.home_pet_view:
+                intent = new Intent(this, PetActivity.class);
+                intent.putExtra("pet", this.pet);
+                intent.putExtra("petAnimator", this.petAnimation);
                 startActivity(intent);
                 break;
         }

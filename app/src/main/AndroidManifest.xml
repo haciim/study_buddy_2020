@@ -20,13 +20,14 @@
         <activity
             android:name="studyBuddy.SessionActivity"
             android:label="Session View"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:theme="@style/AppTheme"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity android:name="studyBuddy.SessionHistoryActivity" />
+        <activity android:name="studyBuddy.pet_activity_ui.PetActivity" />
 
         <receiver android:name="studyBuddy.timemanagement.SessionBroadcastReceiver"
                   android:exported="true">

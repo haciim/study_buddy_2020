@@ -2,12 +2,13 @@
 
 package studyBuddy;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 
-public class PetAnimation {
+public class PetAnimation implements Serializable {
     /** Instance Variables */
     private Pet thePet;
     private String curAnimation;

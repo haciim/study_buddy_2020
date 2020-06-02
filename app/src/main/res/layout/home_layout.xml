@@ -5,7 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/test_background">
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/main_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/test_background"
+        android:contentDescription="@string/application_background"/>
 
     <TextClock
         android:id="@+id/home_clock"
@@ -66,7 +73,9 @@
             android:id="@+id/session_history_inner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/session_history_button"/>
+            android:src="@drawable/session_history_button"
+            android:background="@drawable/button_base"
+            android:padding="12dp"/>
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -79,6 +88,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".45"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,13 +2,14 @@
 
 package studyBuddy;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
-public class Pet {
+public class Pet implements Serializable {
     /** Instance Variables */
     private String name; // name of the pet
     private int trustLevel; // pet's trust level of the user, ranges from -10 to 10
@@ -32,7 +33,7 @@ public class Pet {
     /** Constructor */
     public Pet() {
 
-        name = "Your pet";
+        name = "Buddy";
 
         trustLevel = 0;
 
