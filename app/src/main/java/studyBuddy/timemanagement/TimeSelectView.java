@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.studdybuddy.R;
 
@@ -22,17 +25,33 @@ public class TimeSelectView extends LinearLayout {
     public static String[] time_durations_pomodoro = {"30", "60", "90"};
     private static String[] strategies = {"Standard", "Pomodoro"};
 
+    private View.OnClickListener clearListener;
+    private View clearButton;
+
     private float oldY;
 
     public TimeSelectView(Context ctx) {
         super(ctx);
         setupSliders(ctx);
+        clearButton = findViewById(R.id.clear_time_view);
+        clearButton.setOnClickListener((View v) -> {
+            System.out.println("this runs");
+            if (clearListener != null) {
+                clearListener.onClick(v);
+            }
+        });
 
     }
 
     public TimeSelectView(Context ctx, AttributeSet attrs) {
         super(ctx, attrs);
         setupSliders(ctx);
+    }
+
+    public void setClearListener(View.OnClickListener listener) {
+        this.clearListener = listener;
+
+
     }
 
     private void setupSliders(Context ctx) {
