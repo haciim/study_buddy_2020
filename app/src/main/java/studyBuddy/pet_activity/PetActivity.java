@@ -32,6 +32,8 @@ public class PetActivity extends AppCompatActivity
     private RelativeLayout petNameButton;
 
     private TextView petName;
+    private TextView petMood;
+    private TextView petTrust;
 
     private ImageView petView;
 
@@ -67,12 +69,14 @@ public class PetActivity extends AppCompatActivity
 
         this.pStatus = PetStatus.IDLE;
 
+        // Set time of day lighting
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button_inner));
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_activity_background));
 
         Window window = this.getWindow();
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
+        // Initialize view components and callback listeners
         homeButton = findViewById(R.id.pet_home_button_outer);
         homeButton.setOnClickListener(this);
 
@@ -91,6 +95,15 @@ public class PetActivity extends AppCompatActivity
         petNameButton = findViewById(R.id.pet_name_outer);
         petNameButton.setOnClickListener(this);
 
+        petMood = findViewById(R.id.pet_mood_text);
+        String mood = "Mood: " + pet.getMoodLevel();
+        petMood.setText(mood);
+
+        petTrust = findViewById(R.id.pet_trust_text);
+        String trust = "Trust: " + pet.getTrustLevel();
+        petTrust.setText(trust);
+
+        // Display pet gif
         petAnimation.maintenanceCheck();
         petView = findViewById(R.id.pet_pet_image);
         Glide.with(this).asGif().load(petAnimation.getCurGif()).into(petView);
@@ -109,15 +122,26 @@ public class PetActivity extends AppCompatActivity
                 break;
             case R.id.pet_feed_button_outer:
                 if (pet.getIsFed()) {
-                    Toast.makeText(this, "Pet has been recently fed", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Pet has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
                     pet.feed();
                 }
                 break;
             case R.id.pet_color_button_outer:
+                if (pet.getMoodLevel() >= 2) {
+                    // TODO: Recolor pet
+                } else {
+                    Toast.makeText(this, "Pet needs mood level of 2 or higher to change color",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.pet_name_outer:
-                // TODO: change pet name
+                if (pet.getTrustLevel() >= 2) {
+                    // TODO: Rename pet
+                } else {
+                    Toast.makeText(this, "Pet needs trust level of 2 or higher to respond to new name",
+                            Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.pet_home_button_outer:
                 this.finish();

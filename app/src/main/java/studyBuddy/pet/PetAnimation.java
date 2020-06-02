@@ -2,6 +2,8 @@
 
 package studyBuddy.pet;
 
+import com.example.studdybuddy.R;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -63,8 +65,8 @@ public class PetAnimation implements Serializable {
         return curAnimation;
     }
 
-    public String getCurGif(){
-        return curGif;
+    public int getCurGif(){
+        return R.raw.idle_happy_default;
     }
 
     /** Setter methods */
