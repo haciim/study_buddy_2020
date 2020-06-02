@@ -23,6 +23,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import studyBuddy.pet_activity_ui.PetActivity;
 import studyBuddy.timemanagement.PomodoroStrategy;
 import studyBuddy.timemanagement.SessionBroadcastReceiver;
 import studyBuddy.timemanagement.TimeSelectView;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private CardView sessionHistoryButton;
     private ImageView petView;
     private Pet pet;
+    private PetAnimation petAnimation;
 
     private boolean timeSelectorIsOpen;
     int timerId;
@@ -101,14 +103,16 @@ public class MainActivity extends AppCompatActivity
 
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
+        petView.setOnClickListener(this);
         Glide.with(this).asGif().load(R.raw.pet_idle).into(petView);
 
-        pet = DataManager.load(this, Pet.class);
-        if (pet == null) {
+        this.pet = DataManager.load(this, Pet.class);
+        if (this.pet == null) {
             Log.i("Main", "Init new pet");
-            pet = new Pet();
-            pet.setName("Buddy");
+            this.pet = new Pet();
+            this.pet.setName("Buddy");
         }
+        this.petAnimation = new PetAnimation(this.pet);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -150,6 +154,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.session_history_outer:
                 intent = new Intent(this, SessionHistoryActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.home_pet_view:
+                intent = new Intent(this, PetActivity.class);
+                intent.putExtra("pet", this.pet);
+                intent.putExtra("petAnimator", this.petAnimation);
                 startActivity(intent);
                 break;
         }

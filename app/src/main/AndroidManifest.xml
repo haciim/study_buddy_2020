@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name="studyBuddy.SessionHistoryActivity" />
+        <activity android:name="studyBuddy.pet_activity_ui.PetActivity" />
 
         <receiver android:name="studyBuddy.timemanagement.SessionBroadcastReceiver"
                   android:exported="true">
