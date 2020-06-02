@@ -77,7 +77,8 @@ public class TimerRunner implements Runnable {
             parent.postDelayed(this, Math.max(estimatedTime - currentTime, 0));
             // if 0: never call it
         } else if (finishCall != null) {
-            finishCall.callbackFunc((currentTime - startTime) / 1000);
+            // ensures that we never report more than the planned session duration
+            finishCall.callbackFunc(Math.min(currentTime - startTime, duration) / 1000);
             // call finished callback
         }
     }
