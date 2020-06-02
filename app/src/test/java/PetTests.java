@@ -19,7 +19,7 @@ public class PetTests {
     public void initGetTest(){
         Pet buddy = new Pet();
         Date today = new Date();
-        Assert.assertEquals("Your pet", buddy.getName());
+        Assert.assertEquals("Buddy", buddy.getName());
         Assert.assertEquals(0,buddy.getTrustLevel());
         Assert.assertEquals(0,buddy.getMoodLevel());
         Assert.assertEquals("default",buddy.getColor());
