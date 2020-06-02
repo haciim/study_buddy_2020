@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
@@ -68,10 +69,20 @@ public class SessionActivity extends AppCompatActivity {
 
         createNotificationChannel();
 
+        long sessionLength = getIntent().getLongExtra(SESSION_DURATION_KEY, 480000);
+
+        if (sessionLength == 0) {
+            ((ConstraintLayout)timeline.getParent()).removeView(timeline);
+        }
+
         SessionTimerCallback callback = (secondsPassed, duration) -> {
             double percentage = ((double)secondsPassed / duration);
-            timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
-            timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
+            if (duration != 0) {
+                timeline.setPercentageCompletion(Math.min(Math.max(percentage, 0.0), 1.0));
+                timer.setText(Session.formatTime(Math.min(secondsPassed, duration) / 1000));
+            } else {
+                timer.setText(Session.formatTime(secondsPassed / 1000));
+            }
         };
 
         timer.setText(getResources().getText(R.string.zero_time));
@@ -84,6 +95,10 @@ public class SessionActivity extends AppCompatActivity {
                                  savedInstanceBundle.getLong(SESSION_START_KEY));
         } else if (sessionIntent.getBooleanExtra(SessionBroadcastReceiver.REOPEN_SESSION, false)) {
             long duration = sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()) - sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis());
+            if (duration == 0) {
+                // lol
+                ((ConstraintLayout)timeline.getParent()).removeView(timeline);
+            }
             session.startSession(sessionIntent.getStringExtra(SESSION_NAME_KEY),
                                  duration,
                                  sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
