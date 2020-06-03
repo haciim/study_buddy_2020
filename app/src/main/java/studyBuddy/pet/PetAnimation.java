@@ -66,7 +66,7 @@ public class PetAnimation implements Serializable {
     }
 
     public int getCurGif(){
-        return R.raw.idle_happy_default;
+        return R.raw.idle_neutral_default;
     }
 
     /** Setter methods */

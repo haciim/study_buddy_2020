@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private ImageView petView;
     private Pet pet;
     private PetAnimation petAnimation;
+    private TextView newSessionText;
 
     private boolean timeSelectorIsOpen;
     int timerId;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
 
-        TextView newSessionText = findViewById(R.id.newSession);
+        this.newSessionText = findViewById(R.id.new_session_text);
         newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
 
         // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
@@ -63,6 +64,17 @@ public class MainActivity extends AppCompatActivity
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
+
+        // Load pet
+        this.pet = DataManager.load(this, Pet.class);
+        if (this.pet == null) {
+            Log.i("Main", "Init new pet");
+            this.pet = new Pet();
+            this.pet.setName("Buddy");
+            this.pet.setTrustLevel(2);
+        }
+        this.petAnimation = new PetAnimation(this.pet);
+        petAnimation.maintenanceCheck();
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();
@@ -82,6 +94,8 @@ public class MainActivity extends AppCompatActivity
                 alarmMgr.cancel((PendingIntent) appIntent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
             }
 
+            startSession.putExtra(PET_KEY, this.pet);
+            startSession.putExtra(PET_ANIMATION_KEY, this.petAnimation);
             startActivity(startSession);
         } else {
             Intent broadcast = new Intent(this, SessionBroadcastReceiver.class);
@@ -99,17 +113,6 @@ public class MainActivity extends AppCompatActivity
 
         sessionHistoryButton = findViewById(R.id.session_history_outer);
         sessionHistoryButton.setOnClickListener(this);
-
-        // Load pet
-        this.pet = DataManager.load(this, Pet.class);
-        if (this.pet == null) {
-            Log.i("Main", "Init new pet");
-            this.pet = new Pet();
-            this.pet.setName("Buddy");
-            this.pet.setTrustLevel(2);
-        }
-        this.petAnimation = new PetAnimation(this.pet);
-        petAnimation.maintenanceCheck();
 
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
@@ -144,6 +147,7 @@ public class MainActivity extends AppCompatActivity
                     timerView.setClearListener((View v) -> {
                         ((ConstraintLayout)findViewById(R.id.base_layer)).removeView(timerView);
                         timeSelectorIsOpen = false;
+                        newSessionText.setText(R.string.new_session);
                     });
                     ConstraintLayout layout = findViewById(R.id.base_layer);
                     layout.addView(timerView);
@@ -154,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                     timerConstraints.connect(timerView.getId(), ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
                     timerConstraints.applyTo(layout);
                     timeSelectorIsOpen = true;
+                    this.newSessionText.setText(R.string.start_session);
                 } else {
                     intent = new Intent(this, SessionActivity.class);
                     TimeSelectView selectView = findViewById(timerId);
@@ -167,6 +172,7 @@ public class MainActivity extends AppCompatActivity
                     ((ConstraintLayout) findViewById(R.id.base_layer)).removeView(selectView);
                     startActivity(intent);
                     timeSelectorIsOpen = false;
+                    newSessionText.setText(R.string.new_session);
                 }
                 break;
             case R.id.session_history_outer:

@@ -46,13 +46,12 @@
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/home_new_session_corner_inner_radius">
             <TextView
-                android:id="@+id/newSession"
+                android:id="@+id/new_session_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/home_new_session_inner_margin"
-                android:text="NEW SESSION"
+                android:text="@string/new_session"
                 android:fontFamily="@font/montserrat_light"
-                android:textColor="@color/button_primary"
                 android:textSize="@dimen/home_new_session_text_size" />
         </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
