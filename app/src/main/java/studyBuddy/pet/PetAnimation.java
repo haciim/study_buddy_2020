@@ -2,6 +2,9 @@
 
 package studyBuddy.pet;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.studdybuddy.R;
 
 import java.io.Serializable;
@@ -12,7 +15,7 @@ import java.util.GregorianCalendar;
 
 public class PetAnimation implements Serializable {
     /** Instance Variables */
-    private Pet thePet;
+    private Pet pet;
     private String curAnimation;
     private String curGif;
 
@@ -56,25 +59,28 @@ public class PetAnimation implements Serializable {
 
     // You need an existing Pet object in order to have a PetAnimation object
 
-    public PetAnimation(Pet theePet){
-        thePet = theePet;
+    public PetAnimation(Pet pet){
+        this.pet = pet;
         curAnimation = "idle_neutral";
-        curGif = "idle_neutral_default.gif"; //idle animation, default color
+        curGif = "idle_neutral_default"; //idle animation, default color
         lastFed = new Date();
         lastBathed = new Date();
     }
 
     /** Getter methods */
     public Pet getPet(){
-        return thePet;
+        return pet;
     }
 
     public String getCurAnimation(){
         return curAnimation;
     }
 
-    public int getCurGif(){
-        return R.raw.idle_neutral_default;
+    public int getCurGif(Context context){
+        // getIdentifier won't work if filename has '.gif' at the end
+        int id = context.getResources().getIdentifier(curGif, "raw", context.getApplicationInfo().packageName);
+        Log.i("gif id", "" + id);
+        return id;
     }
 
     /** Setter methods */
@@ -83,12 +89,13 @@ public class PetAnimation implements Serializable {
 
     // helper search method
     private boolean possibleAnimationsSearch(String key){
-        for (int i = 0; i < possibleAnimations.length; i++){
-            String curString = possibleAnimations[i];
+        for (int i = 0; i < possibleGifs.length; i++){
+            String curString = possibleGifs[i][0];
             if(curString.equals(key)){
                 return true;
             }
         }
+        Log.i("Gif", "Not found");
         return false;
     }
 
@@ -97,10 +104,11 @@ public class PetAnimation implements Serializable {
         
         //making sure the newAnimation is a valid one
         if(possibleAnimationsSearch(newAnimation)){
+            Log.i("Gif", "Found");
             curAnimation = newAnimation;
 
             // "bathing_default.gif" for example
-            String newGif = curAnimation + "_" + thePet.getColor() + ".gif";
+            String newGif = curAnimation + "_" + pet.getColor();
 
             //gotta update the current gif accordingly too!
             // no reason why you would change the current gif directly
@@ -116,7 +124,7 @@ public class PetAnimation implements Serializable {
      * this handles the different idle animations*/
     public void setIdleType(){
 
-        int curMood = thePet.getMoodLevel();
+        int curMood = pet.getMoodLevel();
 
         // pet's mood > 2
         if(curMood > 2){
@@ -151,7 +159,7 @@ public class PetAnimation implements Serializable {
     public void maintenanceCheck(){
 
         //i know we're probably not making a screen for this but it doesn't hurt
-        thePet.worstTrustCheck();
+        pet.worstTrustCheck();
 
 
         Date now = new Date();
@@ -175,27 +183,30 @@ public class PetAnimation implements Serializable {
         // again, minor cosmetic feature so it doesn't matter too much
         if(curHour <= 9){
 
-            thePet.setIsFed(false);
-            thePet.setIsBathed(false);
+            pet.setIsFed(false);
+            pet.setIsBathed(false);
         }
 
 
-        if(curHour >= 12 && !thePet.getIsFed()){
+        if(curHour >= 12 && !pet.getIsFed()){
+
+            // commented out auto feeding and bathing for testing purposes
+
             //pet feeds itself after noon
 
             //do in main i guess
-            thePet.feed();
-            setCurAnimation("feeding");
-            lastFed = new Date();
+           // pet.feed();
+          //  setCurAnimation("feeding");
+         //   lastFed = new Date();
 
         }
 
-        if(curHour >= (9 + 12) && !thePet.getIsBathed()){
+        if(curHour >= (9 + 12) && !pet.getIsBathed()){
             //pet bathes itself after 9 pm
 
-            thePet.bathe();
-            setCurAnimation("bathing");
-            lastBathed = new Date();
+       //    pet.bathe();
+       //     setCurAnimation("bathing");
+      //      lastBathed = new Date();
 
         }
 

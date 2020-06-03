@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-        Glide.with(this).asGif().load(this.petAnimation.getCurGif()).into(petView);
+        Glide.with(this).asGif().load(this.petAnimation.getCurGif(this)).into(petView);
     }
 
     @Override
