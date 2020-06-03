@@ -145,7 +145,7 @@ public class PetActivity extends AppCompatActivity
         switch (v.getId()) {
             case R.id.pet_bathe_button_inner:
                 if (pet.getIsBathed()) {
-                    Toast.makeText(this, "Pet has been recently bathed", Toast.LENGTH_SHORT);
+                    Toast.makeText(this, "Pet has been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
                     pet.bathe();
                 }
