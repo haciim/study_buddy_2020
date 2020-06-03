@@ -30,6 +30,10 @@
 
 - [ ] Connect ability to change pet color to frontend
 
+- [ ] Issue: How mood/trust levels viewed
+
+- [ ] Issue: System clock change affects timer
+
 ---
 <h2>Team Contributions</h2>
 <h3>Contributions</h3>
