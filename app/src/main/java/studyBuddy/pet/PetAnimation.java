@@ -77,7 +77,6 @@ public class PetAnimation implements Serializable {
     }
 
     public int getCurGif(Context context){
-        // getIdentifier won't work if filename has '.gif' at the end
         int id = context.getResources().getIdentifier(curGif, "raw", context.getApplicationInfo().packageName);
         Log.i("gif id", "" + id);
         return id;
@@ -107,7 +106,8 @@ public class PetAnimation implements Serializable {
             Log.i("Gif", "Found");
             curAnimation = newAnimation;
 
-            // "bathing_default.gif" for example
+            // "bathing_default" for example
+            // getIdentifier in getCurGif won't work if the filename we give it has '.gif' at the end
             String newGif = curAnimation + "_" + pet.getColor();
 
             //gotta update the current gif accordingly too!
