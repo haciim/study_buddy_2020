@@ -34,6 +34,8 @@
 
 - [ ] Issue: System clock change affects timer
 
+- [ ] Update User Manual with updated images and features 
+
 ---
 <h2>Team Contributions</h2>
 <h3>Contributions</h3>
