@@ -60,7 +60,7 @@ public class PetAnimation implements Serializable {
     public PetAnimation(Pet pet){
         this.pet = pet;
         curAnimation = "idle_neutral";
-        curGif = "idle_neutral_default"; //idle animation, default color
+        curGif = "idle_neutral_" + pet.getColor(); //idle animation, default color
         lastFed = new Date();
         lastBathed = new Date();
     }

@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity
             Log.i("Main", "Init new pet");
             this.pet = new Pet();
             this.pet.setName("Buddy");
-            this.pet.setTrustLevel(2);
+            this.pet.setTrustLevel(4);
+            this.pet.setColor("golden");
         }
         this.petAnimation = new PetAnimation(this.pet);
         petAnimation.maintenanceCheck();
