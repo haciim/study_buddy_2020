@@ -137,7 +137,7 @@ public class SessionActivity extends AppCompatActivity {
         // Setup pet animation
         this.petAnimation.maintenanceCheck();
         petView = findViewById(R.id.session_pet_image);
-        Glide.with(this).asGif().load(R.raw.study_default).into(petView);
+        Glide.with(this).asGif().load(R.raw.studying_default).into(petView);
 
         View endSessionText = findViewById(R.id.endSessionText);
         ObjectAnimator animator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.text_animator);

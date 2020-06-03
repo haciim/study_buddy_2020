@@ -145,14 +145,14 @@ public class PetActivity extends AppCompatActivity
         switch (v.getId()) {
             case R.id.pet_bathe_button_inner:
                 if (pet.getIsBathed()) {
-                    Toast.makeText(this, "Pet has been recently bathed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
                     pet.bathe();
                 }
                 break;
             case R.id.pet_feed_button_inner:
                 if (pet.getIsFed()) {
-                    Toast.makeText(this, "Pet has been recently fed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
                     pet.feed();
                 }
@@ -162,7 +162,7 @@ public class PetActivity extends AppCompatActivity
                     disableButtons();
                     // Recolor pet
                 } else {
-                    Toast.makeText(this, "Pet needs trust level of 7 or higher to change color",
+                    Toast.makeText(this, pet.getName() + " needs trust level of 7 or higher to change color",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -174,7 +174,7 @@ public class PetActivity extends AppCompatActivity
                     nameEdit.setEnabled(true);
                     nameEdit.setSelection(nameEdit.length());
                 } else {
-                    Toast.makeText(this, "Pet needs trust level of 2 or higher to respond to new name",
+                    Toast.makeText(this, pet.getName() + " needs trust level of 2 or higher to respond to new name",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
