@@ -82,7 +82,7 @@
         android:id="@+id/home_pet_view"
         android:layout_width="@dimen/home_pet_image_width"
         android:layout_height="@dimen/home_pet_image_height"
-        android:background="@drawable/pet_frame"
+        android:background="@drawable/frame"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

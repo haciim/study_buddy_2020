@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity
             Log.i("Main", "Init new pet");
             this.pet = new Pet();
             this.pet.setName("Buddy");
+            this.pet.setTrustLevel(2);
         }
         this.petAnimation = new PetAnimation(this.pet);
         petAnimation.maintenanceCheck();
@@ -114,6 +115,19 @@ public class MainActivity extends AppCompatActivity
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
         Glide.with(this).asGif().load(this.petAnimation.getCurGif()).into(petView);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.pet = (Pet) intent.getSerializableExtra(PET_KEY);
+        this.petAnimation = (PetAnimation) intent.getSerializableExtra(PET_ANIMATION_KEY);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        DataManager.save(this, this.pet);
     }
 
     @SuppressLint("ClickableViewAccessibility")

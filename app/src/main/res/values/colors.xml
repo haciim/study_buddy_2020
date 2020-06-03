@@ -14,4 +14,5 @@
     <color name="black">#000000</color>
     <color name="button_primary">#FF9000</color>
     <color name="water">#00CEFF</color>
+    <color name="disabled">#666666</color>
 </resources>

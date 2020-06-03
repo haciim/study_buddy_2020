@@ -19,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/pet_frame">
+        android:background="@drawable/frame">
         <TextView
             android:id="@+id/pet_name_text"
             android:layout_width="wrap_content"
@@ -55,6 +55,7 @@
         app:layout_constraintVertical_bias=".75"
         app:layout_constraintHorizontal_bias=".25">
         <ImageView
+            android:id="@+id/pet_feed_button_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_base"
@@ -75,6 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias=".75">
         <ImageView
+            android:id="@+id/pet_bathe_button_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_base"
@@ -95,6 +97,7 @@
         app:layout_constraintVertical_bias=".75"
         app:layout_constraintHorizontal_bias=".75">
         <ImageView
+            android:id="@+id/pet_color_button_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/button_base"
@@ -147,5 +150,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/pet_pet_image"/>
+
+    <EditText
+        android:id="@+id/pet_name_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:enabled="false"
+        android:background="@color/white"
+        android:inputType="text"
+        android:textColor="@color/dark_grey"
+        android:fontFamily="@font/montserrat_light"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_name_outer"
+        android:layout_marginTop="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
