@@ -18,14 +18,10 @@ public class PetAnimation implements Serializable {
 
     private Date lastFed;
     private Date lastBathed;
-    
-    //TODO: Subject to change
 
     // a master list of animations that the pet can do
     final private String[] possibleAnimations =
-    {"idle_neutral", "idle_happy", "idle_sad", "feed", "bathing", "study"};
-    
-    //TODO: Subject to change
+    {"idle_neutral", "idle_happy", "idle_sad", "feeding", "bathing", "studying"};
     
     // a master list of possible gif file names to display
 
@@ -42,7 +38,19 @@ public class PetAnimation implements Serializable {
      {"idle_sad", "default", "idle_sad_default.gif"},
      {"feeding",  "default", "feeding_default.gif"},
      {"bathing",  "default", "bathing_default.gif"},
-     {"studying", "default", "studying_default.gif"}};
+     {"studying", "default", "studying_default.gif"},
+     {"idle_neutral", "golden", "idle_neutral_golden.gif"},
+     {"idle_happy", "golden", "idle_happy_golden.gif"},
+     {"idle_sad", "golden", "idle_sad_golden.gif"},
+     {"feeding",  "golden", "feeding_golden.gif"},
+     {"bathing",  "golden", "bathing_golden.gif"},
+     {"studying", "golden", "studying_golden.gif"},
+     {"idle_neutral", "red", "idle_neutral_red.gif"},
+     {"idle_happy", "red", "idle_happy_red.gif"},
+     {"idle_sad", "red", "idle_sad_red.gif"},
+     {"feeding",  "red", "feeding_red.gif"},
+     {"bathing",  "red", "bathing_red.gif"},
+     {"studying", "red", "studying_red.gif"}};
 
     /** Constructor */
 
@@ -91,7 +99,7 @@ public class PetAnimation implements Serializable {
         if(possibleAnimationsSearch(newAnimation)){
             curAnimation = newAnimation;
 
-            // "bathing-default.gif" for example
+            // "bathing_default.gif" for example
             String newGif = curAnimation + "_" + thePet.getColor() + ".gif";
 
             //gotta update the current gif accordingly too!
