@@ -158,11 +158,11 @@ public class PetActivity extends AppCompatActivity
                 }
                 break;
             case R.id.pet_color_button_inner:
-                if (pet.getMoodLevel() >= 2) {
+                if (pet.getTrustLevel() >= 7) {
                     disableButtons();
                     // Recolor pet
                 } else {
-                    Toast.makeText(this, "Pet needs mood level of 2 or higher to change color",
+                    Toast.makeText(this, "Pet needs trust level of 7 or higher to change color",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -172,6 +172,7 @@ public class PetActivity extends AppCompatActivity
                     nameEdit.setText(pet.getName());
                     nameEdit.setVisibility(View.VISIBLE);
                     nameEdit.setEnabled(true);
+                    nameEdit.setSelection(nameEdit.length());
                 } else {
                     Toast.makeText(this, "Pet needs trust level of 2 or higher to respond to new name",
                             Toast.LENGTH_SHORT).show();
