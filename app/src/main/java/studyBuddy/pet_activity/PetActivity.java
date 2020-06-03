@@ -2,7 +2,6 @@ package studyBuddy.pet_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,9 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
@@ -25,8 +21,6 @@ import com.example.studdybuddy.R;
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
-import studyBuddy.time_management.TimeSelectView;
-import studyBuddy.util.DataManager;
 import studyBuddy.util.PrimaryColorPicker;
 
 public class PetActivity extends AppCompatActivity

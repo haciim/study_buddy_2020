@@ -5,8 +5,6 @@ package studyBuddy.pet;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.studdybuddy.R;
-
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
