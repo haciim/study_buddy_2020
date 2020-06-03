@@ -89,7 +89,7 @@ public class PetAnimation implements Serializable {
     // helper search method
     private boolean possibleAnimationsSearch(String key){
         for (int i = 0; i < possibleGifs.length; i++){
-            String curString = possibleGifs[i][0];
+            String curString = possibleAnimations[i];
             if(curString.equals(key)){
                 return true;
             }
