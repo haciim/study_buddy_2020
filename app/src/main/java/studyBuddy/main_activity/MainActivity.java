@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity
             Log.i("Main", "Init new pet");
             this.pet = new Pet();
             this.pet.setName("Buddy");
-            this.pet.setTrustLevel(2);
+            this.pet.setTrustLevel(4);
+            this.pet.setColor("golden");
         }
         this.petAnimation = new PetAnimation(this.pet);
         petAnimation.maintenanceCheck();
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-        Glide.with(this).asGif().load(this.petAnimation.getCurGif()).into(petView);
+        Glide.with(this).asGif().load(this.petAnimation.getCurGif(this)).into(petView);
     }
 
     @Override

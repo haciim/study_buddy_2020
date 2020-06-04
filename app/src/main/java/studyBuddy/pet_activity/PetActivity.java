@@ -2,7 +2,6 @@ package studyBuddy.pet_activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
@@ -23,7 +21,6 @@ import com.example.studdybuddy.R;
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
-import studyBuddy.util.DataManager;
 import studyBuddy.util.PrimaryColorPicker;
 
 public class PetActivity extends AppCompatActivity
@@ -127,7 +124,7 @@ public class PetActivity extends AppCompatActivity
         // Display pet gif
         petAnimation.maintenanceCheck();
         petView = findViewById(R.id.pet_pet_image);
-        Glide.with(this).asGif().load(petAnimation.getCurGif()).into(petView);
+        Glide.with(this).asGif().load(petAnimation.getCurGif(this)).into(petView);
     }
 
     @Override
@@ -147,6 +144,8 @@ public class PetActivity extends AppCompatActivity
                 if (pet.getIsBathed()) {
                     Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
+                    petAnimation.setCurAnimation("bathing");
+                    Glide.with(this).asGif().load(petAnimation.getCurGif(this)).into(petView);
                     pet.bathe();
                 }
                 break;
@@ -154,6 +153,8 @@ public class PetActivity extends AppCompatActivity
                 if (pet.getIsFed()) {
                     Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
+                    petAnimation.setCurAnimation("feeding");
+                    Glide.with(this).asGif().load(petAnimation.getCurGif(this)).into(petView);
                     pet.feed();
                 }
                 break;
