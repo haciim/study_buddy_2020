@@ -14,6 +14,7 @@ import com.example.studdybuddy.R;
 import java.util.List;
 
 import studyBuddy.main_activity.MainActivity;
+import studyBuddy.session_activity.Session;
 import studyBuddy.session_activity.SessionActivity;
 
 public class SessionBroadcastReceiver extends BroadcastReceiver {
@@ -64,6 +65,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         int notificationID = intent.getIntExtra(NOTIFICATION_ID, 0);
         long sessionEndTime = intent.getLongExtra(SESSION_END, System.currentTimeMillis());
         long sessionStartTime = intent.getLongExtra(SESSION_START, System.currentTimeMillis());
+        String sessionName = intent.getStringExtra(SessionActivity.SESSION_NAME_KEY);
         Strategy strategy = StrategyFactory.getStrategy(SessionType.POMODORO, intent.getLongExtra(SessionActivity.SESSION_STRATEGY_KEY, -1));
         long duration = sessionEndTime - System.currentTimeMillis();
 
@@ -72,6 +74,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         nextBroadcastIntent.putExtra(NOTIFICATION_ID, notificationID);
         nextBroadcastIntent.putExtra(SESSION_END, sessionEndTime);
         nextBroadcastIntent.putExtra(SESSION_START, sessionStartTime);
+        nextBroadcastIntent.putExtra(SessionActivity.SESSION_NAME_KEY, sessionName);
         if (strategy != null) {
             nextBroadcastIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
         }
@@ -84,6 +87,7 @@ public class SessionBroadcastReceiver extends BroadcastReceiver {
         activityIntent.putExtra(REOPEN_SESSION, true);
         activityIntent.putExtra(SESSION_END, sessionEndTime);
         activityIntent.putExtra(SESSION_START, sessionStartTime);
+        activityIntent.putExtra(SessionActivity.SESSION_NAME_KEY, sessionName);
         if (strategy != null) {
             nextBroadcastIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());
             activityIntent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, strategy.getDuration());

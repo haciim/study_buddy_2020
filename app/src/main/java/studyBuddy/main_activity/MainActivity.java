@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity
             startSession.putExtra(SessionBroadcastReceiver.SESSION_START, appIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
             startSession.putExtra(SessionBroadcastReceiver.SESSION_END, appIntent.getLongExtra(SessionBroadcastReceiver.SESSION_END, System.currentTimeMillis()));
             startSession.putExtra(SessionBroadcastReceiver.REOPEN_SESSION, true);
+            startSession.putExtra(SessionActivity.SESSION_NAME_KEY, appIntent.getStringExtra(SessionActivity.SESSION_NAME_KEY));
             // the strategy was lost in translation -- the duration is used instead.
             startSession.putExtra(SessionActivity.SESSION_STRATEGY_KEY, appIntent.getLongExtra(SessionActivity.SESSION_STRATEGY_KEY, -1));
             if (appIntent.hasExtra(SessionBroadcastReceiver.DELETE_INTENT)) {

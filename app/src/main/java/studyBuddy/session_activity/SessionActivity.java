@@ -3,18 +3,22 @@ package studyBuddy.session_activity;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,11 +60,12 @@ public class SessionActivity extends AppCompatActivity {
 
     static public String SESSION_DURATION_KEY = "sessionDuration";
 
-    static private String SESSION_NAME_KEY = "sessionName";
+    static public String SESSION_NAME_KEY = "sessionName";
 
     static public String SESSION_STRATEGY_KEY = "sessionStrategy";
 
     static public int INTENT_ID = 142857;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceBundle) {
@@ -131,7 +136,28 @@ public class SessionActivity extends AppCompatActivity {
                                  sessionIntent.getLongExtra(SessionBroadcastReceiver.SESSION_START, System.currentTimeMillis()));
         } else {
             strategy = StrategyFactory.getStrategy(SessionType.POMODORO, (sessionIntent.getLongExtra(SESSION_STRATEGY_KEY, -1)));
-            session.startSession("testname", sessionIntent.getLongExtra(SESSION_DURATION_KEY, 480000));
+
+            // https://stackoverflow.com/questions/10903754/input-text-dialog-android
+
+            EditText input = new EditText(this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setView(input);
+            builder.setTitle("Enter a name for this session");
+            // new session
+            builder.setPositiveButton("CONFIRM", (DialogInterface dialog, int which) -> {
+                String sessionName = input.getText().toString();
+                if (sessionName.equals("")) {
+                    sessionName = "Unnamed Session";
+                }
+
+                System.out.println(sessionName);
+
+                session.startSession(sessionName, sessionIntent.getLongExtra(SESSION_DURATION_KEY, 480000));
+            });
+
+            builder.show();
         }
 
         // Setup pet animation
@@ -161,16 +187,6 @@ public class SessionActivity extends AppCompatActivity {
                 doneButton.setOnClickListener(new DoneButtonListener(this));
             });
         });
-
-//        SessionCompleteCallback completeCallback = (elapsedTime) -> {
-//            setContentView(R.layout.finish_session_view);
-//            TextView elapsedText = findViewById(R.id.sessionTime);
-//            elapsedText.setText(Session.formatTime(elapsedTime));
-//            View doneButton = findViewById(R.id.doneButton);
-//            doneButton.setOnClickListener(new DoneButtonListener(this));
-//        };
-
-//        session.setFinishedCallback(completeCallback);
     }
 
     @Override
@@ -216,6 +232,7 @@ public class SessionActivity extends AppCompatActivity {
             broadcastIntent.putExtra(SessionBroadcastReceiver.NOTIFICATION_ID, INTENT_ID);
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_END, session.getExpectedTime() + session.getStartTime().getTime());
             broadcastIntent.putExtra(SessionBroadcastReceiver.SESSION_START, session.getStartTime().getTime());
+            broadcastIntent.putExtra(SESSION_NAME_KEY, session.getName());
             if (strategy != null) {
                 broadcastIntent.putExtra(SESSION_STRATEGY_KEY, strategy.getDuration());
             }
