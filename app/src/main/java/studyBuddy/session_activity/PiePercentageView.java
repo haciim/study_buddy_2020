@@ -6,10 +6,13 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.example.studdybuddy.R;
+
+import java.util.Locale;
 
 public class PiePercentageView extends View implements View.OnTouchListener {
 
@@ -18,6 +21,8 @@ public class PiePercentageView extends View implements View.OnTouchListener {
     private Paint circleBackground;
     private Paint pieFill;
     private Paint pieHighlight;
+
+    private TextView percentageText;
 
     private static final float PIE_SWEEP_INCREMENT = 36.0f;
     private static final float PIE_SWEEP_INCREMENT_RADS = (float)(Math.PI / 5);
@@ -62,8 +67,12 @@ public class PiePercentageView extends View implements View.OnTouchListener {
         }
     }
 
-    public float getPercentProductive() {
-        return (percentage / 10.0f);
+    public void setTextPercentageView(TextView view) {
+        this.percentageText = view;
+    }
+
+    public double getPercentage() {
+        return (percentage + 1) / 10.0;
     }
 
     public boolean onTouch(View v, MotionEvent e) {
@@ -72,6 +81,7 @@ public class PiePercentageView extends View implements View.OnTouchListener {
         int newPercentage = (int)((-Math.atan2(e.getX() - cx, e.getY() - cy) + Math.PI) / PIE_SWEEP_INCREMENT_RADS);
         if (newPercentage != percentage) {
             percentage = newPercentage;
+            percentageText.setText(String.format(Locale.US, "%d%%", (percentage + 1) * 10));
             postInvalidate();
         }
 

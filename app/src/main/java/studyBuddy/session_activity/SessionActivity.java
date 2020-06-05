@@ -147,9 +147,20 @@ public class SessionActivity extends AppCompatActivity {
         animator.setTarget(endSessionText);
         fob.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
-        session.setFinishedCallback((elapsedTime -> {
+        session.setFinishedCallback(elapsedTime -> {
             setContentView(R.layout.percent_productive_view);
-        }));
+            TextView percentageText = findViewById(R.id.percentage);
+            PiePercentageView pieView = findViewById(R.id.pie_view);
+            pieView.setTextPercentageView(percentageText);
+            findViewById(R.id.confirm_percentage).setOnClickListener((View v) -> {
+                session.setTotalProductiveTime(pieView.getPercentage());
+                setContentView(R.layout.finish_session_view);
+                TextView elapsedText = findViewById(R.id.sessionTime);
+                elapsedText.setText(Session.formatTime(elapsedTime));
+                View doneButton = findViewById(R.id.doneButton);
+                doneButton.setOnClickListener(new DoneButtonListener(this));
+            });
+        });
 
 //        SessionCompleteCallback completeCallback = (elapsedTime) -> {
 //            setContentView(R.layout.finish_session_view);
