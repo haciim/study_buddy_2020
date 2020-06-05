@@ -37,9 +37,9 @@ public class Pet implements Serializable {
 
         name = "Buddy";
 
-        trustLevel = 0;
+        trustLevel = 5;
 
-        moodLevel = 0;
+        moodLevel = 5;
 
         color = "default";
 
@@ -99,7 +99,7 @@ public class Pet implements Serializable {
         if(newName == null || newName.isEmpty()){
             return false;
         }
-        if(trustLevel >= 2){
+        if(trustLevel >= 6){
             name = newName;
             return true;
         }
@@ -107,13 +107,13 @@ public class Pet implements Serializable {
     }
 
     public void setTrustLevel(int newTrustLevel){
-        if(newTrustLevel >= (TRUST_SCALE*-1) && newTrustLevel <= TRUST_SCALE){
+        if(newTrustLevel >= 0 && newTrustLevel <= TRUST_SCALE){
             trustLevel = newTrustLevel;
         }
     }
 
     public void setMoodLevel(int newMoodLevel){
-        if(newMoodLevel >= (MOOD_SCALE*-1) && newMoodLevel <= MOOD_SCALE){
+        if(newMoodLevel >= 0 && newMoodLevel <= MOOD_SCALE){
             moodLevel = newMoodLevel;
         }
     }
@@ -122,7 +122,7 @@ public class Pet implements Serializable {
         if(newColor == null || newColor.isEmpty()){
             return false;
         }
-        if(trustLevel >= 4){
+        if(trustLevel >= 8){
             color = newColor;
             return true;
         }
@@ -266,7 +266,7 @@ public class Pet implements Serializable {
                 }
             }
             else{
-                if(trustLevel > TRUST_SCALE*-1){
+                if(trustLevel > 0){
                     trustLevel--;
                 }
             }
@@ -367,7 +367,7 @@ public class Pet implements Serializable {
                 }
             }
             else{
-                if(moodLevel > MOOD_SCALE*-1){
+                if(moodLevel > 0){
                     moodLevel--;
                 }
             }
@@ -381,7 +381,7 @@ public class Pet implements Serializable {
 
     public void worstTrustCheck(){
         // if trust level is at the lowest
-        if(trustLevel == TRUST_SCALE*-1){
+        if(trustLevel == 0){
             Date now = new Date();
 
             //if this is the first day
