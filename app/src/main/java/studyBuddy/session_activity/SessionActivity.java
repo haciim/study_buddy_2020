@@ -147,15 +147,19 @@ public class SessionActivity extends AppCompatActivity {
         animator.setTarget(endSessionText);
         fob.setOnTouchListener(new EndSessionButtonListener(session, endSessionText, this));
 
-        SessionCompleteCallback completeCallback = (elapsedTime) -> {
-            setContentView(R.layout.finish_session_view);
-            TextView elapsedText = findViewById(R.id.sessionTime);
-            elapsedText.setText(Session.formatTime(elapsedTime));
-            View doneButton = findViewById(R.id.doneButton);
-            doneButton.setOnClickListener(new DoneButtonListener(this));
-        };
+        session.setFinishedCallback((elapsedTime -> {
+            setContentView(R.layout.percent_productive_view);
+        }));
 
-        session.setFinishedCallback(completeCallback);
+//        SessionCompleteCallback completeCallback = (elapsedTime) -> {
+//            setContentView(R.layout.finish_session_view);
+//            TextView elapsedText = findViewById(R.id.sessionTime);
+//            elapsedText.setText(Session.formatTime(elapsedTime));
+//            View doneButton = findViewById(R.id.doneButton);
+//            doneButton.setOnClickListener(new DoneButtonListener(this));
+//        };
+
+//        session.setFinishedCallback(completeCallback);
     }
 
     @Override
