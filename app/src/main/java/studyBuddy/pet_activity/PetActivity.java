@@ -1,12 +1,16 @@
 package studyBuddy.pet_activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,18 +29,14 @@ import studyBuddy.util.PrimaryColorPicker;
 
 public class PetActivity extends AppCompatActivity
     implements View.OnClickListener{
-    private ImageView homeButton;
-    private ImageView feedButton;
-    private ImageView batheButton;
-    private ImageView colorButton;
-
-    private RelativeLayout petNameButton;
+    private ImageButton homeButton;
+    private ImageButton feedButton;
+    private ImageButton batheButton;
+    private ImageButton colorButton;
 
     private TextView petName;
     private TextView petMood;
     private TextView petTrust;
-
-    private EditText nameEdit;
 
     private ImageView petView;
 
@@ -46,13 +46,13 @@ public class PetActivity extends AppCompatActivity
 
     private PetAnimation petAnimation;
 
-    private boolean buttonsDisabled;
+    private boolean mainButtonsDisabled;
 
     @IdRes
-    private static final int[] buttons = {
-        R.id.pet_bathe_button_inner, R.id.pet_feed_button_inner,
-        R.id.pet_color_button_inner, R.id.pet_home_button_inner,
-        R.id.pet_name_outer
+    private static final int[] mainButtons = {
+        R.id.pet_bathe_button, R.id.pet_feed_button,
+        R.id.pet_color_button, R.id.pet_home_button,
+        R.id.pet_name_text
     };
 
     private enum PetStatus {
@@ -74,33 +74,31 @@ public class PetActivity extends AppCompatActivity
         }
 
         this.pStatus = PetStatus.IDLE;
-        this.buttonsDisabled = false;
+        this.mainButtonsDisabled = false;
 
         // Set time of day lighting
-        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button_inner));
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button));
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_activity_background));
 
         Window window = this.getWindow();
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         // Initialize view components and callback listeners
-        homeButton = findViewById(R.id.pet_home_button_inner);
+        homeButton = findViewById(R.id.pet_home_button);
         homeButton.setOnClickListener(this);
 
-        feedButton = findViewById(R.id.pet_feed_button_inner);
+        feedButton = findViewById(R.id.pet_feed_button);
         feedButton.setOnClickListener(this);
 
-        batheButton = findViewById(R.id.pet_bathe_button_inner);
+        batheButton = findViewById(R.id.pet_bathe_button);
         batheButton.setOnClickListener(this);
 
-        colorButton = findViewById(R.id.pet_color_button_inner);
+        colorButton = findViewById(R.id.pet_color_button);
         colorButton.setOnClickListener(this);
 
         petName = findViewById(R.id.pet_name_text);
         petName.setText(pet.getName());
-
-        petNameButton = findViewById(R.id.pet_name_outer);
-        petNameButton.setOnClickListener(this);
+        petName.setOnClickListener(this);
 
         petMood = findViewById(R.id.pet_mood_text);
         String mood = "Mood: " + pet.getMoodLevel();
@@ -109,17 +107,6 @@ public class PetActivity extends AppCompatActivity
         petTrust = findViewById(R.id.pet_trust_text);
         String trust = "Trust: " + pet.getTrustLevel();
         petTrust.setText(trust);
-
-        nameEdit = findViewById(R.id.pet_name_edit_text);
-        // https://developer.android.com/training/keyboard-input/style
-        nameEdit.setOnEditorActionListener((v, a, e)-> {
-            boolean handled = false;
-            if (a == EditorInfo.IME_ACTION_DONE) {
-                setNewName(nameEdit.getText().toString());
-                handled = true;
-            }
-            return handled;
-        });
 
         // Display pet gif
         petAnimation.maintenanceCheck();
@@ -140,7 +127,7 @@ public class PetActivity extends AppCompatActivity
     public void onClick(View v) {
         // TODO: change animations based off of action
         switch (v.getId()) {
-            case R.id.pet_bathe_button_inner:
+            case R.id.pet_bathe_button:
                 if (pet.getIsBathed()) {
                     Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
@@ -149,7 +136,7 @@ public class PetActivity extends AppCompatActivity
                     pet.bathe();
                 }
                 break;
-            case R.id.pet_feed_button_inner:
+            case R.id.pet_feed_button:
                 if (pet.getIsFed()) {
                     Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
@@ -158,54 +145,65 @@ public class PetActivity extends AppCompatActivity
                     pet.feed();
                 }
                 break;
-            case R.id.pet_color_button_inner:
+            case R.id.pet_color_button:
                 if (pet.getTrustLevel() >= 7) {
-                    disableButtons();
+                    enableMainButtons();
                     // Recolor pet
                 } else {
                     Toast.makeText(this, pet.getName() + " needs trust level of 7 or higher to change color",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.pet_name_outer:
+            case R.id.pet_name_text:
                 if (pet.getTrustLevel() >= 2) {
-                    disableButtons();
-                    nameEdit.setText(pet.getName());
-                    nameEdit.setVisibility(View.VISIBLE);
-                    nameEdit.setEnabled(true);
-                    nameEdit.setSelection(nameEdit.length());
+                    enableMainButtons();
+                    changeName();
                 } else {
                     Toast.makeText(this, pet.getName() + " needs trust level of 2 or higher to respond to new name",
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.pet_home_button_inner:
+            case R.id.pet_home_button:
                 this.finish();
                 break;
         }
     }
 
-    private void disableButtons() {
-        for (int i = 0; i < buttons.length; i++) {
-            int id = buttons[i];
+    private void enableMainButtons() {
+        for (int i = 0; i < mainButtons.length; i++) {
+            int id = mainButtons[i];
             View view = findViewById(id);
             if (view instanceof ImageView) {
-                if (buttonsDisabled) {
+                if (mainButtonsDisabled) {
                     view.setBackground(getDrawable(R.drawable.button_base));
                 } else {
                     view.setBackground(getDrawable(R.drawable.button_base_disabled));
                 }
             }
-            view.setClickable(buttonsDisabled);
+            view.setClickable(mainButtonsDisabled);
         }
-        buttonsDisabled = !buttonsDisabled;
+        mainButtonsDisabled = !mainButtonsDisabled;
     }
 
-    private void setNewName(String name) {
-        pet.setName(name);
-        nameEdit.setVisibility(View.INVISIBLE);
-        nameEdit.setEnabled(false);
-        petName.setText(pet.getName());
-        disableButtons();
+    private void changeName() {
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(this.pet.getName());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setView(input);
+        builder.setTitle("What do you want to name your pet?");
+        // new session
+        builder.setPositiveButton("NAME PET", (DialogInterface dialog, int which) -> {
+            String petName = input.getText().toString();
+            if (!petName.equals("")) {
+                this.pet.setName(petName);
+            }
+            this.petName.setText(pet.getName());
+            enableMainButtons();
+        });
+        builder.setCancelable(false);
+
+        builder.show();
     }
 }

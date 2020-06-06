@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -25,7 +26,7 @@ public class SessionHistoryActivity extends AppCompatActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SessionRecord[] sessions;
-    private CardView homeButton;
+    private ImageButton homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class SessionHistoryActivity extends AppCompatActivity
             records.addItemDecoration(divider);
         }
 
-        homeButton = findViewById(R.id.session_history_home_button_outer);
+        homeButton = findViewById(R.id.session_history_home_button);
         homeButton.setOnClickListener(this);
     }
 
@@ -59,7 +60,7 @@ public class SessionHistoryActivity extends AppCompatActivity
         super.onResume();
         Window window = this.getWindow();
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
-        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_home_button_inner));
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_home_button));
 
     }
 
@@ -74,7 +75,7 @@ public class SessionHistoryActivity extends AppCompatActivity
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.session_history_home_button_outer:
+            case R.id.session_history_home_button:
                 this.finish();
                 break;
         }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="@dimen/home_button_outer_size"
-    android:width="@dimen/home_button_outer_size"
+    android:height="@dimen/home_button_size"
+    android:width="@dimen/home_button_size"
     android:viewportHeight="100"
     android:viewportWidth="100">
     <group

@@ -137,7 +137,7 @@ public class SessionActivity extends AppCompatActivity {
             builder.setView(input);
             builder.setTitle("Enter a name for this session");
             // new session
-            builder.setPositiveButton("CONFIRM", (DialogInterface dialog, int which) -> {
+            builder.setPositiveButton("START SESSION", (DialogInterface dialog, int which) -> {
                 String sessionName = input.getText().toString();
                 if (sessionName.equals("")) {
                     sessionName = "Unnamed Session";

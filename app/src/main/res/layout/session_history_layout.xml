@@ -34,23 +34,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/session_history_home_button_outer"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+    <ImageButton
+        android:id="@+id/session_history_home_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:layout_marginBottom="25dp"
         android:layout_marginEnd="25dp"
         android:elevation="@dimen/home_button_elevation"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <ImageView
-            android:id="@+id/session_history_home_button_inner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_base"
-            android:src="@drawable/home_shape"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/button_base"
+        android:src="@drawable/home_shape"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

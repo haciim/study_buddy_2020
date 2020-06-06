@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <size android:width="@dimen/home_button_outer_size" android:height="@dimen/home_button_outer_size"/>
+            <size android:width="@dimen/home_button_size" android:height="@dimen/home_button_size"/>
             <solid android:color="@color/disabled"/>
         </shape>
     </item>

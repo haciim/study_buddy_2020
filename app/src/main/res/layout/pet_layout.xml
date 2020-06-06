@@ -11,24 +11,19 @@
         android:id="@+id/pet_activity_background"
         android:src="@drawable/home_background"/>
 
-    <RelativeLayout
-        android:id="@+id/pet_name_outer"
+    <TextView
+        android:id="@+id/pet_name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:fontFamily="@font/montserrat_light"
+        android:textSize="35sp"
+        android:textColor="@color/dark_grey"
+        android:background="@drawable/frame"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/frame">
-        <TextView
-            android:id="@+id/pet_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:fontFamily="@font/montserrat_light"
-            android:textSize="35sp"
-            android:textColor="@color/dark_grey"/>
-    </RelativeLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/pet_pet_image"
@@ -38,93 +33,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/pet_feed_button_outer"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+    <ImageButton
+        android:id="@+id/pet_feed_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:elevation="@dimen/home_button_elevation"
-        android:background="@color/white"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias=".75"
-        app:layout_constraintHorizontal_bias=".25">
-        <ImageView
-            android:id="@+id/pet_feed_button_inner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_base"
-            android:src="@drawable/food_bowl_shape"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintHorizontal_bias=".25"
+        android:background="@drawable/button_base"
+        android:src="@drawable/food_bowl_shape"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/pet_bathe_button_outer"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+    <ImageButton
+        android:id="@+id/pet_bathe_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:elevation="@dimen/home_button_elevation"
-        android:background="@color/white"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias=".75">
-        <ImageView
-            android:id="@+id/pet_bathe_button_inner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_base"
-            android:src="@drawable/bath_shape"/>
-    </androidx.cardview.widget.CardView>
+        android:background="@drawable/button_base"
+        android:src="@drawable/bath_shape"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/pet_color_button_outer"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+    <ImageButton
+        android:id="@+id/pet_color_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:elevation="@dimen/home_button_elevation"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias=".75"
-        app:layout_constraintHorizontal_bias=".75">
-        <ImageView
-            android:id="@+id/pet_color_button_inner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_base"
-            android:src="@drawable/color"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintHorizontal_bias=".75"
+        android:background="@drawable/button_base"
+        android:src="@drawable/food_bowl_shape"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/pet_home_button_outer"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+    <ImageButton
+        android:id="@+id/pet_home_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:layout_marginBottom="25dp"
         android:layout_marginEnd="25dp"
         android:elevation="@dimen/home_button_elevation"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
+        android:background="@drawable/button_base"
+        android:src="@drawable/home_shape"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <ImageView
-            android:id="@+id/pet_home_button_inner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/button_base"
-            android:src="@drawable/home_shape"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/pet_trust_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:textColor="@color/dark_grey"
         android:textAlignment="center"
         android:fontFamily="@font/montserrat_light"
@@ -133,12 +96,13 @@
         android:layout_marginBottom="7dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pet_name_outer"/>
+        app:layout_constraintTop_toBottomOf="@id/pet_name_text"/>
 
     <TextView
         android:id="@+id/pet_mood_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:textColor="@color/dark_grey"
         android:textAlignment="center"
         android:fontFamily="@font/montserrat_light"
@@ -147,21 +111,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pet_trust_text"/>
-
-    <EditText
-        android:id="@+id/pet_name_edit_text"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:visibility="invisible"
-        android:enabled="false"
-        android:background="@color/white"
-        android:inputType="text"
-        android:textColor="@color/dark_grey"
-        android:fontFamily="@font/montserrat_light"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pet_name_outer"
-        android:layout_marginTop="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

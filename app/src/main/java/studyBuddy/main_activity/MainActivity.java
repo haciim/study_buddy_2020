@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     public static final String PET_ANIMATION_KEY = "pet_animation";
 
     private CardView newSession;
-    private CardView sessionHistoryButton;
+    private ImageButton sessionHistoryButton;
     private ImageView petView;
     private Pet pet;
     private PetAnimation petAnimation;
@@ -59,8 +60,7 @@ public class MainActivity extends AppCompatActivity
             Log.i("Main", "Init new pet");
             this.pet = new Pet();
             this.pet.setName("Buddy");
-            this.pet.setTrustLevel(4);
-            this.pet.setColor("golden");
+            this.pet.setColor("red");
         }
         this.petAnimation = new PetAnimation(this.pet);
         petAnimation.maintenanceCheck();
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity
         newSession = findViewById(R.id.new_session_outer);
         newSession.setOnClickListener(this);
 
-        sessionHistoryButton = findViewById(R.id.session_history_outer);
+        sessionHistoryButton = findViewById(R.id.session_history_button);
         sessionHistoryButton.setOnClickListener(this);
 
         // Setup pet animation
@@ -114,16 +114,14 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
-        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
+        PrimaryColorPicker.setBackgroundFilter(this, this.sessionHistoryButton);
 
 
         // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
         Window window = this.getWindow();
-
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
-
     }
 
     @Override
@@ -181,7 +179,7 @@ public class MainActivity extends AppCompatActivity
                     newSessionText.setText(R.string.new_session);
                 }
                 break;
-            case R.id.session_history_outer:
+            case R.id.session_history_button:
                 intent = new Intent(this, SessionHistoryActivity.class);
                 startActivity(intent);
                 break;

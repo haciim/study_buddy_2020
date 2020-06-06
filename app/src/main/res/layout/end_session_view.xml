@@ -16,8 +16,8 @@
 
     <ImageView
         android:id="@+id/fob"
-        android:layout_width="@dimen/home_button_outer_size"
-        android:layout_height="@dimen/home_button_outer_size"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:src="@drawable/home_shape"
         android:background="@drawable/button_base"/>
 

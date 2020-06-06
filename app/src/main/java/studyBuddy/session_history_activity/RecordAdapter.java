@@ -64,7 +64,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
         holder.name.setText(record.name);
 
-        String info = record.getDurationMins() + " Mins";
+        String info = record.getDurationMins() + " Mins | " + (int) (record.percentProductive * 100) + "% Productive";
         holder.info.setText(info);
     }
 

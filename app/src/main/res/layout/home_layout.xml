@@ -56,26 +56,18 @@
         </androidx.cardview.widget.CardView>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/session_history_outer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/session_history_button"
+        android:layout_width="@dimen/home_button_size"
+        android:layout_height="@dimen/home_button_size"
         android:elevation="@dimen/home_button_elevation"
-        app:cardBackgroundColor="@color/transparent"
-        app:cardCornerRadius="@dimen/home_button_outer_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".85">
-        <ImageView
-            android:id="@+id/session_history_inner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/session_history_shape"
-            android:background="@drawable/button_base"
-            android:padding="12dp"/>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintVertical_bias=".85"
+        android:src="@drawable/session_history_shape"
+        android:background="@drawable/button_base"/>
 
     <ImageView
         android:id="@+id/home_pet_view"

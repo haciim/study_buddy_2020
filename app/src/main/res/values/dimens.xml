@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="home_button_inner_corner_radius">3dp</dimen>
-    <dimen name="home_button_outer_size">50dp</dimen>
+    <dimen name="home_button_size">60dp</dimen>
     <dimen name="home_button_outer_corner_radius">25dp</dimen>
     <dimen name="home_button_inner_size">20dp</dimen>
     <dimen name="home_button_inner_margin">15dp</dimen>
