@@ -26,13 +26,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
@@ -50,7 +50,7 @@ public class SessionActivity extends AppCompatActivity {
 
     private Session session;
     private NotificationChannel channel;
-    private ImageView petView;
+    private GifImageView petView;
     private List<SessionRecord> sessions;
     private Strategy strategy;
     private Pet pet;
@@ -81,8 +81,8 @@ public class SessionActivity extends AppCompatActivity {
         SessionRecord[] sessionRecords = DataManager.load(this, SessionRecord[].class);
         Intent sessionIntent = getIntent();
 
-        this.pet = (Pet) sessionIntent.getSerializableExtra(MainActivity.PET_KEY);
         this.petAnimation = (PetAnimation) sessionIntent.getSerializableExtra(MainActivity.PET_ANIMATION_KEY);
+        this.pet = petAnimation.getPet();
 
         if(sessionRecords == null) {
             sessions = new ArrayList<>();
@@ -155,7 +155,7 @@ public class SessionActivity extends AppCompatActivity {
         this.petAnimation.maintenanceCheck();
         petView = findViewById(R.id.session_pet_image);
         petAnimation.setCurAnimation("studying");
-        Glide.with(this).asGif().load(petAnimation.getCurGif(this)).into(petView);
+        petView.setImageResource(petAnimation.getCurGif(this));
 
         View endSessionText = findViewById(R.id.endSessionText);
         ObjectAnimator animator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.text_animator);

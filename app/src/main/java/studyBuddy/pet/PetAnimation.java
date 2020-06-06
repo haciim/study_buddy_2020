@@ -74,7 +74,7 @@ public class PetAnimation implements Serializable {
         return curAnimation;
     }
 
-    public int getCurGif(Context context){
+    public int getCurGif(Context context) {
         int id = context.getResources().getIdentifier(curGif, "raw", context.getApplicationInfo().packageName);
         Log.i("gif id", "" + id);
         return id;
@@ -124,15 +124,15 @@ public class PetAnimation implements Serializable {
 
         int curMood = pet.getMoodLevel();
 
-        // pet's mood > 2
-        if(curMood > 2){
+        // If pet is happy
+        if(curMood >= Pet.HAPPY_MOOD_LEVEL){
             setCurAnimation("idle_happy");
         }
-        // if -2 <= pet's mood <= 2
-        else if(-2 <= curMood){
+        // pet is neutral
+        else if(curMood >= Pet.NEUTRAL_MOOD_LEVEL){
             setCurAnimation("idle_neutral");
         }
-        //pet mood is less than -2
+        //pet is sad
         else{
             setCurAnimation("idle_sad");
         }
@@ -151,6 +151,9 @@ public class PetAnimation implements Serializable {
         return hour;
     }
 
+    public void updateColor() {
+        this.curGif = this.curAnimation + "_" + pet.getColor();
+    }
 
 
     // should be called at the beginning of every pet screen pull
@@ -159,29 +162,24 @@ public class PetAnimation implements Serializable {
         //i know we're probably not making a screen for this but it doesn't hurt
         pet.worstTrustCheck();
 
-
         Date now = new Date();
 
         long fedDiff = now.getTime() - lastFed.getTime();
-        long fedDiffMin = fedDiff/ (60 * 60 * 1000);
-
-        if (fedDiffMin > 30){
-            setIdleType();
-        }
+        long fedDiffMin = fedDiff / (60 * 1000);
 
         long bathedDiff = now.getTime() - lastBathed.getTime();
-        long bathedDiffMin = fedDiff/ (60 * 60 * 1000);
-        if (bathedDiffMin > 30){
+        long bathedDiffMin = bathedDiff / (60 * 1000);
+        if (bathedDiffMin > 30 && fedDiffMin > 30) {
             setIdleType();
         }
 
         int curHour = getHourOfDay();
 
-        // checking app from 12am to 9am resets feeding/bathing
-        // again, minor cosmetic feature so it doesn't matter too much
-        if(curHour <= 9){
-
+        // Resets feeding and bathing every 12 hours
+        if (fedDiffMin > 720) {
             pet.setIsFed(false);
+        }
+        if (bathedDiffMin > 720) {
             pet.setIsBathed(false);
         }
 

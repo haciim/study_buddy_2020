@@ -18,9 +18,9 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import com.bumptech.glide.Glide;
 import com.example.studdybuddy.R;
 
+import pl.droidsonroids.gif.GifImageView;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity
 
     private CardView newSession;
     private ImageButton sessionHistoryButton;
-    private ImageView petView;
-    private Pet pet;
+    private GifImageView petView;
     private PetAnimation petAnimation;
+    private Pet pet;
     private TextView newSessionText;
 
     private boolean timeSelectorIsOpen;
@@ -55,14 +55,13 @@ public class MainActivity extends AppCompatActivity
         timeSelectorIsOpen = false;
         this.newSessionText = findViewById(R.id.new_session_text);
         // Load pet
-        this.pet = DataManager.load(this, Pet.class);
-        if (this.pet == null) {
+        this.petAnimation = DataManager.load(this, PetAnimation.class);
+        if (this.petAnimation == null) {
             Log.i("Main", "Init new pet");
             this.pet = new Pet();
             this.pet.setName("Buddy");
-            this.pet.setColor("red");
+            this.petAnimation = new PetAnimation(this.pet);
         }
-        this.petAnimation = new PetAnimation(this.pet);
         petAnimation.maintenanceCheck();
 
         // see if we need to open the activity back up
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-        Glide.with(this).asGif().load(this.petAnimation.getCurGif(this)).into(petView);
+        petView.setImageResource(petAnimation.getCurGif(this));
     }
 
     @Override
@@ -122,19 +121,21 @@ public class MainActivity extends AppCompatActivity
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
+        petAnimation.maintenanceCheck();
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        this.pet = (Pet) intent.getSerializableExtra(PET_KEY);
         this.petAnimation = (PetAnimation) intent.getSerializableExtra(PET_ANIMATION_KEY);
+        this.petAnimation.maintenanceCheck();
+        this.petView.setImageResource(this.petAnimation.getCurGif(this));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        DataManager.save(this, this.pet);
+        DataManager.save(this, this.petAnimation);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -168,7 +169,6 @@ public class MainActivity extends AppCompatActivity
                     TimeSelectView selectView = findViewById(timerId);
                     Log.d("Session Length: ", String.valueOf(selectView.getDuration()));
                     intent.putExtra(SessionActivity.SESSION_DURATION_KEY, (long) (selectView.getDuration() * 60 * 1000));
-                    intent.putExtra(PET_KEY, this.pet);
                     intent.putExtra(PET_ANIMATION_KEY, this.petAnimation);
                     if (selectView.getStrategy() != null) {
                         intent.putExtra(SessionActivity.SESSION_STRATEGY_KEY, (long) (selectView.getDuration() * 60 * 1000));
@@ -185,7 +185,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.home_pet_view:
                 intent = new Intent(this, PetActivity.class);
-                intent.putExtra(PET_KEY, this.pet);
                 intent.putExtra(PET_ANIMATION_KEY, this.petAnimation);
                 startActivity(intent);
                 break;

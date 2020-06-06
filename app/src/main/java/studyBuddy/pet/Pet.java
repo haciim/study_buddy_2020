@@ -30,6 +30,10 @@ public class Pet implements Serializable {
     private final int MOOD_SCALE = 10;
     private final int TRUST_SCALE = 10;
     private final int MAX_DAYS_AT_WORST = 21;
+    public static final int COLOR_CHANGE_TRUST_LEVEL = 4;
+    public static final int NAME_CHANGE_TRUST_LEVEL = 6;
+    public static final int HAPPY_MOOD_LEVEL = 7;
+    public static final int NEUTRAL_MOOD_LEVEL = 3;
 
 
     /** Constructor */
@@ -90,6 +94,10 @@ public class Pet implements Serializable {
         return birthDate;
     }
 
+    public boolean canChangeColor() { return trustLevel >= this.COLOR_CHANGE_TRUST_LEVEL; }
+
+    public boolean canChangeName() { return trustLevel >= this.NAME_CHANGE_TRUST_LEVEL; }
+
     /** Setter Methods */
     // methods that return booleans for fields that are changeable
     // dependent on certain pet conditions and will return false
@@ -99,7 +107,7 @@ public class Pet implements Serializable {
         if(newName == null || newName.isEmpty()){
             return false;
         }
-        if(trustLevel >= 6){
+        if(trustLevel >= this.NAME_CHANGE_TRUST_LEVEL){
             name = newName;
             return true;
         }
@@ -122,7 +130,7 @@ public class Pet implements Serializable {
         if(newColor == null || newColor.isEmpty()){
             return false;
         }
-        if(trustLevel >= 8){
+        if(trustLevel >= COLOR_CHANGE_TRUST_LEVEL){
             color = newColor;
             return true;
         }

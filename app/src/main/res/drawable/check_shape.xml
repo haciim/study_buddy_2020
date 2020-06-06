@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="@dimen/home_button_size" android:width="@dimen/home_button_size"
+    android:viewportWidth="100" android:viewportHeight="100">
+    <path android:strokeColor="@color/button_primary"
+        android:strokeWidth="5"
+        android:pathData="M20,50 L40,70 L80,30 "/>
+</vector>

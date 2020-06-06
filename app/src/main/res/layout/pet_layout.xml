@@ -25,7 +25,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <ImageView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/pet_pet_image"
         android:layout_width="@dimen/pet_activity_pet_width"
         android:layout_height="@dimen/pet_activity_pet_height"
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".75"
         android:background="@drawable/button_base"
-        android:src="@drawable/food_bowl_shape"/>
+        android:src="@drawable/color_wheel"/>
 
     <ImageButton
         android:id="@+id/pet_home_button"
@@ -111,5 +111,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pet_trust_text"/>
+
+    <ImageButton
+        android:id="@+id/pet_red_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_base"
+        android:src="@drawable/color_base"
+        android:tintMode="src_atop"
+        android:tint="@color/pet_red"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
+        app:layout_constraintBottom_toTopOf="@id/pet_bathe_button"
+        app:layout_constraintHorizontal_bias=".2"/>
+
+    <ImageButton
+        android:id="@+id/pet_default_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_base"
+        android:src="@drawable/color_base"
+        android:tintMode="src_atop"
+        android:tint="@color/pet_default"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
+        app:layout_constraintBottom_toTopOf="@id/pet_bathe_button"
+        app:layout_constraintHorizontal_bias=".4"/>
+
+    <ImageButton
+        android:id="@+id/pet_golden_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_base"
+        android:src="@drawable/color_base"
+        android:tintMode="src_atop"
+        android:tint="@color/pet_golden"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
+        app:layout_constraintBottom_toTopOf="@id/pet_bathe_button"
+        app:layout_constraintHorizontal_bias=".6"/>
+
+    <ImageButton
+        android:id="@+id/pet_confirm_color_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_base"
+        android:src="@drawable/check_shape"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pet_pet_image"
+        app:layout_constraintBottom_toTopOf="@id/pet_bathe_button"
+        app:layout_constraintHorizontal_bias=".8"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
