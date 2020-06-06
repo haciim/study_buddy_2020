@@ -181,9 +181,9 @@ public class Session {
             if (completeCallback != null) {
                 if (expectedTime == 0) {
                     // duration is 0
-                    completeCallback.callbackFunc(getSeconds(startTime, endTime));
+                    completeCallback.callbackFunc(getActualTime() / 1000);
                 } else {
-                    completeCallback.callbackFunc(Math.min(getSeconds(startTime, endTime), expectedTime / 1000));
+                    completeCallback.callbackFunc(Math.min(getActualTime() / 1000, expectedTime / 1000));
                 }
             }
 
@@ -240,6 +240,10 @@ public class Session {
      */
     public Date getStartTime() {
         return startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
     }
 
     /**
