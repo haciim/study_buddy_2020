@@ -98,6 +98,15 @@ public class Pet implements Serializable {
 
     public boolean canChangeName() { return trustLevel >= this.NAME_CHANGE_TRUST_LEVEL; }
 
+    public String getMood() {
+        if (moodLevel >= HAPPY_MOOD_LEVEL) {
+            return "Happy";
+        } else if (moodLevel >= NEUTRAL_MOOD_LEVEL) {
+            return "Neutral";
+        } else {
+            return "Sad";
+        }
+    }
     /** Setter Methods */
     // methods that return booleans for fields that are changeable
     // dependent on certain pet conditions and will return false
@@ -217,7 +226,7 @@ public class Pet implements Serializable {
      * Post-condition:
      * returns -1 if no sessions occurred this week
      */
-    private double getWPA(List<Session> sessions){
+    private double getWPA(List<Session> sessions) {
         //Need a date to check this week
         Date today = new Date();
 

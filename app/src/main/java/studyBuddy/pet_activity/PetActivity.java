@@ -98,7 +98,7 @@ public class PetActivity extends AppCompatActivity
         petName.setOnClickListener(this);
 
         petMood = findViewById(R.id.pet_mood_text);
-        String mood = "Mood: " + petAnimation.getPet().getMoodLevel();
+        String mood = "Mood: " + petAnimation.getPet().getMood();
         petMood.setText(mood);
 
         petTrust = findViewById(R.id.pet_trust_text);
