@@ -30,7 +30,7 @@ public class Pet implements Serializable {
     private final int MOOD_SCALE = 10;
     private final int TRUST_SCALE = 10;
     private final int MAX_DAYS_AT_WORST = 21;
-    public static final int COLOR_CHANGE_TRUST_LEVEL = 4;
+    public static final int COLOR_CHANGE_TRUST_LEVEL = 7;
     public static final int NAME_CHANGE_TRUST_LEVEL = 6;
     public static final int HAPPY_MOOD_LEVEL = 7;
     public static final int NEUTRAL_MOOD_LEVEL = 3;

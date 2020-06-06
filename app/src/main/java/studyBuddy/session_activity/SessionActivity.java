@@ -26,17 +26,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.load.resource.gif.GifBitmapProvider;
 import com.example.studdybuddy.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
+import studyBuddy.util.GlideGifLoader;
 import studyBuddy.util.PrimaryColorPicker;
 import studyBuddy.time_management.EndSessionButtonListener;
 import studyBuddy.time_management.SessionBroadcastReceiver;
@@ -50,7 +51,7 @@ public class SessionActivity extends AppCompatActivity {
 
     private Session session;
     private NotificationChannel channel;
-    private GifImageView petView;
+    private ImageView petView;
     private List<SessionRecord> sessions;
     private Strategy strategy;
     private Pet pet;
@@ -155,7 +156,7 @@ public class SessionActivity extends AppCompatActivity {
         this.petAnimation.maintenanceCheck();
         petView = findViewById(R.id.session_pet_image);
         petAnimation.setCurAnimation("studying");
-        petView.setImageResource(petAnimation.getCurGif(this));
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
 
         View endSessionText = findViewById(R.id.endSessionText);
         ObjectAnimator animator = (ObjectAnimator) AnimatorInflater.loadAnimator(this, R.animator.text_animator);

@@ -7,7 +7,7 @@
     android:id="@+id/session_base">
 
 
-    <pl.droidsonroids.gif.GifImageView
+    <ImageView
         android:id="@+id/session_pet_image"
         android:layout_width="150dp"
         android:layout_height="150dp"

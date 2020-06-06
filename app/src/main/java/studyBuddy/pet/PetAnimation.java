@@ -208,4 +208,15 @@ public class PetAnimation implements Serializable {
 
     }
 
+    public void feed() {
+        setCurAnimation("feeding");
+        this.lastFed = new Date();
+        pet.feed();
+    }
+
+    public void bathe() {
+        setCurAnimation("bathing");
+        this.lastBathed = new Date();
+        pet.bathe();
+    }
 }

@@ -8,8 +8,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.EditorInfo;
-import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,10 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studdybuddy.R;
 
-import pl.droidsonroids.gif.GifImageView;
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
+import studyBuddy.util.GlideGifLoader;
 import studyBuddy.util.PrimaryColorPicker;
 
 public class PetActivity extends AppCompatActivity
@@ -38,7 +36,7 @@ public class PetActivity extends AppCompatActivity
     private TextView petMood;
     private TextView petTrust;
 
-    private GifImageView petView;
+    private ImageView petView;
 
     private Pet pet;
     private PetAnimation petAnimation;
@@ -116,7 +114,7 @@ public class PetActivity extends AppCompatActivity
         // Display pet gif
         petAnimation.maintenanceCheck();
         petView = findViewById(R.id.pet_pet_image);
-        petView.setImageResource(petAnimation.getCurGif(this));
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     @Override
@@ -134,8 +132,7 @@ public class PetActivity extends AppCompatActivity
                 if (pet.getIsBathed()) {
                     Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
-                    petAnimation.setCurAnimation("bathing");
-                    pet.bathe();
+                    petAnimation.bathe();
                     petView.setImageResource(petAnimation.getCurGif(this));
                 }
                 break;
@@ -143,8 +140,7 @@ public class PetActivity extends AppCompatActivity
                 if (pet.getIsFed()) {
                     Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
-                    petAnimation.setCurAnimation("feeding");
-                    pet.feed();
+                    petAnimation.feed();
                     petView.setImageResource(petAnimation.getCurGif(this));
                 }
                 break;
@@ -163,7 +159,7 @@ public class PetActivity extends AppCompatActivity
             case R.id.pet_name_text:
                 if (pet.canChangeName()) {
                     enableMainButtons();
-                    changeName();
+                    changePetName();
                 } else {
                     Toast.makeText(this,
                             pet.getName() + " needs trust level of "
@@ -194,7 +190,7 @@ public class PetActivity extends AppCompatActivity
         mainButtonsDisabled = !mainButtonsDisabled;
     }
 
-    private void changeName() {
+    private void changePetName() {
         EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         input.setText(this.pet.getName());
@@ -220,7 +216,7 @@ public class PetActivity extends AppCompatActivity
         petAnimation.getPet().setColor(color);
         petAnimation.updateColor();
         petAnimation.maintenanceCheck();
-        petView.setImageResource(petAnimation.getCurGif(this));
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     private void toggleColorChoices() {

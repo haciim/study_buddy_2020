@@ -20,10 +20,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.studdybuddy.R;
 
-import pl.droidsonroids.gif.GifImageView;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
+import studyBuddy.util.GlideGifLoader;
 import studyBuddy.util.PrimaryColorPicker;
 import studyBuddy.session_activity.SessionActivity;
 import studyBuddy.session_history_activity.SessionHistoryActivity;
@@ -33,12 +33,11 @@ import studyBuddy.time_management.TimeSelectView;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
-    public static final String PET_KEY = "pet";
     public static final String PET_ANIMATION_KEY = "pet_animation";
 
     private CardView newSession;
     private ImageButton sessionHistoryButton;
-    private GifImageView petView;
+    private ImageView petView;
     private PetAnimation petAnimation;
     private Pet pet;
     private TextView newSessionText;
@@ -82,8 +81,6 @@ public class MainActivity extends AppCompatActivity
                 // prevents notifications from being triggered once the app has been opened again
                 alarmMgr.cancel((PendingIntent) appIntent.getParcelableExtra(SessionBroadcastReceiver.DELETE_INTENT));
             }
-
-            startSession.putExtra(PET_KEY, this.pet);
             startSession.putExtra(PET_ANIMATION_KEY, this.petAnimation);
             startActivity(startSession);
         } else {
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-        petView.setImageResource(petAnimation.getCurGif(this));
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     @Override
@@ -127,9 +124,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        // Retrieve pet info from calling activity
         this.petAnimation = (PetAnimation) intent.getSerializableExtra(PET_ANIMATION_KEY);
+        if (this.petAnimation == null) {
+            Log.i("MainActivity", "New intent without PetAnimation");
+            this.finish();
+        }
         this.petAnimation.maintenanceCheck();
-        this.petView.setImageResource(this.petAnimation.getCurGif(this));
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     @Override
