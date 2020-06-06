@@ -153,6 +153,7 @@ public class SessionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         session.resumeSession();
+        cancelOldIntent();
         View background = findViewById(R.id.session_base);
         background.setBackgroundColor(PrimaryColorPicker.getDayColorInt(this));
 
@@ -242,5 +243,16 @@ public class SessionActivity extends AppCompatActivity {
                 SessionRecord[] arr = sessions.toArray(new SessionRecord[0]);
                 DataManager.save(this, arr);
         }
+    }
+
+    private void cancelOldIntent() {
+        Intent broadcast = new Intent(this, SessionBroadcastReceiver.class);
+        AlarmManager mgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+        assert mgr != null;
+        // prevent notification from updating
+        mgr.cancel(PendingIntent.getBroadcast(this, INTENT_ID, broadcast, PendingIntent.FLAG_UPDATE_CURRENT));
+        NotificationManager notifMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        assert notifMgr != null;
+        notifMgr.cancel(INTENT_ID);
     }
 }
