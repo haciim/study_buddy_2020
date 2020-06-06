@@ -15,4 +15,9 @@
     <color name="button_primary">#FF9000</color>
     <color name="water">#00CEFF</color>
     <color name="disabled">#666666</color>
+    <!-- Pie Colors -->
+    <color name="pie_fill">#219C36</color>
+    <color name="pie_highlight">#50BC1C</color>
+    <color name="pie_background">#b0b0b0</color>
+    <color name="pie_border">#202020</color>
 </resources>
