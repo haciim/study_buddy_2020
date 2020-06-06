@@ -52,19 +52,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.home_layout);
         
         timeSelectorIsOpen = false;
-
-        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
-
         this.newSessionText = findViewById(R.id.new_session_text);
-        newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
-
-        // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
-        Window window = this.getWindow();
-
-        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
-
-        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
-
         // Load pet
         this.pet = DataManager.load(this, Pet.class);
         if (this.pet == null) {
@@ -119,6 +107,22 @@ public class MainActivity extends AppCompatActivity
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
         Glide.with(this).asGif().load(this.petAnimation.getCurGif(this)).into(petView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_inner));
+
+
+        // https://stackoverflow.com/questions/22192291/how-to-change-the-status-bar-color-in-android
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
+
+        PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
+
     }
 
     @Override

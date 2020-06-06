@@ -66,17 +66,8 @@ public class SessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceBundle) {
         super.onCreate(savedInstanceBundle);
         setContentView(R.layout.session_layout);
-        View background = findViewById(R.id.session_base);
-        background.setBackgroundColor(PrimaryColorPicker.getDayColorInt(this));
 
         View fob = findViewById(R.id.fob);
-        Drawable buttonContents = ((ImageView)fob).getDrawable();
-
-        buttonContents.mutate().setColorFilter(PrimaryColorPicker.getDayColorMatrixFilter(this));
-
-        Window window = this.getWindow();
-
-        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         session = new Session(new Handler(Looper.getMainLooper()));
         TimelineView timeline = findViewById(R.id.timeLine);
@@ -162,6 +153,17 @@ public class SessionActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         session.resumeSession();
+        View background = findViewById(R.id.session_base);
+        background.setBackgroundColor(PrimaryColorPicker.getDayColorInt(this));
+
+        View fob = findViewById(R.id.fob);
+        Drawable buttonContents = ((ImageView)fob).getDrawable();
+
+        buttonContents.mutate().setColorFilter(PrimaryColorPicker.getDayColorMatrixFilter(this));
+
+        Window window = this.getWindow();
+
+        window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
         // clear notification
     }
 
