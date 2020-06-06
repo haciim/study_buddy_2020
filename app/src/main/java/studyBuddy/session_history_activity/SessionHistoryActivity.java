@@ -52,10 +52,15 @@ public class SessionHistoryActivity extends AppCompatActivity
 
         homeButton = findViewById(R.id.session_history_home_button_outer);
         homeButton.setOnClickListener(this);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         Window window = this.getWindow();
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.session_history_home_button_inner));
+
     }
 
     @Override
