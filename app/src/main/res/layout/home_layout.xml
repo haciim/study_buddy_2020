@@ -64,9 +64,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".85"
-        android:src="@drawable/session_history_shape"
+        app:layout_constraintTop_toBottomOf="@id/home_pet_view"
+        app:layout_constraintHorizontal_bias=".65"
+        android:src="@drawable/history_icon"
         android:background="@drawable/button_base"/>
 
     <ImageView
@@ -79,5 +79,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".45"/>
+
+    <ImageButton
+        android:id="@+id/home_info_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/home_button_elevation"
+        android:background="@drawable/button_base"
+        android:src="@drawable/info_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_pet_view"
+        app:layout_constraintHorizontal_bias=".35"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

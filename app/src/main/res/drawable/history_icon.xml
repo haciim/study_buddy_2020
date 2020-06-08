@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="@dimen/home_button_size" android:height="@dimen/home_button_size"
+    android:viewportHeight="100" android:viewportWidth="100">
+    <group>
+        <path android:strokeColor="@color/white"
+            android:strokeWidth="5"
+            android:pathData="M30,75
+                        A5,5 0 0,1 25,70
+                        L25,25
+                        A5,5 0 0,1 30,20
+                        L70,20
+                        A5,5 0 0,1 75,25
+                        L75,70
+                        A5,5 0 0,1 70,75"/>
+        <path android:strokeColor="@color/white"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M36,30 L64,30
+                        M36,38 L64,38
+                        M36,46 L64,46
+                        M36,54 L64,54
+                        M50,84
+                        A1,1 0 0,1 50,62
+                        A1,1 0 0,1 50,84
+                        M50,73 L50,66
+                        M50,73 L54,77"/>
+    </group>
+</vector>

@@ -42,6 +42,7 @@ public class PetActivity extends AppCompatActivity
     private PetAnimation petAnimation;
 
     private boolean mainButtonsDisabled;
+    private boolean homeButtonPressed;
 
     @IdRes
     private static final int[] mainButtons = {
@@ -72,6 +73,7 @@ public class PetActivity extends AppCompatActivity
         }
 
         this.mainButtonsDisabled = false;
+        this.homeButtonPressed = false;
 
         // Set time of day lighting
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.pet_home_button));
@@ -118,33 +120,39 @@ public class PetActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.PET_ANIMATION_KEY, this.petAnimation);
-        startActivity(intent);
+    public void onStop() {
+        super.onStop();
+        if (homeButtonPressed) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.PET_ANIMATION_KEY, this.petAnimation);
+            startActivity(intent);
+        }
     }
 
+    // Determines behavior when registered pet_layout components are clicked
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pet_bathe_button:
+                // Bathe the pet, if possible; else, notify user
                 if (pet.getIsBathed()) {
                     Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
                     petAnimation.bathe();
-                    petView.setImageResource(petAnimation.getCurGif(this));
+                    GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
                 }
                 break;
             case R.id.pet_feed_button:
+                // Feed the pet, if possible; else, notify user
                 if (pet.getIsFed()) {
                     Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
                     petAnimation.feed();
-                    petView.setImageResource(petAnimation.getCurGif(this));
+                    GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
                 }
                 break;
             case R.id.pet_color_button:
+                // If we can change color of pet, open color choice menu; else, notify user
                 if (pet.canChangeColor()) {
                     enableMainButtons();
                     toggleColorChoices();
@@ -157,6 +165,7 @@ public class PetActivity extends AppCompatActivity
                 }
                 break;
             case R.id.pet_name_text:
+                // If we can change the name of pet, open name change dialog; else, notify user
                 if (pet.canChangeName()) {
                     enableMainButtons();
                     changePetName();
@@ -169,11 +178,14 @@ public class PetActivity extends AppCompatActivity
                 }
                 break;
             case R.id.pet_home_button:
+                // Return to home screen
+                this.homeButtonPressed = true;
                 this.finish();
                 break;
         }
     }
 
+    // Toggles main buttons on/off when opening/closing color menu and name changer
     private void enableMainButtons() {
         for (int i = 0; i < mainButtons.length; i++) {
             int id = mainButtons[i];
@@ -198,7 +210,6 @@ public class PetActivity extends AppCompatActivity
 
         builder.setView(input);
         builder.setTitle("What do you want to name your pet?");
-        // new session
         builder.setPositiveButton("NAME PET", (DialogInterface dialog, int which) -> {
             String petName = input.getText().toString();
             if (!petName.equals("")) {

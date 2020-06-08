@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,10 +34,13 @@ import studyBuddy.time_management.TimeSelectView;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
+
     public static final String PET_ANIMATION_KEY = "pet_animation";
+    public static final String USER_MANUAL = "https://github.com/haciim/study_buddy_2020/blob/master/USER_MANUAL.md";
 
     private CardView newSession;
     private ImageButton sessionHistoryButton;
+    private ImageButton infoButton;
     private ImageView petView;
     private PetAnimation petAnimation;
     private Pet pet;
@@ -100,6 +104,9 @@ public class MainActivity extends AppCompatActivity
         sessionHistoryButton = findViewById(R.id.session_history_button);
         sessionHistoryButton.setOnClickListener(this);
 
+        infoButton = findViewById(R.id.home_info_button);
+        infoButton.setOnClickListener(this);
+
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         window.setStatusBarColor(PrimaryColorPicker.getDayColorInt(this));
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
+        PrimaryColorPicker.setBackgroundFilter(this, infoButton);
         petAnimation.maintenanceCheck();
     }
 
@@ -147,6 +155,8 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
         switch (view.getId()) {
             case R.id.new_session_outer:
+                // Start new session
+                // Allow user to set duration and strategy
                 if (!timeSelectorIsOpen) {
                     TimeSelectView timerView = new TimeSelectView(this);
                     timerId = View.generateViewId();
@@ -182,12 +192,20 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
             case R.id.session_history_button:
+                // Start Session History Activity
                 intent = new Intent(this, SessionHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.home_pet_view:
+                // Start Pet Activity
                 intent = new Intent(this, PetActivity.class);
                 intent.putExtra(PET_ANIMATION_KEY, this.petAnimation);
+                startActivity(intent);
+                break;
+            case R.id.home_info_button:
+                // Send user to Github User Manual
+                intent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse(USER_MANUAL));
                 startActivity(intent);
                 break;
         }
