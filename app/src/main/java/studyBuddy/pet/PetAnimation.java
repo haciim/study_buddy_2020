@@ -162,6 +162,8 @@ public class PetAnimation implements Serializable {
         //i know we're probably not making a screen for this but it doesn't hurt
         pet.worstTrustCheck();
 
+        setIdleType();
+
         Date now = new Date();
 
         long fedDiff = now.getTime() - lastFed.getTime();
