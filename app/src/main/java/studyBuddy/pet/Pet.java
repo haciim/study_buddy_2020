@@ -233,7 +233,7 @@ public class Pet implements Serializable {
      * Post-condition:
      * returns -1 if no sessions occurred this week
      */
-    private double getWPA(ArrayList<SessionRecord> sessionRecords) {
+    private double getWPA(List<SessionRecord> sessionRecords) {
         //Need a date to check this week
         Date today = new Date();
 
@@ -277,7 +277,7 @@ public class Pet implements Serializable {
 
     // who put this List<Session> sessions parameter?!
 
-    public void trustCheck(ArrayList<SessionRecord> sessionRecords){
+    public void trustCheck(List<SessionRecord> sessionRecords){
 
         Date thisWeek = new Date();
         Calendar c = Calendar.getInstance();
@@ -355,7 +355,7 @@ public class Pet implements Serializable {
      * returns -1 if no sessions occurred today
      */
 
-    private double getDPA(ArrayList<SessionRecord> sessionRecords){
+    private double getDPA(List<SessionRecord> sessionRecords){
         //Need a date to check the day's timer
         Date today = new Date();
 
@@ -397,7 +397,7 @@ public class Pet implements Serializable {
      * Should be called only once a day (5 PM to 11PM or so)
      */
 
-    public void moodCheck(ArrayList<SessionRecord> sessionRecords){
+    public void moodCheck(List<SessionRecord> sessionRecords){
         Date today = new Date();
         if(lastMoodCheck == null){
             // if first time mood check ever done,

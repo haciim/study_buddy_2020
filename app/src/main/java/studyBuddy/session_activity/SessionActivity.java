@@ -153,7 +153,7 @@ public class SessionActivity extends AppCompatActivity {
         }
 
         // Setup pet animation
-        this.petAnimation.maintenanceCheck();
+        this.petAnimation.maintenanceCheck(this.sessions);
         petView = findViewById(R.id.session_pet_image);
         petAnimation.setCurAnimation("studying");
         GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));

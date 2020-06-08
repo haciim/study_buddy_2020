@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import studyBuddy.time_management.SessionRecord;
 
@@ -160,10 +161,12 @@ public class PetAnimation implements Serializable {
 
 
     // should be called at the beginning of every pet screen pull
-    public void maintenanceCheck(ArrayList<SessionRecord> sessionRecords){
+    public void maintenanceCheck(List<SessionRecord> sessionRecords){
 
-        pet.moodCheck(sessionRecords);
-        pet.trustCheck(sessionRecords);
+        if (sessionRecords != null) {
+            pet.moodCheck(sessionRecords);
+            pet.trustCheck(sessionRecords);
+        }
 
         //i know we're probably not making a screen for this but it doesn't hurt
         pet.worstTrustCheck();
@@ -188,30 +191,6 @@ public class PetAnimation implements Serializable {
         if (bathedDiffMin > 720) {
             pet.setIsBathed(false);
         }
-
-
-        if(curHour >= 12 && !pet.getIsFed()){
-
-            // commented out auto feeding and bathing for testing purposes
-
-            //pet feeds itself after noon
-
-            //do in main i guess
-           // pet.feed();
-          //  setCurAnimation("feeding");
-         //   lastFed = new Date();
-
-        }
-
-        if(curHour >= (9 + 12) && !pet.getIsBathed()){
-            //pet bathes itself after 9 pm
-
-       //    pet.bathe();
-       //     setCurAnimation("bathing");
-      //      lastBathed = new Date();
-
-        }
-
     }
 
     public void feed() {

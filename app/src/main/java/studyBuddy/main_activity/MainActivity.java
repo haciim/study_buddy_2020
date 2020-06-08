@@ -21,6 +21,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.studdybuddy.R;
 
+import java.util.Arrays;
+import java.util.List;
+
+import studyBuddy.time_management.SessionRecord;
 import studyBuddy.util.DataManager;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     private PetAnimation petAnimation;
     private Pet pet;
     private TextView newSessionText;
+    private List<SessionRecord> recordList;
 
     private boolean timeSelectorIsOpen;
     int timerId;
@@ -65,7 +70,6 @@ public class MainActivity extends AppCompatActivity
             this.pet.setName("Buddy");
             this.petAnimation = new PetAnimation(this.pet);
         }
-        petAnimation.maintenanceCheck();
 
         // see if we need to open the activity back up
         Intent appIntent = getIntent();
@@ -110,7 +114,9 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
+
+        // Load Session Records
+        this.recordList = Arrays.asList(DataManager.load(this, SessionRecord[].class));
     }
 
     @Override
@@ -126,7 +132,8 @@ public class MainActivity extends AppCompatActivity
 
         PrimaryColorPicker.setBackgroundFilter(this, findViewById(R.id.main_background));
         PrimaryColorPicker.setBackgroundFilter(this, infoButton);
-        petAnimation.maintenanceCheck();
+        petAnimation.maintenanceCheck(this.recordList);
+        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     @Override
@@ -138,8 +145,6 @@ public class MainActivity extends AppCompatActivity
             Log.i("MainActivity", "New intent without PetAnimation");
             this.finish();
         }
-        this.petAnimation.maintenanceCheck();
-        GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
     @Override

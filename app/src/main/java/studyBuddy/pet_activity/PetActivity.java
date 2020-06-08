@@ -19,9 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studdybuddy.R;
 
+import java.util.List;
+
 import studyBuddy.main_activity.MainActivity;
 import studyBuddy.pet.Pet;
 import studyBuddy.pet.PetAnimation;
+import studyBuddy.time_management.SessionRecord;
 import studyBuddy.util.GlideGifLoader;
 import studyBuddy.util.PrimaryColorPicker;
 
@@ -65,7 +68,7 @@ public class PetActivity extends AppCompatActivity
         if (intent != null) {
             petAnimation = (PetAnimation) intent.getSerializableExtra(MainActivity.PET_ANIMATION_KEY);
             this.pet = petAnimation.getPet();
-            petAnimation.maintenanceCheck();
+            petAnimation.maintenanceCheck(null);
         } else {
             Log.i("PET_ACTIVITY", "Bad Parent, Could not load pet");
             this.finish();
@@ -114,7 +117,6 @@ public class PetActivity extends AppCompatActivity
         findViewById(R.id.pet_confirm_color_button).setOnClickListener(new ColorChoiceListener("", true));
 
         // Display pet gif
-        petAnimation.maintenanceCheck();
         petView = findViewById(R.id.pet_pet_image);
         GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
@@ -226,7 +228,7 @@ public class PetActivity extends AppCompatActivity
     private void changeColor(String color) {
         petAnimation.getPet().setColor(color);
         petAnimation.updateColor();
-        petAnimation.maintenanceCheck();
+        petAnimation.maintenanceCheck(null);
         GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
     }
 
