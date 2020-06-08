@@ -5,7 +5,7 @@
         android:allowBackup="true"
         android:icon="@drawable/cattronsuperscale"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/cattronsuperscale"
+        android:roundIcon="@raw/idle_neutral_default"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity

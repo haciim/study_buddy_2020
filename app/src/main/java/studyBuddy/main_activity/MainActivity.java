@@ -21,6 +21,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.studdybuddy.R;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity
             this.pet = new Pet();
             this.pet.setName("Buddy");
             this.petAnimation = new PetAnimation(this.pet);
+        } else {
+            this.pet = this.petAnimation.getPet();
         }
 
         // see if we need to open the activity back up
@@ -114,14 +117,19 @@ public class MainActivity extends AppCompatActivity
         // Setup pet animation
         petView = findViewById(R.id.home_pet_view);
         petView.setOnClickListener(this);
-
-        // Load Session Records
-        this.recordList = Arrays.asList(DataManager.load(this, SessionRecord[].class));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        // Load Session Records
+        SessionRecord[] records = DataManager.load(this, SessionRecord[].class);
+        if (records != null) {
+            this.recordList = Arrays.asList(records);
+        } else {
+            this.recordList = new ArrayList<>();
+        }
+
         newSessionText.setTextColor(PrimaryColorPicker.getDayColorInt(this));
         PrimaryColorPicker.setBackgroundFilter(this, this.sessionHistoryButton);
 
