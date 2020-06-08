@@ -31,7 +31,7 @@ Right after you open the app, you can start a session. To accomplish this, tap t
 
 You will have the ability to either pre-select the length of your session or set to infinite on the left side of the slider. You can select the type of session on the right side of the slider. A _Standard_ session is a regular session of your determined length. A _Pomadoro_ session is a session that follows the Pomadoro productivity idealogy. After selecting the "START SESSION" button on top of the slider, the app will switch to the session view and you will be prompted to provide a name for your session prior to beginning. 
 
-![Application as seen from Session View](manual_resources/SessionNamingScreen.PNG)
+![Application as seen from Session View](manual_resources/SessionNamingScreen.png)
 
 *Figure 3. The session view with name prompting.*
 
