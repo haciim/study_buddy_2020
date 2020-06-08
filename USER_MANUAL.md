@@ -81,7 +81,7 @@ On the screen you can view your pet's name, it's current mood and trust levels. 
 
 Additionally, you can see your pets current animation and some action buttons below it. You can feed and bathe the pet by clicking on the two buttons on the bottom of the screen that show a food bowl and bath tub. You can see your pet either in the eating or bathing animation. These actions are for cosmetic use only and either execute automatically if you have not done so and have no effect on the mood or trust levels of your pet. 
 
-
+![Pet animations](manual_resources/PetActions.png)
 
 *Figure 8. The pet animations of eating and bathing.*
 
@@ -93,7 +93,7 @@ You are able to change your pets name by clicking on it's name at the top of scr
 
 You are able to change the color of your pet by clicking the bottom right icon that has a color wheel of our current color selections (gold, red, default). You must have a trust level of 7 or higher to change the color of your pet. This change will show up across the entire app and with all animations. 
 
-
+![colors](manual_resources/PetColor.png)
 
 *Figure 10. The color options for your pet.*
 
