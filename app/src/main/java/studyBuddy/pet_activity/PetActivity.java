@@ -133,7 +133,7 @@ public class PetActivity extends AppCompatActivity
                     Toast.makeText(this, pet.getName() + " been recently bathed", Toast.LENGTH_SHORT).show();
                 } else {
                     petAnimation.bathe();
-                    petView.setImageResource(petAnimation.getCurGif(this));
+                    GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
                 }
                 break;
             case R.id.pet_feed_button:
@@ -141,7 +141,7 @@ public class PetActivity extends AppCompatActivity
                     Toast.makeText(this, pet.getName() + " has been recently fed", Toast.LENGTH_SHORT).show();
                 } else {
                     petAnimation.feed();
-                    petView.setImageResource(petAnimation.getCurGif(this));
+                    GlideGifLoader.loadGifIntoView(this, petView, petAnimation.getCurGif(this));
                 }
                 break;
             case R.id.pet_color_button:
