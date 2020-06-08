@@ -3,12 +3,16 @@
 package studyBuddy.pet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import studyBuddy.session_activity.Session;
+import studyBuddy.time_management.SessionRecord;
+import studyBuddy.util.DataManager;
 
 
 public class Pet implements Serializable {
@@ -26,6 +30,9 @@ public class Pet implements Serializable {
     /* the last date recorded at the worst trust level */
     private Date lastDAWT;
     private Date birthDate; // possible birthday tracker
+
+    private Date lastTrustCheck;
+    private Date lastMoodCheck;
 
     private final int MOOD_SCALE = 10;
     private final int TRUST_SCALE = 10;
@@ -226,23 +233,23 @@ public class Pet implements Serializable {
      * Post-condition:
      * returns -1 if no sessions occurred this week
      */
-    private double getWPA(List<Session> sessions) {
+    private double getWPA(ArrayList<SessionRecord> sessionRecords) {
         //Need a date to check this week
         Date today = new Date();
 
         int countedSessions = 0;
         double cumulativeSum = 0;
         //iterating through session history
-        for(int i = 0; i < sessions.size(); i++){
-            Session curSession = sessions.get(i);
+        for(int i = 0; i < sessionRecords.size(); i++){
+            SessionRecord curSessionR = sessionRecords.get(i);
 
             // checking if current session is from this week
-            boolean sameWeekQuery = isSameWeek(today, curSession.getStartTime());
+            boolean sameWeekQuery = isSameWeek(today, curSessionR.start);
 
             // if session occurred this week, add % productivity to
             // average and count the session
             if(sameWeekQuery){
-                cumulativeSum += curSession.getPercentProductive();
+                cumulativeSum += curSessionR.percentProductive;
                 countedSessions++;
             }
         }
@@ -268,26 +275,44 @@ public class Pet implements Serializable {
      * Should be called only once a week (end of day Friday or so)
      */
 
-    public void trustCheck(List<Session> sessions){
+    // who put this List<Session> sessions parameter?!
 
-        double WPA = getWPA(sessions);
+    public void trustCheck(ArrayList<SessionRecord> sessionRecords){
 
-        // no need to change pet trust level if no sessions happened that week
-        // though it would be weird if the user stopped using the app for a week
-        // i guess a vacation?
+        Date thisWeek = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(thisWeek);
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 
-        if(WPA != -1){
-            if(WPA >= 0.5){
-                if(trustLevel < TRUST_SCALE){
-                    trustLevel++;
+        if(lastTrustCheck == null){
+            lastTrustCheck = thisWeek;
+        }
+        //valid trust check performed only if the day is friday or saturday
+        // sure if the user were to not use the app on these days, the user could
+        // "escape" accountability of a week or more, but the user would likely
+        // check on their pet more often anyways because of the mood changes
+
+        else if((!isSameWeek(lastTrustCheck, thisWeek)) && dayOfWeek >= 5){
+            double WPA = getWPA(sessionRecords);
+
+            // no need to change pet trust level if no sessions happened that week
+            // though it would be weird if the user stopped using the app for a week
+            // i guess a vacation?
+
+            if(WPA != -1){
+                if(WPA >= 0.5){
+                    if(trustLevel < TRUST_SCALE){
+                        trustLevel++;
+                    }
                 }
-            }
-            else{
-                if(trustLevel > 0){
-                    trustLevel--;
+                else{
+                    if(trustLevel > 0){
+                        trustLevel--;
+                    }
                 }
             }
         }
+
     }
 
     /**
@@ -330,23 +355,23 @@ public class Pet implements Serializable {
      * returns -1 if no sessions occurred today
      */
 
-    private double getDPA(List<Session> sessions){
+    private double getDPA(ArrayList<SessionRecord> sessionRecords){
         //Need a date to check the day's timer
         Date today = new Date();
 
         int countedSessions = 0;
         double cumulativeSum = 0;
         //iterating through session history
-        for(int i = 0; i < sessions.size(); i++){
-            Session curSession = sessions.get(i);
+        for(int i = 0; i < sessionRecords.size(); i++){
+            SessionRecord curSessionR = sessionRecords.get(i);
 
             // checking if current session is from today
-            boolean sameDayQuery = isSameDay(today, curSession.getStartTime());
+            boolean sameDayQuery = isSameDay(today, curSessionR.start);
 
             // if session occurred today, add % productivity to
             // average and count the session
             if(sameDayQuery){
-                cumulativeSum += curSession.getPercentProductive();
+                cumulativeSum += curSessionR.percentProductive;
                 countedSessions++;
             }
         }
@@ -372,23 +397,43 @@ public class Pet implements Serializable {
      * Should be called only once a day (5 PM to 11PM or so)
      */
 
-    public void moodCheck(List<Session> sessions){
-        // getting the daily productivity average
-        double DPA = getDPA(sessions);
+    public void moodCheck(ArrayList<SessionRecord> sessionRecords){
+        Date today = new Date();
+        if(lastMoodCheck == null){
+            // if first time mood check ever done,
+            // set it to now and continue with process
 
-        // no need to change mood if nothing happened today
-        if(DPA != -1){
-            if(DPA >= 0.5){
-                if(moodLevel < MOOD_SCALE){
-                    moodLevel++;
-                }
-            }
-            else{
-                if(moodLevel > 0){
-                    moodLevel--;
-                }
-            }
+            lastMoodCheck = today;
         }
+        // otherwise if the the last mood check was not today
+        // continue with process
+
+        else if(!isSameDay(lastMoodCheck, today)){
+
+            // getting the daily productivity average
+            double DPA = getDPA(sessionRecords);
+
+            // no need to change mood if nothing happened today
+            if(DPA != -1){
+                if(DPA >= 0.5){
+                    if(moodLevel < MOOD_SCALE){
+                        moodLevel++;
+                    }
+                }
+                else{
+                    if(moodLevel > 0){
+                        moodLevel--;
+                    }
+                }
+            }
+
+            lastMoodCheck = today;
+
+        }
+
+
+
+
     }
 
     public void updateLastDAWT(){

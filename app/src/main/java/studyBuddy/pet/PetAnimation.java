@@ -6,9 +6,12 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import studyBuddy.time_management.SessionRecord;
 
 
 public class PetAnimation implements Serializable {
@@ -157,7 +160,10 @@ public class PetAnimation implements Serializable {
 
 
     // should be called at the beginning of every pet screen pull
-    public void maintenanceCheck(){
+    public void maintenanceCheck(ArrayList<SessionRecord> sessionRecords){
+
+        pet.moodCheck(sessionRecords);
+        pet.trustCheck(sessionRecords);
 
         //i know we're probably not making a screen for this but it doesn't hurt
         pet.worstTrustCheck();
