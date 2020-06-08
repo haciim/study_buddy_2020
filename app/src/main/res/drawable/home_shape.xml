@@ -9,8 +9,11 @@
         <path
             android:name="home"
             android:strokeColor="@color/white"
-            android:strokeWidth="7"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
             android:strokeLineJoin="round"
-            android:pathData="M50,17 L80,40 L70,40 L70,70 L57,70 L57,55 L43,55 L43,70 L30,70 L30,40 L20,40z"/>
+            android:pathData="M15,50 L50,15 L85,50
+                            M50,30 L75,55 L75,85 L58,85 L58,65 L42,65 L42,85 L25,85 L25,55 Z
+                            M70,25 L70,15 L60,15"/>
     </group>
 </vector>

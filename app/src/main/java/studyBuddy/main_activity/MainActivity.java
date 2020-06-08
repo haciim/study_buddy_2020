@@ -34,7 +34,9 @@ import studyBuddy.time_management.TimeSelectView;
 
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener {
+
     public static final String PET_ANIMATION_KEY = "pet_animation";
+    public static final String USER_MANUAL = "https://github.com/haciim/study_buddy_2020/blob/master/USER_MANUAL.md";
 
     private CardView newSession;
     private ImageButton sessionHistoryButton;
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.home_info_button:
                 // Send user to Github User Manual
                 intent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://github.com/haciim/study_buddy_2020/blob/master/USER_MANUAL.md"));
+                        Uri.parse(USER_MANUAL));
                 startActivity(intent);
                 break;
         }

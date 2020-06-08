@@ -66,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_pet_view"
         app:layout_constraintHorizontal_bias=".65"
-        android:src="@drawable/session_history_shape"
+        android:src="@drawable/history_icon"
         android:background="@drawable/button_base"/>
 
     <ImageView
