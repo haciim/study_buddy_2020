@@ -8,7 +8,7 @@ Study Buddy is a productivity tool intended to assist you in remaining productiv
 In order to install the application, you must have an Android phone running at least Android 9.0. The steps to install the application are located in [the repository's README file](https://github.com/haciim/study_buddy_2020/blob/master/README.md#running-the-system).
 
 ## Opening the Application
-![Study Buddy home screen](manual_resources/HomeScreen.png)
+![Study Buddy home screen](manual_resources/Home.png)
 
 *Figure 1. The application home screen.*
 
@@ -37,7 +37,7 @@ You will have the ability to either pre-select the length of your session or set
 
 Upon starting a session, the app will switch to the final session view. 
 
-![study running session](manual_resources/StudyScreen.png)
+![study running session](manual_resources/Studying.png)
 
 *Figure 4. The running session view.*
 
@@ -63,7 +63,7 @@ Once the session has been ended, you are able to rate the productivity of your s
 
 You are able to access the session history by clicking the list button at the bottom of the home screen. 
 
-![session history](manual_resources/HistoryScreen.png)
+![session history](manual_resources/History.png)
 
 *Figure 6. The session history screen.*
 
@@ -73,7 +73,7 @@ On the screen you are able to see a chronological list of all your past sessions
 
 You can view the below pet screen by clicking within the square around the pet on the home screen. 
 
-![pet screen](manual_resources/PetScreen.png)
+![pet screen](manual_resources/Pet.png)
 
 *Figure 7. The main pet screen.*
 
@@ -87,7 +87,7 @@ Additionally, you can see your pets current animation and some action buttons be
 
 You are able to change your pets name by clicking on it's name at the top of screen once you have aquired a trust level of 6. 
 
-![rename screen](manual_resources/PetNamingScreen.png)
+![rename screen](manual_resources/Name.png)
 
 *Figure 9. The renaming screen.*
 
