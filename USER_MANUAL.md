@@ -5,7 +5,7 @@ Study Buddy is a productivity tool intended to assist you in remaining productiv
 
 ## Installing the Application
 
-In order to install the application, you must have Android Studio installed, and an Android phone running at least Android 9.0. The steps to install the application are located in the repository's README file.
+In order to install the application, you must have an Android phone running at least Android 9.0. The steps to install the application are located in the repository's README file.
 
 ## Opening the Application
 ![Study Buddy home screen](manual_resources/HomeScreen.png)
