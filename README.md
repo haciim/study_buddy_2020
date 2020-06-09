@@ -1,4 +1,5 @@
 
+
 # Study Buddy
 Study Buddy is an Android app that offers a reward for productivity by tying the user’s commitment to a virtual pet which directly benefits from their compliance. When the user remains accountable for their tasks, their virtual pet will grow, improve in mood, and trust the user.
 
@@ -15,8 +16,11 @@ Study Buddy is an Android app that offers a reward for productivity by tying the
 ## Building and Testing the System
 Gradle automatically builds the system. To test the system, run the JUnit tests found within the testing folder (app >> src >> test).
 ## Running the System
-First, the repository must be cloned to your system, which can be done via the following command:  
-git clone https://github.com/haciim/study_buddy_2020.git
+Our latest release can be found [here](https://github.com/haciim/study_buddy_2020/releases). StudyBuddy can be run by installing the release's .apk on an Android Device.
+
+If you would like to run the app from a commit not included in our releases, first, the repository must be cloned to your system, which can be done via the following command:
+	
+	git clone https://github.com/haciim/study_buddy_2020.git
 
 Additionally, you must be building the application on Java 8. The appropriate JDK can be acquired [here](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html).
 
